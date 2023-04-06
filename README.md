@@ -9,6 +9,12 @@ All of the code is in the Code folder.
 
 # Linux
 
+You will need to install the ncurses library if you do not alread have it. Run the command below to install it.
+
+```shell
+sudo apt-get install libncurses5-dev libncursesw5-dev
+```
+
 Simply download the repository, enter the Linux folder, and run the command below
 
 ```shell
@@ -19,10 +25,4 @@ Then enter
 
 ```shell
 ./Stratego
-```
-
-You will need to install the ncurses library if you do not alread have it. Run the command below to install it.
-
-```shell
-sudo apt-get install libncurses5-dev libncursesw5-dev
 ```
