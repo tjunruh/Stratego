@@ -11,23 +11,18 @@ All of the code is in the Code folder.
 
 Simply download the repository, enter the Linux folder, and run the command below
 
-''
+''shell
 make
 ''
 
 Then enter
 
-''
+''shell
 ./Stratego
 ''
 
 You will need to install the ncurses library if you do not alread have it. Run the command below to install it.
 
-''
+''shell
 sudo apt-get install libncurses5-dev libncursesw5-dev
 ''
-
-
-
-
-Currently, the program only works on Windows. I am looking into implementing it for Linux.
