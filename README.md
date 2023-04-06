@@ -1,9 +1,33 @@
 # Stratego
 This is the two player board game of Stratego. Here, it is implemented as a console application.
 
+# Windows
+
 The game can be installed directly by downloading the Installation folder and selecting the file called setup.exe
 
 All of the code is in the Code folder.
+
+# Linux
+
+Simply download the repository, enter the Linux folder, and run the command below
+
+''
+make
+''
+
+Then enter
+
+''
+./Stratego
+''
+
+You will need to install the ncurses library if you do not alread have it. Run the command below to install it.
+
+''
+sudo apt-get install libncurses5-dev libncursesw5-dev
+''
+
+
 
 
 Currently, the program only works on Windows. I am looking into implementing it for Linux.
