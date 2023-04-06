@@ -15,7 +15,7 @@ You will need to install the ncurses library if you do not alread have it. Run t
 sudo apt-get install libncurses5-dev libncursesw5-dev
 ```
 
-Simply download this repository, enter the Linux folder, and run the command below
+Simply download this repository, enter the Linux folder, and run the command below.
 
 ```shell
 make
