@@ -55,7 +55,6 @@ std::string stratego_io::getline() {
 #ifdef _WIN32
 	std::getline(std::cin, input);
 #elif __linux__
-	std::string input;
 	nocbreak();
 	echo();
 
