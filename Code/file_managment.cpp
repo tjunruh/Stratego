@@ -6,7 +6,7 @@
 #include <windows.h>
 #include <libloaderapi.h>
 #elif __linux__
-#include <linux/limitx.h>
+#include <linux/limits.h>
 #endif
 #include <dirent.h>
 #include <sys/types.h>
