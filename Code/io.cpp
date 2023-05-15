@@ -55,16 +55,7 @@ std::string stratego_io::getline() {
 #ifdef _WIN32
 	std::getline(std::cin, input);
 #elif __linux__
-	nocbreak();
-	echo();
-
-	int ch = getch();
-
-	while (ch != '\n') {
-		input.push_back(char(ch));
-	}
-	cbreak();
-	noecho();
+	getnstr(input.c_str(), 160);
 #endif
 	return input;
 }
