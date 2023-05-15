@@ -5,7 +5,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #include <libloaderapi.h>
-#elif
+#elif __linux__
 #include <linux/limitx.h>
 #endif
 #include <dirent.h>
@@ -155,7 +155,7 @@ std::string stratego_file_managment::get_exe_path_directory() {
 #elif __linux__
 	char path[PATH_MAX];
 	ssize_t count = readlink("/proc/self/exe", path, PATH_MAX);
-	return string(result, (count > 0) ? count : 0);
+	return std::string(path, (count > 0) ? count : 0);
 #endif
 }
 
