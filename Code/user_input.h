@@ -13,18 +13,19 @@
 #define F 102
 #define B 98
 #define H 104
-#define ENTER 13
 #define D 100
 
 #define Q 113
 #define SPACE 32
 
 #ifdef _WIN32
+#define ENTER 13
 #define RIGHT 77
 #define LEFT 75
 #define UP 72
 #define DOWN 80
 #elif __linux__
+#define ENTER 10
 #define RIGHT 67
 #define LEFT 68
 #define UP 65

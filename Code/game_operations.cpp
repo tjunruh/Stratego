@@ -41,12 +41,12 @@ void stratego_game_operations::setup() {
     io.clear();
     io.print("Enter your name player 1:\n");
     std::string player_name = "";
-    std::getline(std::cin, player_name);
+    player_name = io.getline();
     display.set_player1_name(player_name);
 
     io.clear();
     io.print("Enter your name player 2:\n");
-    std::getline(std::cin, player_name);
+    player_name = io.getline();
     display.set_player2_name(player_name);
 
     do {
