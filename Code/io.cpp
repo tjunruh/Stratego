@@ -51,11 +51,16 @@ void stratego_io::reset() {
 }
 
 std::string stratego_io::getline() {
-	std::string input = "";
 #ifdef _WIN32
+	std::string input = "";
 	std::getline(std::cin, input);
 #elif __linux__
-	getnstr(input.c_str(), 160);
+	echo();
+	char raw_input[160];
+	std::string input;
+	getnstr(raw_input, 160);
+	input = raw_input;
+	noecho();
 #endif
 	return input;
 }
