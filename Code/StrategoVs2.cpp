@@ -10,7 +10,7 @@
 //#include "file_managment.h"
 #include "game_operations.h"
 #ifdef __linux__
-#incude <unistd.h>
+#include <unistd.h>
 #include <ncurses.h>
 #endif
 
