@@ -7,6 +7,7 @@
 #include <libloaderapi.h>
 #elif __linux__
 #include <linux/limits.h>
+#include <unistd.h>
 #endif
 #include <dirent.h>
 #include <sys/types.h>
