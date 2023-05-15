@@ -9,4 +9,5 @@ public:
 	int getchar();
 	void clear();
 	void reset();
+	std::string getline();
 };
