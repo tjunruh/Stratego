@@ -415,7 +415,7 @@ void stratego_display::display_rules() {
 }
 
 void stratego_display::display_controls() {
-	io.print("Go back   : q\n");
+	io.print("Go back   : q\n\n");
 	io.print("MOVING CURSER\n");
 	io.print("Operation : Button\n");
 	io.print("Move up   : Up arrow\n");
@@ -447,6 +447,7 @@ void stratego_display::display_controls() {
 	io.print("Move down : Down arrow\n");
 	io.print("Move right: Right arrow\n");
 	io.print("Move left : Left arrow\n");
+	io.print("Finalize  : Enter\n");
 }
 
 void stratego_display::set_player1_name(std::string name) {

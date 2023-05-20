@@ -50,7 +50,7 @@ void stratego_io::reset() {
 	Position.Y = 0;
 	SetConsoleCursorPosition(hOut, Position);
 	#elif __linux__
-
+		erase();
 	#endif
 }
 

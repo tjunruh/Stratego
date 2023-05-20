@@ -1,13 +1,6 @@
 // StrategoVs2.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-//#include "display.h"
-//#include "io.h"
-//#include "logic.h"
-//#include "user_input.h"
-//#include "input_to_logic_interface.h"
-//#include "string.h"
-//#include "file_managment.h"
 #include "game_operations.h"
 #ifdef __linux__
 #include <unistd.h>

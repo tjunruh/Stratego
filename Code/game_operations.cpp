@@ -10,6 +10,7 @@ void stratego_game_operations::initialize_file_system() {
 void stratego_game_operations::menu() {
     int input = -1;
     int position = 0;
+    display.set_menu_selection(new_game);
     do {
         io.clear();
         display.display_menu();
@@ -456,7 +457,7 @@ void stratego_game_operations::save_game_handle() {
     io.print("Enter a name:\n");
     std::string game_name = "";
     do {
-        std::getline(std::cin, game_name);
+        game_name = io.getline();
         if (file_managment.duplicate_name(game_name)) {
             io.print("Game already exists. Enter a different name:\n");
         }

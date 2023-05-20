@@ -69,9 +69,7 @@ bool stratego_logic::path_clear(int start_row, int start_column, direction _dire
 			}
 		}
 	}
-	else {
-		return true;
-	}
+	return true;
 }
 
 int stratego_logic::determine_loser(int piece1_id, int piece2_id) {
