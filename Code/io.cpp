@@ -22,6 +22,10 @@ int stratego_io::getchar() {
 		input = _getch();
 	#elif __linux__
 		input = getch();
+		if (input == 27) {
+			input = getch();
+			input = getch();
+		}
 	#endif
 
 	return input;
