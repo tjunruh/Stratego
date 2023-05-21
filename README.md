@@ -3,9 +3,7 @@ This is the two player board game of Stratego. Here, it is implemented as a cons
 
 # Windows
 
-The game can be installed directly by downloading the Installation folder and selecting the file called setup.exe
-
-All of the code is in the Code folder.
+The game can be installed by double clicking on the setup executable in the Windows_Installation folder.
 
 # Linux
 
@@ -15,7 +13,7 @@ You will need to install the ncurses library if you do not alread have it. Run t
 sudo apt-get install libncurses5-dev libncursesw5-dev
 ```
 
-Simply download this repository, enter the Linux folder, and run the command below.
+Simply clone this repository, enter the Code folder, and run the command below.
 
 ```shell
 make
@@ -26,3 +24,7 @@ Then enter
 ```shell
 ./Stratego
 ```
+
+# Game Instructions
+
+One entering, you may need to widen the terminal to properly see the title. To see controls pressing 'h' will disply controls in most cases.
