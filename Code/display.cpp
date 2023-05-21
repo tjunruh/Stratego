@@ -450,7 +450,8 @@ void stratego_display::display_controls() {
 	io.print("Move left : Left arrow\n");
 	io.print("Finalize  : Enter\n");
 	io.print("Save      : S\n");
-	io.print("Note that you can only save the game at a preturn menu.\n");
+	io.print("Note that you can only save the game at a preturn menu.\n\n");
+	io.print("To delete a game, you can press d while the game is selected\n in the load menu.");
 }
 
 void stratego_display::set_player1_name(std::string name) {
