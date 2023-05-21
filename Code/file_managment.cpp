@@ -152,7 +152,6 @@ void stratego_file_managment::set_working_directory(std::string exe_path) {
 		char* dirname = "Saved_Stratego_Games/";
 		mkdir(dirname, 0777);
 	}
-}
 #endif
 }
 
