@@ -3,10 +3,16 @@
 
 void stratego_game_operations::initialize_file_system() {
     std::string exe_path = file_managment.get_exe_path_directory();
+#ifdef _WIN32
     while (exe_path[exe_path.length() - 1] != '\\') {
         exe_path.erase(exe_path.length() - 1, 1);
     }
-   
+#elif __linux__
+    while (exe_path[exe_path.length() - 1] != '/') {
+        exe_path.erase(exe_path.length() - 1, 1);
+    }
+#endif
+    
     file_managment.set_working_directory(exe_path);
 }
 
