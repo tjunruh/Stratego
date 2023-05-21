@@ -27,4 +27,4 @@ Then enter
 
 # Game Instructions
 
-One entering, you may need to widen the terminal to properly see the title. To see controls pressing 'h' will disply controls in most cases.
+On entering, you may need to widen the terminal to properly see the title. To see controls pressing 'h' will disply controls in most cases.
