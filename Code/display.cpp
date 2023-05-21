@@ -415,6 +415,7 @@ void stratego_display::display_rules() {
 }
 
 void stratego_display::display_controls() {
+	io.print("CONTROLS:\n\n");
 	io.print("Go back   : q\n\n");
 	io.print("MOVING CURSER\n");
 	io.print("Operation : Button\n");
@@ -449,7 +450,7 @@ void stratego_display::display_controls() {
 	io.print("Move left : Left arrow\n");
 	io.print("Finalize  : Enter\n");
 	io.print("Save      : S\n");
-	io.print("Note that you can only save the game at a preturn menu.");
+	io.print("Note that you can only save the game at a preturn menu.\n");
 }
 
 void stratego_display::set_player1_name(std::string name) {
