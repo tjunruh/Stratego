@@ -8,6 +8,7 @@
 #elif __linux__
 #include <linux/limits.h>
 #include <unistd.h>
+#include <sys/stat.h>
 #endif
 #include <dirent.h>
 #include <sys/types.h>
@@ -49,7 +50,7 @@ void stratego_file_managment::save_game(std::string file_name, stratego_piece bo
 	}
 }
 
-void stratego_file_managment::load_game(std::string file_name, stratego_piece(&board_info)[80], int& player_turn, std::string& saved_move_shot, std::string &player1_name, std::string &player2_name) {
+void stratego_file_managment::load_game(std::string file_name, stratego_piece(&board_info)[80], int& player_turn, std::string& saved_move_shot, std::string& player1_name, std::string& player2_name) {
 	stratego_io io;
 	std::string content = read_file(file_name);
 	if (content == "") {
@@ -75,7 +76,7 @@ void stratego_file_managment::load_game(std::string file_name, stratego_piece(&b
 
 		position++;
 		position++;
-		
+
 		int piece = 0;
 		while (content[position] != '#') {
 			if (content[position] == '1') {
@@ -145,6 +146,14 @@ std::string stratego_file_managment::read_file(std::string file_name) {
 
 void stratego_file_managment::set_working_directory(std::string exe_path) {
 	_working_directory = exe_path + "Saved_Stratego_Games/";
+#ifdef __linux__
+	struct stat sb;
+	if (stat(_working_directory, &sb) != 0)) {
+		char* dirname = "Saved_Stratego_Games/";
+		mkdir(dirname, 0777);
+	}
+}
+#endif
 }
 
 std::string stratego_file_managment::get_exe_path_directory() {

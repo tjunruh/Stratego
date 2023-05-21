@@ -3,7 +3,10 @@
 
 void stratego_game_operations::initialize_file_system() {
     std::string exe_path = file_managment.get_exe_path_directory();
-    exe_path.erase(exe_path.length() - 15, 15);
+    while (exe_path[exe_path.length() - 1] != '\\') {
+        exe_path.erase(exe_path.length() - 1, 1);
+    }
+   
     file_managment.set_working_directory(exe_path);
 }
 
