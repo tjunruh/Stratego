@@ -3,7 +3,7 @@ This is the two player board game of Stratego. Here, it is implemented as a cons
 
 # Windows
 
-The game can be installed by double clicking on the setup executable in the Windows_Installation folder.
+The game can be installed by double clicking on the setup executable in the Windows_Installation folder. Note that you most likely will have to run the game as administrator when you start the game in order to save games later.
 
 # Linux
 
