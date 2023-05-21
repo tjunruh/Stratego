@@ -148,7 +148,7 @@ void stratego_file_managment::set_working_directory(std::string exe_path) {
 	_working_directory = exe_path + "Saved_Stratego_Games/";
 #ifdef __linux__
 	struct stat sb;
-	if (stat(_working_directory, &sb) != 0) {
+	if (stat(_working_directory.c_str(), &sb) != 0) {
 		char* dirname = "Saved_Stratego_Games/";
 		mkdir(dirname, 0777);
 	}
