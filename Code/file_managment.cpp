@@ -178,9 +178,10 @@ void stratego_file_managment::get_saved_game_names(std::vector<std::string>& gam
 			game_names.push_back(en->d_name);
 		}
 	}
-	if (game_names.size() != 0) {
-		game_names.erase(game_names.begin());
-		game_names.erase(game_names.begin());
+	for (int name = (game_names.size() - 1); name >= 0; name--) {
+		if ((game_names[name] == ".") || (game_names[name] == "..")) {
+			game_names.erase(game_names.begin() + name);
+		}
 	}
 
 	closedir(dr);
@@ -203,6 +204,5 @@ int stratego_file_managment::char_to_int(char _char) {
 
 void stratego_file_managment::delete_file(std::string file_name) {
 	std::string path = _working_directory + file_name;
-	int succes = remove(path.c_str());
-	int stop = 0;
+	remove(path.c_str());
 }
