@@ -10,7 +10,7 @@ _____/\\\\\\\\\\\_______________________________________________________________
         ___\///////////_________\/////____\///___________\////////\//______\/////______\//////////___\////////______\/////_____
 ```
 
-<a href="https://github.com/NonlinearFruit/stratego-cpp/actions/workflows/pipeline.yml"><img src="https://img.shields.io/github/actions/workflow/status/NonlinearFruit/stratego-cpp/pipeline.yml?label=build&branch=main"></a>
+<a href="https://github.com/tjunruh/Stratego/actions/workflows/pipeline.yml"><img src="https://img.shields.io/github/actions/workflow/status/tjunruh/Stratego/pipeline.yml?label=build&branch=main"></a>
 
 This is the two player board game of Stratego. Here, it is implemented as a console application.
 
