@@ -13,14 +13,14 @@ DEPS := $(OCJS:.o=.d)
 
 LDFLAGS := -lncurses
 INC_FLAGS := $(addprefix -I,$(INC_DIR))
-CXXFLAGS := -std=c++17 -O2 $(INC_FLAGS) -Wall  $(LDFLAGS)
+CXXFLAGS := -std=c++17 $(LDFLAGS) -O2 $(INC_FLAGS) -Wall
 
 .PHONY: all clean
 
 all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJS)
-	$(CXX) $(CXXFLAGS) $(OBJS) -o $@
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $@ $(LDFLAGS)
 
 $(BLD_DIR)/%.cpp.o: %.cpp
 	mkdir -p $(dir $@)
