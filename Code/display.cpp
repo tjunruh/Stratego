@@ -375,7 +375,7 @@ void stratego_display::display_menu() {
 		display = display + "                                                          ";
 		display = display + "  Load Game \n";
 		display = display + "                                                          ";
-		display = display + "  exit \n";
+		display = display + "  Exit \n";
 		io.print(display);
 	}
 	else if (get_menu_selection() == load_game) {
@@ -384,7 +384,7 @@ void stratego_display::display_menu() {
 		display = display + "                                                          ";
 		display = display + "* Load Game \n";
 		display = display + "                                                          ";
-		display = display + "  exit \n";
+		display = display + "  Exit \n";
 		io.print(display);
 	}
 	else if (get_menu_selection() == exit_game) {
@@ -393,7 +393,7 @@ void stratego_display::display_menu() {
 		display = display + "                                                          ";
 		display = display + "  Load Game \n";
 		display = display + "                                                          ";
-		display = display + "* exit \n";
+		display = display + "* Exit \n";
 		io.print(display);
 	}
 }
