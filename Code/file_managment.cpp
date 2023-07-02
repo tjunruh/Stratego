@@ -14,7 +14,6 @@
 #include <sys/types.h>
 
 void stratego_file_managment::save_game(std::string file_name, stratego_piece board_info[80], int player_turn, std::string saved_move_shot, std::string player1_name, std::string player2_name) {
-	stratego_io io;
 	std::string content = "";
 	content = content + player1_name + "\n";
 	content = content + player2_name + "\n";
@@ -43,18 +42,17 @@ void stratego_file_managment::save_game(std::string file_name, stratego_piece bo
 	content = content + "#\n";
 	content = content + saved_move_shot;
 	if (write_file(file_name, content)) {
-		io.print(file_name + " saved!\n");
+		stratego_io::print(file_name + " saved!\n");
 	}
 	else {
-		io.print("Failed to save game.");
+		stratego_io::print("Failed to save game.");
 	}
 }
 
 void stratego_file_managment::load_game(std::string file_name, stratego_piece(&board_info)[80], int& player_turn, std::string& saved_move_shot, std::string& player1_name, std::string& player2_name) {
-	stratego_io io;
 	std::string content = read_file(file_name);
 	if (content == "") {
-		io.print("Could not open the file.\n");
+		stratego_io::print("Could not open the file.\n");
 	}
 	else {
 		int position = 0;
@@ -124,7 +122,6 @@ bool stratego_file_managment::write_file(std::string file_name, std::string cont
 }
 
 std::string stratego_file_managment::read_file(std::string file_name) {
-	stratego_io io;
 	std::ifstream file(_working_directory + file_name);
 	std::string content;
 
@@ -138,7 +135,7 @@ std::string stratego_file_managment::read_file(std::string file_name) {
 		file.close();
 	}
 	else {
-		io.print("Cannot find file.\n");
+		stratego_io::print("Cannot find file.\n");
 		content = "";
 	}
 	return content;

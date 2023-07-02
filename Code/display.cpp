@@ -199,8 +199,8 @@ void stratego_display::display_pieces_out_of_play(int player1_pieces_out[12], in
 	}
 	player1_disp = player1_disp + "    \n";
 	player2_disp = player2_disp + "    \n";
-	io.print(player1_disp);
-	io.print(player2_disp);
+	stratego_io::print(player1_disp);
+	stratego_io::print(player2_disp);
 }
 
 void stratego_display::add_board_pieces_to_spaces() {
@@ -342,7 +342,7 @@ void stratego_display::display_board(stratego_piece board_pieces[80]) {
 		printable_board = printable_board + ".---.---.---.---.---.---.---.---.---.---.\n";
 	}
 
-	io.print(printable_board);
+	stratego_io::print(printable_board);
 
 	if (_display_pieces_out_of_play) {
 		int player1_pieces_out[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -376,7 +376,7 @@ void stratego_display::display_menu() {
 		display = display + "  Load Game \n";
 		display = display + "                                                          ";
 		display = display + "  Exit \n";
-		io.print(display);
+		stratego_io::print(display);
 	}
 	else if (get_menu_selection() == load_game) {
 		std::string display = "                                                          ";
@@ -385,7 +385,7 @@ void stratego_display::display_menu() {
 		display = display + "* Load Game \n";
 		display = display + "                                                          ";
 		display = display + "  Exit \n";
-		io.print(display);
+		stratego_io::print(display);
 	}
 	else if (get_menu_selection() == exit_game) {
 		std::string display = "                                                          ";
@@ -394,16 +394,16 @@ void stratego_display::display_menu() {
 		display = display + "  Load Game \n";
 		display = display + "                                                          ";
 		display = display + "* Exit \n";
-		io.print(display);
+		stratego_io::print(display);
 	}
 }
 
 void stratego_display::display_player1_preturn_menu() {
-	io.print(player1_name + "'s turn. Press space to begin.");
+	stratego_io::print(player1_name + "'s turn. Press space to begin.");
 }
 
 void stratego_display::display_player2_preturn_menu() {
-	io.print(player2_name + "'s turn. Press space to begin.");
+	stratego_io::print(player2_name + "'s turn. Press space to begin.");
 }
 
 menu_options stratego_display::get_menu_selection() {
@@ -415,43 +415,43 @@ void stratego_display::display_rules() {
 }
 
 void stratego_display::display_controls() {
-	io.print("CONTROLS:\n\n");
-	io.print("Go back   : q\n\n");
-	io.print("MOVING CURSER\n");
-	io.print("Operation : Button\n");
-	io.print("Move up   : Up arrow\n");
-	io.print("Move down : Down arrow\n");
-	io.print("Move right: Right arrow\n");
-	io.print("Move left : Left arrow\n");
-	io.print("\n");
-	io.print("GAME SETUP\n");
-	io.print("Operation : Button\n");
-	io.print("Place 1   : 1\n");
-	io.print("Place 2   : 2\n");
-	io.print("Place 3   : 3\n");
-	io.print("Place 4   : 4\n");
-	io.print("Place 5   : 5\n");
-	io.print("Place 6   : 6\n");
-	io.print("Place 7   : 7\n");
-	io.print("Place 8   : 8\n");
-	io.print("Place 9   : 9\n");
-	io.print("Place s   : s\n");
-	io.print("Place b   : b\n");
-	io.print("Place f   : f\n");
-	io.print("If you want to remove a piece from the board, place another piece on top of it.\nThis will replace the piece on the board with the new piece.\n");
-	io.print("\n");
-	io.print("GAME PLAY PIECE MANIPULATION\n");
-	io.print("Operation : Button\n");
-	io.print("Select    : Enter\n");
-	io.print("Unselect  : q\n");
-	io.print("Move up   : Up arrow\n");
-	io.print("Move down : Down arrow\n");
-	io.print("Move right: Right arrow\n");
-	io.print("Move left : Left arrow\n");
-	io.print("Finalize  : Enter\n");
-	io.print("Save      : S\n");
-	io.print("Note that you can only save the game at a preturn menu.\n\n");
-	io.print("To delete a game, you can press d while the game is selected\n in the load menu.");
+	stratego_io::print("CONTROLS:\n\n");
+	stratego_io::print("Go back   : q\n\n");
+	stratego_io::print("MOVING CURSER\n");
+	stratego_io::print("Operation : Button\n");
+	stratego_io::print("Move up   : Up arrow\n");
+	stratego_io::print("Move down : Down arrow\n");
+	stratego_io::print("Move right: Right arrow\n");
+	stratego_io::print("Move left : Left arrow\n");
+	stratego_io::print("\n");
+	stratego_io::print("GAME SETUP\n");
+	stratego_io::print("Operation : Button\n");
+	stratego_io::print("Place 1   : 1\n");
+	stratego_io::print("Place 2   : 2\n");
+	stratego_io::print("Place 3   : 3\n");
+	stratego_io::print("Place 4   : 4\n");
+	stratego_io::print("Place 5   : 5\n");
+	stratego_io::print("Place 6   : 6\n");
+	stratego_io::print("Place 7   : 7\n");
+	stratego_io::print("Place 8   : 8\n");
+	stratego_io::print("Place 9   : 9\n");
+	stratego_io::print("Place s   : s\n");
+	stratego_io::print("Place b   : b\n");
+	stratego_io::print("Place f   : f\n");
+	stratego_io::print("If you want to remove a piece from the board, place another piece on top of it.\nThis will replace the piece on the board with the new piece.\n");
+	stratego_io::print("\n");
+	stratego_io::print("GAME PLAY PIECE MANIPULATION\n");
+	stratego_io::print("Operation : Button\n");
+	stratego_io::print("Select    : Enter\n");
+	stratego_io::print("Unselect  : q\n");
+	stratego_io::print("Move up   : Up arrow\n");
+	stratego_io::print("Move down : Down arrow\n");
+	stratego_io::print("Move right: Right arrow\n");
+	stratego_io::print("Move left : Left arrow\n");
+	stratego_io::print("Finalize  : Enter\n");
+	stratego_io::print("Save      : S\n");
+	stratego_io::print("Note that you can only save the game at a preturn menu.\n\n");
+	stratego_io::print("To delete a game, you can press d while the game is selected\n in the load menu.");
 }
 
 void stratego_display::set_player1_name(std::string name) {
@@ -609,7 +609,7 @@ void stratego_display::save_move(int player, stratego_piece losing_piece) {
 }
 
 void stratego_display::display_saved_move() {
-	io.print(screen_shot);
+	stratego_io::print(screen_shot);
 }
 
 void stratego_display::invert_arrows() {
@@ -676,7 +676,7 @@ void stratego_display::display_load_game_menu(std::vector<std::string> saved_gam
 			saved_game_list = saved_game_list + "  " + saved_game_names[saved_game] + "\n";
 		}
 	}
-	io.print(saved_game_list);
+	stratego_io::print(saved_game_list);
 }
 
 std::string stratego_display::get_screen_shot() {
@@ -696,7 +696,7 @@ std::string stratego_display::get_player2_name() {
 }
 
 void stratego_display::display_logo() {
-	io.print(R"(_____/\\\\\\\\\\\______________________________________________________________________________________________________)"
+	stratego_io::print(R"(_____/\\\\\\\\\\\______________________________________________________________________________________________________)"
 	        "\n"
 	        R"( ___/\\\/////////\\\____________________________________________________________________________________________________  )"
 	        "\n"
@@ -721,6 +721,5 @@ void stratego_display::add_hint() {
 }
 
 void stratego_display::execute_add_hint() {
-	stratego_io io;
-	io.print("Press Enter.\n");
+	stratego_io::print("Press Enter.\n");
 }

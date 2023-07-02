@@ -10,7 +10,6 @@ class stratego_game_operations {
 private:
 	bool game_loaded;
 	stratego_display display;
-	stratego_io io;
 	stratego_logic logic;
 	stratego_interface interface;
 	stratego_file_managment file_managment;

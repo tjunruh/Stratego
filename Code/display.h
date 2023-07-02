@@ -13,7 +13,6 @@ enum menu_options {
 
 class stratego_display {
 private:
-	stratego_io io;
 	// data on game pieces
 	stratego_piece _board_pieces[80];
 
