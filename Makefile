@@ -13,7 +13,7 @@ DEPS := $(OCJS:.o=.d)
 
 LDFLAGS := -lncurses
 INC_FLAGS := $(addprefix -I,$(INC_DIR))
-CXXFLAGS := -std=c++17 $(LDFLAGS) -O2 $(INC_FLAGS) -Wall
+CXXFLAGS := -std=c++17 $(LDFLAGS) -O2 $(INC_FLAGS) -Wall -MMD -MP
 
 .PHONY: all clean
 
@@ -27,7 +27,7 @@ $(BLD_DIR)/%.cpp.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -r $(BLD_DIR)
-	rm $(EXECUTABLE)
+	-rm -r $(BLD_DIR)
+	-rm $(EXECUTABLE)
 
 -include $(DEPS)

@@ -8,7 +8,7 @@
 #include <ncurses.h>
 #endif
 
-void stratego_io::print(std::string output) {
+void stratego_io::print(const std::string& output) {
 	#ifdef _WIN32
 		std::cout << output;
 	#elif __linux__

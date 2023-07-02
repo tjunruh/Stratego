@@ -21,9 +21,9 @@ void stratego_game_operations::menu() {
     int position = 0;
     display.set_menu_selection(new_game);
     do {
-        io.clear();
+        stratego_io::clear();
         display.display_menu();
-        input = io.getchar();
+        input = stratego_io::getchar();
         if ((input == UP) && (position > 0)) {
             position--;
         }
@@ -48,21 +48,21 @@ void stratego_game_operations::setup() {
     logic.reset_board();
     logic.set_game_state(placing_pieces);
 
-    io.clear();
-    io.print("Enter your name player 1:\n");
+    stratego_io::clear();
+    stratego_io::print("Enter your name player 1:\n");
     std::string player_name = "";
-    player_name = io.getline();
+    player_name = stratego_io::getline();
     display.set_player1_name(player_name);
 
-    io.clear();
-    io.print("Enter your name player 2:\n");
-    player_name = io.getline();
+    stratego_io::clear();
+    stratego_io::print("Enter your name player 2:\n");
+    player_name = stratego_io::getline();
     display.set_player2_name(player_name);
 
     do {
-        io.clear();
+        stratego_io::clear();
         display.display_player1_preturn_menu();
-        input = io.getchar();
+        input = stratego_io::getchar();
         if (input == H) {
             help_menu();
         }
@@ -78,9 +78,9 @@ void stratego_game_operations::setup() {
         display.add_standard_curser(logic.get_curser_row(), logic.get_curser_column());
         stratego_piece board_info[80];
         logic.get_board_info(board_info);
-        io.reset();
+        stratego_io::reset();
         display.display_board(board_info);
-        input = io.getchar();
+        input = stratego_io::getchar();
         if ((input == UP) || (input == DOWN) || (input == RIGHT) || (input == LEFT)) {
             logic.move_curser(interface.user_to_logic(input));
         }
@@ -95,9 +95,9 @@ void stratego_game_operations::setup() {
     } while (!logic.player1_pieces_placed());
 
     do {
-        io.clear();
+        stratego_io::clear();
         display.display_player2_preturn_menu();
-        input = io.getchar();
+        input = stratego_io::getchar();
         if (input == H) {
             help_menu();
         }
@@ -114,9 +114,9 @@ void stratego_game_operations::setup() {
         display.add_standard_curser(logic.get_curser_row(), logic.get_curser_column());
         stratego_piece board_info[80];
         logic.get_board_info(board_info);
-        io.reset();
+        stratego_io::reset();
         display.display_board(board_info);
-        input = io.getchar();
+        input = stratego_io::getchar();
         if ((input == UP) || (input == DOWN) || (input == RIGHT) || (input == LEFT)) {
             logic.move_curser(interface.user_to_logic(input));
         }
@@ -137,13 +137,13 @@ void stratego_game_operations::load() {
     std::vector<std::string> saved_game_names;
     file_managment.get_saved_game_names(saved_game_names);
     int saved_game_selection = 0;
-    io.clear();
+    stratego_io::clear();
     do {
-        io.reset();
+        stratego_io::reset();
         if (saved_game_names.size() != 0) {
             display.display_load_game_menu(saved_game_names, saved_game_selection);
         }
-        input = io.getchar();
+        input = stratego_io::getchar();
         if ((input == UP) && (saved_game_selection > 0)) {
             saved_game_selection--;
         }
@@ -173,7 +173,7 @@ void stratego_game_operations::load() {
         else if (input == D) {
             file_managment.delete_file(saved_game_names[saved_game_selection]);
             file_managment.get_saved_game_names(saved_game_names);
-            io.clear();
+            stratego_io::clear();
         }
 
         if (input == H) {
@@ -203,10 +203,10 @@ void stratego_game_operations::game_loop() {
             display.hide_player1();
         }
         display.add_pieces_out_of_play();
-        io.reset();
+        stratego_io::reset();
         display.display_board(board_info);
 
-        input = io.getchar();
+        input = stratego_io::getchar();
         if (logic.get_game_state() == moving_curser) {
             moving_curser_handle(input);
         }
@@ -225,17 +225,17 @@ void stratego_game_operations::game_loop() {
     } while (!logic.player1_won() && !logic.player2_won());
     
     if (logic.player1_won()) {
-        io.clear();
-        io.print(display.get_player1_name() + " won!");
+        stratego_io::clear();
+        stratego_io::print(display.get_player1_name() + " won!");
         do {
-            input = io.getchar();
+            input = stratego_io::getchar();
         } while (input != ENTER);
     }
     else if (logic.player2_won()) {
-        io.clear();
-        io.print(display.get_player2_name() + " won!");
+        stratego_io::clear();
+        stratego_io::print(display.get_player2_name() + " won!");
         do {
-            input = io.getchar();
+            input = stratego_io::getchar();
         } while (input != ENTER);
     }
 }
@@ -256,22 +256,22 @@ void stratego_game_operations::end_game() {
         display.hide_player2();
         display.orient_for_player(1);
         display.add_pieces_out_of_play();
-        io.clear();
-        io.print(display.get_player1_name() + "'s pieces:\n");
+        stratego_io::clear();
+        stratego_io::print(display.get_player1_name() + "'s pieces:\n");
         display.display_board(board_info);
         int input = -1;
         do {
-            input = io.getchar();
+            input = stratego_io::getchar();
         } while (input != ENTER);
 
         display.hide_player1();
         display.orient_for_player(2);
         display.add_pieces_out_of_play();
-        io.clear();
-        io.print(display.get_player2_name() + "'s pieces:\n");
+        stratego_io::clear();
+        stratego_io::print(display.get_player2_name() + "'s pieces:\n");
         display.display_board(board_info);
         do {
-            input = io.getchar();
+            input = stratego_io::getchar();
         } while (input != ENTER);
     }
 }
@@ -279,12 +279,12 @@ void stratego_game_operations::end_game() {
 void stratego_game_operations::help_menu() {
     int input = -1;
    
-    io.clear();
+    stratego_io::clear();
     display.display_controls();
     do {
-        input = io.getchar();
+        input = stratego_io::getchar();
     } while (input != Q);
-    io.clear();
+    stratego_io::clear();
 }
 
 bool stratego_game_operations::turn_ended_handle() {
@@ -293,9 +293,9 @@ bool stratego_game_operations::turn_ended_handle() {
         logic.set_curser_row(2);
         logic.set_curser_column(4);
         do {
-            io.clear();
+            stratego_io::clear();
             display.display_player2_preturn_menu();
-            input = io.getchar();
+            input = stratego_io::getchar();
             if (input == H) {
                 help_menu();
             }
@@ -306,11 +306,11 @@ bool stratego_game_operations::turn_ended_handle() {
         }
         logic.set_turn(2);
         if (!display.screen_shot_empty()) {
-            io.reset();
+            stratego_io::reset();
             display.display_saved_move();
-            io.print(display.get_player1_name() + "'s move. Press enter to continue.");
+            stratego_io::print(display.get_player1_name() + "'s move. Press enter to continue.");
             do {
-                input = io.getchar();
+                input = stratego_io::getchar();
             } while (input != ENTER);
         }
         display.add_standard_curser(logic.get_curser_row(), logic.get_curser_column());
@@ -319,9 +319,9 @@ bool stratego_game_operations::turn_ended_handle() {
         logic.set_curser_row(7);
         logic.set_curser_column(5);
         do {
-            io.clear();
+            stratego_io::clear();
             display.display_player1_preturn_menu();
-            input = io.getchar();
+            input = stratego_io::getchar();
             if (input == H) {
                 help_menu();
             }
@@ -332,11 +332,11 @@ bool stratego_game_operations::turn_ended_handle() {
         }
         logic.set_turn(1);
         if (!display.screen_shot_empty()) {
-            io.reset();
+            stratego_io::reset();
             display.display_saved_move();
-            io.print(display.get_player2_name() + "'s move. Press enter to continue.");
+            stratego_io::print(display.get_player2_name() + "'s move. Press enter to continue.");
             do {
-                input = io.getchar();
+                input = stratego_io::getchar();
             } while (input != ENTER);
         }
         display.add_standard_curser(logic.get_curser_row(), logic.get_curser_column());
@@ -462,13 +462,13 @@ void stratego_game_operations::battling_handle(int input) {
 }
 
 void stratego_game_operations::save_game_handle() {
-    io.clear();
-    io.print("Enter a name:\n");
+    stratego_io::clear();
+    stratego_io::print("Enter a name:\n");
     std::string game_name = "";
     do {
-        game_name = io.getline();
+        game_name = stratego_io::getline();
         if (file_managment.duplicate_name(game_name)) {
-            io.print("Game already exists. Enter a different name:\n");
+            stratego_io::print("Game already exists. Enter a different name:\n");
         }
     } while (file_managment.duplicate_name(game_name));
     stratego_piece board_info[80];
