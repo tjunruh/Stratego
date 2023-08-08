@@ -20,7 +20,7 @@ The game can be installed by double clicking on the setup executable in the Wind
 
 # Linux
 
-You will need to install the ncurses library if you do not alread have it. Run the command below to install it.
+You will need to install the ncurses library if you do not already have it. Run the command below to install it.
 
 ```shell
 sudo apt-get install libncurses5-dev libncursesw5-dev
