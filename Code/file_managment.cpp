@@ -1,6 +1,6 @@
 #include "file_managment.h"
 #include <fstream>
-#include "io.h"
+#include "ascii_io.h"
 #include <stdio.h>
 #ifdef _WIN32
 #include <windows.h>
@@ -42,17 +42,17 @@ void stratego_file_managment::save_game(std::string file_name, stratego_piece bo
 	content = content + "#\n";
 	content = content + saved_move_shot;
 	if (write_file(file_name, content)) {
-		stratego_io::print(file_name + " saved!\n");
+		ascii_io::print(file_name + " saved!\n");
 	}
 	else {
-		stratego_io::print("Failed to save game.");
+		ascii_io::print("Failed to save game.");
 	}
 }
 
 void stratego_file_managment::load_game(std::string file_name, stratego_piece(&board_info)[80], int& player_turn, std::string& saved_move_shot, std::string& player1_name, std::string& player2_name) {
 	std::string content = read_file(file_name);
 	if (content == "") {
-		stratego_io::print("Could not open the file.\n");
+		ascii_io::print("Could not open the file.\n");
 	}
 	else {
 		int position = 0;
@@ -135,7 +135,7 @@ std::string stratego_file_managment::read_file(std::string file_name) {
 		file.close();
 	}
 	else {
-		stratego_io::print("Cannot find file.\n");
+		ascii_io::print("Cannot find file.\n");
 		content = "";
 	}
 	return content;

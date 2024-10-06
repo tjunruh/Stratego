@@ -3,7 +3,6 @@
 #include <vector>
 #include "piece.h"
 #include "direction.h"
-#include "io.h"
 
 enum menu_options {
 	new_game = 4,
