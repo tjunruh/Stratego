@@ -11,13 +11,18 @@ SRCS := $(shell find $(SRC_DIR) -name *.cpp)
 OBJS := $(SRCS:%=$(BLD_DIR)/%.o)
 DEPS := $(OCJS:.o=.d)
 
-LDFLAGS := -lncurses
+LDFLAGS := -lncurses -L external_libraries/ASCII_Board_Game_Engine_v1.0.0-alpha/Linux/ -lascii_engine
 INC_FLAGS := $(addprefix -I,$(INC_DIR))
-CXXFLAGS := -std=c++17 $(LDFLAGS) -O2 $(INC_FLAGS) -Wall -MMD -MP
+CXXFLAGS := -std=c++17 -O2 $(INC_FLAGS) -Wall -MMD -MP -I external_libraries/ASCII_Board_Game_Engine_v1.0.0-alpha/Linux/headers/ascii_engine
 
 .PHONY: all clean
 
+OUT := stratego
+
 all: $(EXECUTABLE)
+
+run: $(EXECUTABLE)
+	env LD_LIBRARY_PATH="../ASCII_Board_Game_Engine/build" ./$(OUT)
 
 $(EXECUTABLE): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $@ $(LDFLAGS)
