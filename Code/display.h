@@ -4,12 +4,6 @@
 #include "piece.h"
 #include "direction.h"
 
-enum menu_options {
-	new_game = 4,
-	load_game,
-	exit_game
-};
-
 class stratego_display {
 private:
 	// data on game pieces
@@ -51,8 +45,6 @@ private:
 	bool _save_move = false;
 
 	int _players_move;
-	
-	menu_options _menu_selection = new_game;
 
 	std::string player1_name = "player 1";
 	std::string player2_name = "player 2";
@@ -92,12 +84,8 @@ public:
 	void add_scout_arrows(int start_row, int start_column, direction direction, int distance, int player);
 	void add_pieces_out_of_play();
 	void display_board(stratego_piece board_pieces[80]);
-	void set_menu_selection(menu_options menu_selection);
-	menu_options get_menu_selection();
-	void display_menu();
 	void display_player1_preturn_menu();
 	void display_player2_preturn_menu();
-	void display_rules();
 	void display_controls();
 	void display_load_game_menu(std::vector<std::string> saved_game_names, int selected_game);
 	void set_player1_name(std::string name);
@@ -110,6 +98,5 @@ public:
 	void reset();
 	std::string get_player1_name();
 	std::string get_player2_name();
-	void display_logo();
 	void add_hint();
 };

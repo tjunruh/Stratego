@@ -17,33 +17,6 @@ void stratego_game_operations::initialize_file_system() {
     file_managment.set_working_directory(exe_path);
 }
 
-void stratego_game_operations::menu() {
-    int input = -1;
-    int position = 0;
-    display.set_menu_selection(new_game);
-    do {
-        ascii_io::clear();
-        display.display_menu();
-        input = ascii_io::getchar();
-        if ((input == ascii_io::up) && (position > 0)) {
-            position--;
-        }
-        else if ((input == ascii_io::down) && (position < 2)) {
-            position++;  
-        }
-
-        if (position == 0) {
-            display.set_menu_selection(new_game);
-        }
-        else if (position == 1) {
-            display.set_menu_selection(load_game);
-        }
-        else if (position == 2) {
-            display.set_menu_selection(exit_game);
-        }
-    } while (input != ascii_io::enter);
-}
-
 void stratego_game_operations::setup() {
     int input = -1;
     logic.reset_board();
@@ -243,10 +216,6 @@ void stratego_game_operations::game_loop() {
 
 bool stratego_game_operations::game_is_loaded() {
     return game_loaded;
-}
-
-menu_options stratego_game_operations::get_menu_selection() {
-    return display.get_menu_selection();
 }
 
 void stratego_game_operations::end_game() {

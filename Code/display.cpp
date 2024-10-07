@@ -363,56 +363,12 @@ void stratego_display::display_board(stratego_piece board_pieces[80]) {
 	reset();
 }
 
-
-void stratego_display::set_menu_selection(menu_options menu_selection) {
-	_menu_selection = menu_selection;
-}
-
-void stratego_display::display_menu() {
-	display_logo();
-	if (get_menu_selection() == new_game) {
-		std::string display = "                                                          ";
-		display = display + "* New Game\n";
-		display = display + "                                                          ";
-		display = display + "  Load Game \n";
-		display = display + "                                                          ";
-		display = display + "  Exit \n";
-		ascii_io::print(display);
-	}
-	else if (get_menu_selection() == load_game) {
-		std::string display = "                                                          ";
-		display = display + "  New Game\n";
-		display = display + "                                                          ";
-		display = display + "* Load Game \n";
-		display = display + "                                                          ";
-		display = display + "  Exit \n";
-		ascii_io::print(display);
-	}
-	else if (get_menu_selection() == exit_game) {
-		std::string display = "                                                          ";
-		display = display + "  New Game\n";
-		display = display + "                                                          ";
-		display = display + "  Load Game \n";
-		display = display + "                                                          ";
-		display = display + "* Exit \n";
-		ascii_io::print(display);
-	}
-}
-
 void stratego_display::display_player1_preturn_menu() {
 	ascii_io::print(player1_name + "'s turn. Press space to begin.");
 }
 
 void stratego_display::display_player2_preturn_menu() {
 	ascii_io::print(player2_name + "'s turn. Press space to begin.");
-}
-
-menu_options stratego_display::get_menu_selection() {
-	return _menu_selection;
-}
-
-void stratego_display::display_rules() {
-
 }
 
 void stratego_display::display_controls() {
@@ -694,27 +650,6 @@ std::string stratego_display::get_player1_name() {
 
 std::string stratego_display::get_player2_name() {
 	return player2_name;
-}
-
-void stratego_display::display_logo() {
-	ascii_io::print(R"(_____/\\\\\\\\\\\______________________________________________________________________________________________________)"
-	        "\n"
-	        R"( ___/\\\/////////\\\____________________________________________________________________________________________________  )"
-	        "\n"
-	        R"(  __\//\\\______\///______/\\\_______________________________________/\\\_______________________/\\\\\\\\________________)"
-	        "\n"
-	        R"(   ___\////\\\__________/\\\\\\\\\\\__/\\/\\\\\\\___/\\\\\\\\\_____/\\\\\\\\\\\_____/\\\\\\\\___/\\\////\\\_____/\\\\\____)"
-	        "\n"
-	        R"(    ______\////\\\______\////\\\////__\/\\\/////\\\_\////////\\\___\////\\\////____/\\\/////\\\_\//\\\\\\\\\___/\\\///\\\__)"
-	        "\n"
-	        R"(     _________\////\\\______\/\\\______\/\\\___\///____/\\\\\\\\\\_____\/\\\_______/\\\\\\\\\\\___\///////\\\__/\\\__\//\\\_)"
-	        "\n"
-	        R"(      __/\\\______\//\\\_____\/\\\_/\\__\/\\\__________/\\\/////\\\_____\/\\\_/\\__\//\\///////____/\\_____\\\_\//\\\__/\\\__)"
-	        "\n"
-	        R"(       _\///\\\\\\\\\\\/______\//\\\\\___\/\\\_________\//\\\\\\\\/\\____\//\\\\\____\//\\\\\\\\\\_\//\\\\\\\\___\///\\\\\/___)"
-	        "\n"
-	        R"(        ___\///////////_________\/////____\///___________\////////\//______\/////______\//////////___\////////______\/////_____)"
-	        "\n\n\n");
 }
 
 void stratego_display::add_hint() {
