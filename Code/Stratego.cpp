@@ -7,16 +7,13 @@
 #include "label.h"
 #ifdef __linux__
 #include <unistd.h>
-#include <ncurses.h>
+#include "ascii_io.h"
 #endif
 
 int main()
 {
 #ifdef __linux__
-    initscr();
-    raw();
-    noecho();
-    cbreak();
+    ascii_io::ncurses_init();
 #endif
     frame* home_frame = new frame();
     do {
@@ -52,6 +49,6 @@ int main()
    
     delete(home_frame);
 #ifdef __linux__
-    endwin();
+    ascii_io::ncurses_end();
 #endif
 }
