@@ -35,7 +35,6 @@ void stratego_file_managment::save_game(std::string file_name, stratego_piece bo
 		else {
 			content = content + std::to_string(board_info[piece].get_rank()) + " ";
 		}
-		content = content + board_info[piece].get_piece() + " ";
 		content = content + std::to_string(board_info[piece].get_row()) + " ";
 		content = content + std::to_string(board_info[piece].get_column()) + "\n";
 	}
@@ -93,11 +92,10 @@ void stratego_file_managment::load_game(std::string file_name, stratego_piece(&b
 			else {
 				board_info[piece].set_rank(char_to_int(content[position + 4]));
 			}
-			board_info[piece].set_piece(content[position + 6]);
-			board_info[piece].set_row(char_to_int(content[position + 8]));
-			board_info[piece].set_column(char_to_int(content[position + 10]));
+			board_info[piece].set_row(char_to_int(content[position + 6]));
+			board_info[piece].set_column(char_to_int(content[position + 8]));
 			piece++;
-			position = position + 12;
+			position = position + 10;
 		}
 		position = position + 2;
 		saved_move_shot = "";

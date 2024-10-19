@@ -2,6 +2,11 @@
 #include "game_operations.h"
 #include <iostream>
 
+stratego_game_operations::stratego_game_operations(frame* main_display) : display(main_display)
+{
+
+}
+
 void stratego_game_operations::initialize_file_system() {
     std::string exe_path = file_managment.get_exe_path_directory();
 #ifdef _WIN32
@@ -278,7 +283,7 @@ bool stratego_game_operations::turn_ended_handle() {
         if (!display.screen_shot_empty()) {
             ascii_io::move_cursor_to_position(0, 0);
             display.display_saved_move();
-            ascii_io::print(display.get_player1_name() + "'s move. Press enter to continue.");
+            ascii_io::print("\n" + display.get_player1_name() + "'s move. Press enter to continue.");
             do {
                 input = ascii_io::getchar();
             } while (input != ascii_io::enter);
@@ -304,7 +309,7 @@ bool stratego_game_operations::turn_ended_handle() {
         if (!display.screen_shot_empty()) {
             ascii_io::move_cursor_to_position(0, 0);
             display.display_saved_move();
-            ascii_io::print(display.get_player2_name() + "'s move. Press enter to continue.");
+            ascii_io::print("\n" + display.get_player2_name() + "'s move. Press enter to continue.");
             do {
                 input = ascii_io::getchar();
             } while (input != ascii_io::enter);

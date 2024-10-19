@@ -11,9 +11,7 @@ private:
 
 public:
 	void set_owner(int owner);
-	void set_piece(char piece);
 	int get_owner();
-	char get_piece();
 	void set_row(int row);
 	int get_row();
 	void set_column(int column);

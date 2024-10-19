@@ -89,18 +89,26 @@ int stratego_logic::determine_loser(int piece1_id, int piece2_id) {
 			return piece1_id;
 		}
 	}
-	else if ((piece1.get_rank() >= 0) && (piece2.get_rank() >= 0)) {
-		if (piece1.get_rank() > piece2.get_rank()) {
-			return piece2_id;
-		}
-		else if (piece1.get_rank() < piece2.get_rank()) {
-			return piece1_id;
-		}
+	else if (piece1.get_rank() == 0)
+	{
+		return piece1_id;
 	}
-	else if ((piece1.get_rank() == 2) && (piece2.get_rank() == -2)) {
+	else if (piece2.get_rank() == 0)
+	{
 		return piece2_id;
 	}
-	else if ((piece1.get_rank() == -2) && (piece2.get_rank() == 2)) {
+	else if ((piece1.get_rank() > 0) && (piece2.get_rank() > 0)) {
+		if (piece1.get_rank() > piece2.get_rank()) {
+			return piece1_id;
+		}
+		else if (piece1.get_rank() < piece2.get_rank()) {
+			return piece2_id;
+		}
+	}
+	else if ((piece1.get_rank() == 8) && (piece2.get_rank() == -2)) {
+		return piece2_id;
+	}
+	else if ((piece1.get_rank() == -2) && (piece2.get_rank() == 8)) {
 		return piece1_id;
 	}
 	else if (piece1.get_rank() == -1) {
@@ -157,7 +165,7 @@ void stratego_logic::select_piece(int row, int column) {
 		stratego_piece selected_piece = board.get_piece_data(temp_selected_piece_id);
 		if ((selected_piece.get_rank() != 0) && (selected_piece.get_rank() != -2) && (selected_piece.get_owner() == player_turn)) {
 			selected_piece_id = temp_selected_piece_id;
-			if (selected_piece.get_rank() == 1) {
+			if (selected_piece.get_rank() == 9) {
 				set_game_state(scout_selected);
 				set_direction(neutral);
 			}
@@ -401,31 +409,31 @@ void stratego_logic::get_board_info(stratego_piece(&board_info)[80]) {
 void stratego_logic::place_piece(input user_input) {
 	if (is_valid_position_to_place_piece(curser_row)) {
 		if (user_input == one) {
-			board.add_piece(9, player_turn, curser_row, curser_column);
+			board.add_piece(1, player_turn, curser_row, curser_column);
 		}
 		else if (user_input == two) {
-			board.add_piece(8, player_turn, curser_row, curser_column);
+			board.add_piece(2, player_turn, curser_row, curser_column);
 		}
 		else if (user_input == three) {
-			board.add_piece(7, player_turn, curser_row, curser_column);
+			board.add_piece(3, player_turn, curser_row, curser_column);
 		}
 		else if (user_input == four) {
-			board.add_piece(6, player_turn, curser_row, curser_column);
+			board.add_piece(4, player_turn, curser_row, curser_column);
 		}
 		else if (user_input == five) {
 			board.add_piece(5, player_turn, curser_row, curser_column);
 		}
 		else if (user_input == six) {
-			board.add_piece(4, player_turn, curser_row, curser_column);
+			board.add_piece(6, player_turn, curser_row, curser_column);
 		}
 		else if (user_input == seven) {
-			board.add_piece(3, player_turn, curser_row, curser_column);
+			board.add_piece(7, player_turn, curser_row, curser_column);
 		}
 		else if (user_input == eight) {
-			board.add_piece(2, player_turn, curser_row, curser_column);
+			board.add_piece(8, player_turn, curser_row, curser_column);
 		}
 		else if (user_input == nine) {
-			board.add_piece(1, player_turn, curser_row, curser_column);
+			board.add_piece(9, player_turn, curser_row, curser_column);
 		}
 		else if (user_input == b) {
 			board.add_piece(-2, player_turn, curser_row, curser_column);

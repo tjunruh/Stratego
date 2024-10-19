@@ -4,16 +4,8 @@ void stratego_piece::set_owner(int owner) {
 	_owner = owner;
 }
 
-void stratego_piece::set_piece(char piece) {
-	_piece = piece;
-}
-
 int stratego_piece::get_owner() {
 	return _owner;
-}
-
-char stratego_piece::get_piece() {
-	return _piece;
 }
 
 void stratego_piece::set_row(int row) {

@@ -3,25 +3,21 @@
 #include <vector>
 #include "piece.h"
 #include "direction.h"
+#include "ascii_board.h"
+#include "label.h"
 
 class stratego_display {
 private:
 	// data on game pieces
 	stratego_piece _board_pieces[80];
 
-	// visual appearance of all board spaces
-	std::string board_spaces[10][10];
-
 	std::string screen_shot;
-
-	std::string printable_board;
 
 	// curser functions
 	int _curser_row;
 	int _curser_column;
 	bool add_curser = false;
-	char curser_character_L;
-	char curser_character_R;
+	std::string cursor_config;
 
 	int _player_for_orientation = false;
 
@@ -62,16 +58,17 @@ private:
 	void execute_add_scout_arrows();
 	void display_pieces_out_of_play(int player1_pieces_out[12], int player2_pieces_out[12]);
 	void determine_pieces_out_of_play(int(&player1_pieces_out)[12], int(&player2_pieces_out)[12]);
-	void add_board_pieces_to_spaces();
-	void add_terrain();
 	void execute_save_move();
 	void execute_show_player1();
 	void execute_show_player2();
 	void invert_arrows();
 	void execute_add_hint();
+	ascii_board board;
+	label pieces_out_label;
+	frame* main_frame;
 
 public:
-
+	stratego_display(frame* main_display);
 	void add_move_up_curser(int curser_row, int curser_column);
 	void add_move_down_curser(int curser_row, int curser_column);
 	void add_move_right_curser(int curser_row, int curser_column);

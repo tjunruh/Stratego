@@ -3,6 +3,7 @@
 #include "logic.h"
 #include "input_to_logic_interface.h"
 #include "file_managment.h"
+#include "frame.h"
 
 class stratego_game_operations {
 private:
@@ -12,8 +13,8 @@ private:
 	stratego_interface interface;
 	stratego_file_managment file_managment;
 public:
+	stratego_game_operations(frame* main_display);
 	void initialize_file_system();
-	void menu();
 	void setup();
 	void load();
 	void game_loop();

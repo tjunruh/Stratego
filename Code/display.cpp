@@ -1,42 +1,70 @@
 #include "display.h"
 #include "ascii_io.h"
+#include "frame.h"
+#include "ascii_board.h"
+#include "label.h"
 #include <string>
 
+stratego_display::stratego_display(frame* main_display) : board(main_display, "board_configs/stratego_board.txt", "default"), pieces_out_label(main_display, "new line")
+{
+	main_frame = main_display;
+	board.set_alignment("center block");
+	pieces_out_label.set_alignment("center block");
+	board.load_board_translation("reverse", "board_configs/stratego_reverse_board.txt");
+	board.add_configuration("hide", -1, -1, "*X*", '*');
+	board.add_configuration("0", -1, -1, "*f*", '*');
+	board.add_configuration("-1", -1, -1, "*s*", '*');
+	board.add_configuration("-2", -1, -1, "*b*", '*');
+	board.add_configuration("1", -1, -1, "*1*", '*');
+	board.add_configuration("2", -1, -1, "*2*", '*');
+	board.add_configuration("3", -1, -1, "*3*", '*');
+	board.add_configuration("4", -1, -1, "*4*", '*');
+	board.add_configuration("5", -1, -1, "*5*", '*');
+	board.add_configuration("6", -1, -1, "*6*", '*');
+	board.add_configuration("7", -1, -1, "*7*", '*');
+	board.add_configuration("8", -1, -1, "*8*", '*');
+	board.add_configuration("9", -1, -1, "*9*", '*');
+	board.add_configuration("cursor", -1, -1, "(*)", '*');
+	board.add_configuration("up_cursor", -1, -1, "^*^", '*');
+	board.add_configuration("down_cursor", -1, -1, "v*v", '*');
+	board.add_configuration("left_cursor", -1, -1, "<*<", '*');
+	board.add_configuration("right_cursor", -1, -1, ">*>", '*');
+	board.add_configuration("scout_up", -1, -1, "*^*", '*');
+	board.add_configuration("scout_down", -1, -1, "*v*", '*');
+	board.add_configuration("scout_left", -1, -1, "*<*", '*');
+	board.add_configuration("scout_right", -1, -1, "*>*", '*');
+}
+
 void stratego_display::add_move_up_curser(int curser_row, int curser_column) {
-	curser_character_L = '^';
-	curser_character_R = '^';
+	cursor_config = "up_cursor";
 	_curser_row = curser_row;
 	_curser_column = curser_column;
 	add_curser = true;
 }
 
 void stratego_display::add_move_down_curser(int curser_row, int curser_column) {
-	curser_character_L = 'v';
-	curser_character_R = 'v';
+	cursor_config = "down_cursor";
 	_curser_row = curser_row;
 	_curser_column = curser_column;
 	add_curser = true;
 }
 
 void stratego_display::add_move_right_curser(int curser_row, int curser_column) {
-	curser_character_L = '>';
-	curser_character_R = '>';
+	cursor_config = "right_cursor";
 	_curser_row = curser_row;
 	_curser_column = curser_column;
 	add_curser = true;
 }
 
 void stratego_display::add_move_left_curser(int curser_row, int curser_column) {
-	curser_character_L = '<';
-	curser_character_R = '<';
+	cursor_config = "left_cursor";
 	_curser_row = curser_row;
 	_curser_column = curser_column;
 	add_curser = true;
 }
 
 void stratego_display::add_standard_curser(int curser_row, int curser_column) {
-	curser_character_L = '(';
-	curser_character_R = ')';
+	cursor_config = "cursor";
 	_curser_row = curser_row;
 	_curser_column = curser_column;
 	add_curser = true;
@@ -63,41 +91,29 @@ void stratego_display::reveal_piece(int row, int column) {
 
 void stratego_display::execute_hide_player1() {
 	for (int piece = 0; piece < 80; piece++) {
-		if (_board_pieces[piece].get_owner() == 1) {
-			_board_pieces[piece].set_piece('X');
+		if ((_board_pieces[piece].get_owner() == 1) && _board_pieces[piece].get_inPlay()) {
+			board.activate_configuration("hide", _board_pieces[piece].get_row(), _board_pieces[piece].get_column());
 		}
 	}
 }
 
 void stratego_display::execute_hide_player2() {
 	for (int piece = 0; piece < 80; piece++) {
-		if (_board_pieces[piece].get_owner() == 2) {
-			_board_pieces[piece].set_piece('X');
+		if ((_board_pieces[piece].get_owner() == 2) && _board_pieces[piece].get_inPlay()) {
+			board.activate_configuration("hide", _board_pieces[piece].get_row(), _board_pieces[piece].get_column());
 		}
 	}
 }
 
 void stratego_display::execute_reveal_piece() {
 	for (int piece = 0; piece < 80; piece++) {
-		if ((_board_pieces[piece].get_row() == _reveal_piece_row) && (_board_pieces[piece].get_column() == _reveal_piece_column))
-			_board_pieces[piece].set_owner(0);
+		if (_board_pieces[piece].get_inPlay() && (_board_pieces[piece].get_row() == _reveal_piece_row) && (_board_pieces[piece].get_column() == _reveal_piece_column))
+			board.activate_configuration(std::to_string(_board_pieces[piece].get_rank()), _reveal_piece_row, _reveal_piece_column);
 	}
 }
 
-void stratego_display::add_terrain() {
-	board_spaces[4][2] = "|||";
-	board_spaces[5][2] = "|||";
-	board_spaces[4][3] = "|||";
-	board_spaces[5][3] = "|||";
-	board_spaces[4][6] = "|||";
-	board_spaces[5][6] = "|||";
-	board_spaces[4][7] = "|||";
-	board_spaces[5][7] = "|||";
-}
-
 void stratego_display::execute_add_curser() {
-	(board_spaces[_curser_row][_curser_column])[0] = curser_character_L;
-	(board_spaces[_curser_row][_curser_column])[2] = curser_character_R;
+	board.activate_configuration(cursor_config, _curser_row, _curser_column);
 }
 
 void stratego_display::determine_pieces_out_of_play(int(&player1_pieces_out)[12], int(&player2_pieces_out)[12]) {
@@ -106,31 +122,31 @@ void stratego_display::determine_pieces_out_of_play(int(&player1_pieces_out)[12]
 		for (int piece = 0; piece < 80; piece++) {
 			if ((_board_pieces[piece].get_owner() == player) && (!_board_pieces[piece].get_inPlay())) {
 				int current_piece = _board_pieces[piece].get_rank();
-				if (current_piece == 1) {
+				if (current_piece == 9) {
 					present_pieces[9]++;
 				}
-				else if (current_piece == 2) {
+				else if (current_piece == 8) {
 					present_pieces[8]++;
 				}
-				else if (current_piece == 3) {
+				else if (current_piece == 7) {
 					present_pieces[7]++;
 				}
-				else if (current_piece == 4) {
+				else if (current_piece == 6) {
 					present_pieces[6]++;
 				}
 				else if (current_piece == 5) {
 					present_pieces[5]++;
 				}
-				else if (current_piece == 6) {
+				else if (current_piece == 4) {
 					present_pieces[4]++;
 				}
-				else if (current_piece == 7) {
+				else if (current_piece == 3) {
 					present_pieces[3]++;
 				}
-				else if (current_piece == 8) {
+				else if (current_piece == 2) {
 					present_pieces[2]++;
 				}
-				else if (current_piece == 9) {
+				else if (current_piece == 1) {
 					present_pieces[1]++;
 				}
 				else if (current_piece == -1) {
@@ -198,24 +214,7 @@ void stratego_display::display_pieces_out_of_play(int player1_pieces_out[12], in
 			}
 		}
 	}
-	player1_disp = player1_disp + "    \n";
-	player2_disp = player2_disp + "    \n";
-	ascii_io::print(player1_disp);
-	ascii_io::print(player2_disp);
-}
-
-void stratego_display::add_board_pieces_to_spaces() {
-	for (int row = 0; row < 10; row++) {
-		for (int column = 0; column < 10; column++) {
-			board_spaces[row][column] = "   ";
-		}
-	}
-	add_terrain();
-	for (int piece = 0; piece < 80; piece++) {
-		if (_board_pieces[piece].get_inPlay()) {
-			(board_spaces[_board_pieces[piece].get_row()][_board_pieces[piece].get_column()])[1] = _board_pieces[piece].get_piece();
-		}
-	}
+	pieces_out_label.set_output(player1_disp + "\n" + player2_disp);
 }
 
 void stratego_display::add_pieces_out_of_play() {
@@ -236,48 +235,48 @@ void stratego_display::execute_add_scout_arrows() {
 	if (scout_direction == up) {
 		if (_player_for_scout_arrows == 1) {
 			for (moving_coordinate = scout_start_row - 1; moving_coordinate > (scout_start_row - scout_distance); moving_coordinate--) {
-				(board_spaces[moving_coordinate][scout_start_column])[1] = '^';
+				board.activate_configuration("scout_up", moving_coordinate, scout_start_column);
 			}
 		}
 		else if (_player_for_scout_arrows == 2) {
 			for (moving_coordinate = scout_start_row + 1; moving_coordinate < (scout_start_row + scout_distance); moving_coordinate++) {
-				(board_spaces[moving_coordinate][scout_start_column])[1] = '^';
+				board.activate_configuration("scout_up", moving_coordinate, scout_start_column);
 			}
 		}
 	}
 	else if (scout_direction == down) {
 		if (_player_for_scout_arrows == 1) {
 			for (moving_coordinate = scout_start_row + 1; moving_coordinate < (scout_start_row + scout_distance); moving_coordinate++) {
-				(board_spaces[moving_coordinate][scout_start_column])[1] = 'v';
+				board.activate_configuration("scout_down", moving_coordinate, scout_start_column);
 			}
 		}
 		else if (_player_for_scout_arrows == 2) {
 			for (moving_coordinate = scout_start_row - 1; moving_coordinate > (scout_start_row - scout_distance); moving_coordinate--) {
-				(board_spaces[moving_coordinate][scout_start_column])[1] = 'v';
+				board.activate_configuration("scout_down", moving_coordinate, scout_start_column);
 			}
 		}
 	}
 	else if (scout_direction == right) {
 		if (_player_for_scout_arrows == 1) {
 			for (moving_coordinate = scout_start_column + 1; moving_coordinate < (scout_start_column + scout_distance); moving_coordinate++) {
-				(board_spaces[scout_start_row][moving_coordinate])[1] = '>';
+				board.activate_configuration("scout_right", scout_start_row, moving_coordinate);
 			}
 		}
 		else if (_player_for_scout_arrows == 2) {
 			for (moving_coordinate = scout_start_column - 1; moving_coordinate > (scout_start_column - scout_distance); moving_coordinate--) {
-				(board_spaces[scout_start_row][moving_coordinate])[1] = '>';
+				board.activate_configuration("scout_right", scout_start_row, moving_coordinate);
 			}
 		}
 	}
 	else if (scout_direction == left) {
 		if (_player_for_scout_arrows == 1) {
 			for (moving_coordinate = scout_start_column - 1; moving_coordinate > (scout_start_column - scout_distance); moving_coordinate--) {
-				(board_spaces[scout_start_row][moving_coordinate])[1] = '<';
+				board.activate_configuration("scout_left", scout_start_row, moving_coordinate);
 			}
 		}
 		else if (_player_for_scout_arrows == 2) {
 			for (moving_coordinate = scout_start_column + 1; moving_coordinate < (scout_start_column + scout_distance); moving_coordinate++) {
-				(board_spaces[scout_start_row][moving_coordinate])[1] = '<';
+				board.activate_configuration("scout_left", scout_start_row, moving_coordinate);
 			}
 		}
 	}
@@ -292,27 +291,31 @@ void stratego_display::reset() {
 	_display_pieces_out_of_play = false;
 	_save_move = false;
 	_add_hint = false;
+	board.clear_all();
 }
 
 void stratego_display::display_board(stratego_piece board_pieces[80]) {
-	printable_board = "";
 	for (int i = 0; i < 80; i++) {
 		_board_pieces[i] = board_pieces[i];
+	}
+
+	if (_hide_player1) {
+		execute_hide_player1();
+		execute_show_player2();
+	}
+	else if (_hide_player2) {
+		execute_hide_player2();
+		execute_show_player1();
+	}
+	else
+	{
+		execute_show_player1();
+		execute_show_player2();
 	}
 
 	if (_reveal_piece) {
 		execute_reveal_piece();
 	}
-
-	if (_hide_player1) {
-		execute_hide_player1();
-	}
-
-	if (_hide_player2) {
-		execute_hide_player2();
-	}
-
-	add_board_pieces_to_spaces();
 
 	if (add_curser) {
 		execute_add_curser();
@@ -323,27 +326,13 @@ void stratego_display::display_board(stratego_piece board_pieces[80]) {
 	}
 
 	if (_player_for_orientation == 1) {
-		for (int row = 0; row < 10; row++) {
-			printable_board  = printable_board + ".---.---.---.---.---.---.---.---.---.---.\n";
-			for (int column = 0; column < 10; column++) {
-				printable_board = printable_board + "|" + board_spaces[row][column];
-			}
-			printable_board = printable_board + "|\n";
-		}
-		printable_board = printable_board + ".---.---.---.---.---.---.---.---.---.---.\n";
+		board.use_translation("default");
 	}
 	else if (_player_for_orientation == 2) {
-		for (int row = 9; row >= 0; row--) {
-			printable_board = printable_board + ".---.---.---.---.---.---.---.---.---.---.\n";
-			for (int column = 9; column >= 0; column--) {
-				printable_board = printable_board + "|" + board_spaces[row][column];
-			}
-			printable_board = printable_board + "|\n";
-		}
-		printable_board = printable_board + ".---.---.---.---.---.---.---.---.---.---.\n";
+		board.use_translation("reverse");
 	}
 
-	ascii_io::print(printable_board);
+	board.sync();
 
 	if (_display_pieces_out_of_play) {
 		int player1_pieces_out[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -351,6 +340,8 @@ void stratego_display::display_board(stratego_piece board_pieces[80]) {
 		determine_pieces_out_of_play(player1_pieces_out, player2_pieces_out);
 		display_pieces_out_of_play(player1_pieces_out, player2_pieces_out);
 	}
+
+	main_frame->display();
 
 	if (_add_hint) {
 		execute_add_hint();
@@ -422,137 +413,41 @@ void stratego_display::set_player2_name(std::string name) {
 void stratego_display::execute_save_move() {
 	screen_shot = "";
 	if (_players_move == 1) {
+		execute_show_player2();
+		execute_hide_player1();
+		invert_arrows();
 		if ((_losing_piece.get_owner() == 1) && _losing_piece.get_inPlay()) {
 			reveal_piece(_losing_piece.get_row(), _losing_piece.get_column());
 			execute_reveal_piece();
 		}
-		execute_show_player2();
-		execute_hide_player1();
-		invert_arrows();
-
-		for (int piece = 0; piece < 80; piece++) {
-			if (_board_pieces[piece].get_inPlay()) {
-				(board_spaces[_board_pieces[piece].get_row()][_board_pieces[piece].get_column()])[1] = _board_pieces[piece].get_piece();
-			}
-		}
-
-		for (int row = 9; row >= 0; row--) {
-			screen_shot = screen_shot + ".---.---.---.---.---.---.---.---.---.---.\n";
-			for (int column = 9; column >= 0; column--) {
-				screen_shot = screen_shot + "|" + board_spaces[row][column];
-			}
-			screen_shot = screen_shot + "|\n";
-		}
-		screen_shot = screen_shot + ".---.---.---.---.---.---.---.---.---.---.\n";
+		board.use_translation("reverse");
+		screen_shot = board.get_board();
 	}
 	else if (_players_move == 2) {
+		execute_show_player1();
+		execute_hide_player2();
+		invert_arrows();
 		if ((_losing_piece.get_owner() == 2) && _losing_piece.get_inPlay()) {
 			reveal_piece(_losing_piece.get_row(), _losing_piece.get_column());
 			execute_reveal_piece();
 		}
-		execute_show_player1();
-		execute_hide_player2();
-		invert_arrows();
-
-		for (int piece = 0; piece < 80; piece++) {
-			if (_board_pieces[piece].get_inPlay()) {
-				(board_spaces[_board_pieces[piece].get_row()][_board_pieces[piece].get_column()])[1] = _board_pieces[piece].get_piece();
-			}
-		}
-
-		for (int row = 0; row < 10; row++) {
-			screen_shot = screen_shot + ".---.---.---.---.---.---.---.---.---.---.\n";
-			for (int column = 0; column < 10; column++) {
-				screen_shot = screen_shot + "|" + board_spaces[row][column];
-			}
-			screen_shot = screen_shot + "|\n";
-		}
-		screen_shot = screen_shot + ".---.---.---.---.---.---.---.---.---.---.\n";
+		board.use_translation("default");
+		screen_shot = board.get_board();
 	}
 }
 
 void stratego_display::execute_show_player1() {
 	for (int piece = 0; piece < 80; piece++) {
-		if (_board_pieces[piece].get_owner() == 1) {
-			if (_board_pieces[piece].get_rank() == -2) {
-				_board_pieces[piece].set_piece('b');
-			}
-			else if (_board_pieces[piece].get_rank() == -1) {
-				_board_pieces[piece].set_piece('s');
-			}
-			else if (_board_pieces[piece].get_rank() == 0) {
-				_board_pieces[piece].set_piece('f');
-			}
-			else if (_board_pieces[piece].get_rank() == 1) {
-				_board_pieces[piece].set_piece('9');
-			}
-			else if (_board_pieces[piece].get_rank() == 2) {
-				_board_pieces[piece].set_piece('8');
-			}
-			else if (_board_pieces[piece].get_rank() == 3) {
-				_board_pieces[piece].set_piece('7');
-			}
-			else if (_board_pieces[piece].get_rank() == 4) {
-				_board_pieces[piece].set_piece('6');
-			}
-			else if (_board_pieces[piece].get_rank() == 5) {
-				_board_pieces[piece].set_piece('5');
-			}
-			else if (_board_pieces[piece].get_rank() == 6) {
-				_board_pieces[piece].set_piece('4');
-			}
-			else if (_board_pieces[piece].get_rank() == 7) {
-				_board_pieces[piece].set_piece('3');
-			}
-			else if (_board_pieces[piece].get_rank() == 8) {
-				_board_pieces[piece].set_piece('2');
-			}
-			else if (_board_pieces[piece].get_rank() == 9) {
-				_board_pieces[piece].set_piece('1');
-			}
+		if ((_board_pieces[piece].get_owner() == 1) && _board_pieces[piece].get_inPlay()) {
+			board.activate_configuration(std::to_string(_board_pieces[piece].get_rank()), _board_pieces[piece].get_row(), _board_pieces[piece].get_column());
 		}
 	}
 }
 
 void stratego_display::execute_show_player2() {
 	for (int piece = 0; piece < 80; piece++) {
-		if (_board_pieces[piece].get_owner() == 2) {
-			if (_board_pieces[piece].get_rank() == -2) {
-				_board_pieces[piece].set_piece('b');
-			}
-			else if (_board_pieces[piece].get_rank() == -1) {
-				_board_pieces[piece].set_piece('s');
-			}
-			else if (_board_pieces[piece].get_rank() == 0) {
-				_board_pieces[piece].set_piece('f');
-			}
-			else if (_board_pieces[piece].get_rank() == 1) {
-				_board_pieces[piece].set_piece('9');
-			}
-			else if (_board_pieces[piece].get_rank() == 2) {
-				_board_pieces[piece].set_piece('8');
-			}
-			else if (_board_pieces[piece].get_rank() == 3) {
-				_board_pieces[piece].set_piece('7');
-			}
-			else if (_board_pieces[piece].get_rank() == 4) {
-				_board_pieces[piece].set_piece('6');
-			}
-			else if (_board_pieces[piece].get_rank() == 5) {
-				_board_pieces[piece].set_piece('5');
-			}
-			else if (_board_pieces[piece].get_rank() == 6) {
-				_board_pieces[piece].set_piece('4');
-			}
-			else if (_board_pieces[piece].get_rank() == 7) {
-				_board_pieces[piece].set_piece('3');
-			}
-			else if (_board_pieces[piece].get_rank() == 8) {
-				_board_pieces[piece].set_piece('2');
-			}
-			else if (_board_pieces[piece].get_rank() == 9) {
-				_board_pieces[piece].set_piece('1');
-			}
+		if ((_board_pieces[piece].get_owner() == 2) && _board_pieces[piece].get_inPlay()) {
+			board.activate_configuration(std::to_string(_board_pieces[piece].get_rank()), _board_pieces[piece].get_row(), _board_pieces[piece].get_column());
 		}
 	}
 }
@@ -571,46 +466,33 @@ void stratego_display::display_saved_move() {
 
 void stratego_display::invert_arrows() {
 	if (add_curser) {
-		if ((curser_character_L == '^') && (curser_character_R == '^')) {
-			curser_character_L = 'v';
-			curser_character_R = 'v';
+		if (cursor_config == "up_cursor") {
+			board.modify_configuration("up_cursor", "down_cursor");
 		}
-		else if ((curser_character_L == 'v') && (curser_character_R == 'v')) {
-			curser_character_L = '^';
-			curser_character_R = '^';
+		else if (cursor_config == "down_cursor") {
+			board.modify_configuration("down_cursor", "up_cursor");
 		}
-		else if ((curser_character_L == '>') && (curser_character_R == '>')) {
-			curser_character_L = '<';
-			curser_character_R = '<';
+		else if (cursor_config == "right_cursor") {
+			board.modify_configuration("right_cursor", "left_cursor");
 		}
-		else if ((curser_character_L == '<') && (curser_character_R == '<')) {
-			curser_character_L = '>';
-			curser_character_R = '>';
+		else if (cursor_config == "left_cursor") {
+			board.modify_configuration("left_cursor", "right_cursor");
 		}
-		execute_add_curser();
 	}
 	
 	if (_add_scout_arrows) {
-		if (_player_for_scout_arrows == 1) {
-			_player_for_scout_arrows = 2;
-		}
-		else if (_player_for_scout_arrows == 2) {
-			_player_for_scout_arrows = 1;
-		}
-
 		if (scout_direction == up) {
-			scout_direction = down;
+			board.modify_configuration("scout_up", "scout_down");
 		}
 		else if (scout_direction == down) {
-			scout_direction = up;
+			board.modify_configuration("scout_down", "scout_up");
 		}
 		else if (scout_direction == right) {
-			scout_direction = left;
+			board.modify_configuration("scout_right", "scout_left");
 		}
 		else if (scout_direction == left) {
-			scout_direction = right;
+			board.modify_configuration("scout_left", "scout_right");
 		}
-		execute_add_scout_arrows();
 	}
 }
 

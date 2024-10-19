@@ -15,7 +15,6 @@ public:
 	void remove_piece(int id);
 	void add_piece(int rank, int owner, int row, int column);
 	void set_most_powerful_piece(char symbol);
-	char get_symbol(int rank);
 	stratego_piece get_piece_data(int id);
 	int get_best_rank(int owner);
 	void change_piece_position(int id, int new_row, int new_column);

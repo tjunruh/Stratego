@@ -5,6 +5,7 @@
 #include "frame.h"
 #include "menu.h"
 #include "label.h"
+#include "ascii_board.h"
 #ifdef __linux__
 #include <unistd.h>
 #include "ascii_io.h"
@@ -16,7 +17,8 @@ int main()
     ascii_io::ncurses_init();
 #endif
     frame* home_frame = new frame();
-    stratego_game_operations game_manager;
+    frame* main_frame = new frame();
+    stratego_game_operations game_manager(main_frame);
     game_manager.initialize_file_system();
     label logo(home_frame);
     logo.set_alignment("center block");

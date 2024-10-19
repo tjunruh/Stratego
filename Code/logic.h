@@ -13,24 +13,6 @@ enum game_state {
 	battling
 };
 
-/*
-struct display_flags {
-	bool add_regular_curser = false;
-	bool add_up_curser = false;
-	bool add_down_curser = false;
-	bool add_right_curser = false;
-	bool add_left_curser = false;
-	bool _hide_player1 = false;
-	bool _hide_player2 = false;
-	bool _add_scout_arrows = false;
-	bool _reveal_piece = false;
-	int row_reveal = -1;
-	int column_reveal = -1;
-	int curser_row = -1;
-	int curser_column = -1;
-};
-*/
-
 class stratego_logic {
 
 private:
