@@ -19,5 +19,6 @@ enum input {
 	_down,
 	_right,
 	_left,
-	enter
+	enter,
+	undefined
 };

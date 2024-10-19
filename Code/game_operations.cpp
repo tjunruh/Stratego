@@ -115,7 +115,7 @@ void stratego_game_operations::load() {
     int input = -1;
     std::vector<std::string> saved_game_names;
     file_managment.get_saved_game_names(saved_game_names);
-    int saved_game_selection = 0;
+    unsigned int saved_game_selection = 0;
     ascii_io::clear();
     do {
         ascii_io::move_cursor_to_position(0, 0);

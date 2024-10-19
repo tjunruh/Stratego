@@ -127,6 +127,7 @@ int stratego_logic::determine_loser(int piece1_id, int piece2_id) {
 			return piece2_id;
 		}
 	}
+	return -1;
 }
 
 void stratego_logic::move_curser(input user_input) {
@@ -359,10 +360,10 @@ void stratego_logic::move_piece(input user_input) {
 void stratego_logic::end_turn() {
 	if (get_game_state() == turn_ended) {
 		if (player_turn == 1) {
-			player_turn == 2;
+			player_turn = 2;
 		}
 		else if (player_turn == 2) {
-			player_turn == 1;
+			player_turn = 1;
 		}
 	}
 }

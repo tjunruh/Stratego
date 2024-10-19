@@ -507,8 +507,8 @@ bool stratego_display::screen_shot_empty() {
 
 void stratego_display::display_load_game_menu(std::vector<std::string> saved_game_names, int selected_game) {
 	std::string saved_game_list = "";
-	for (int saved_game = 0; saved_game < saved_game_names.size(); saved_game++) {
-		if (saved_game == selected_game) {
+	for (unsigned int saved_game = 0; saved_game < saved_game_names.size(); saved_game++) {
+		if (saved_game == (unsigned int) selected_game) {
 			saved_game_list = saved_game_list + "* " + saved_game_names[saved_game] + "\n";
 		}
 		else {

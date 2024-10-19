@@ -185,7 +185,7 @@ void stratego_file_managment::get_saved_game_names(std::vector<std::string>& gam
 bool stratego_file_managment::duplicate_name(std::string game_name) {
 	std::vector<std::string> saved_game_names;
 	get_saved_game_names(saved_game_names);
-	for (int name = 0; name < saved_game_names.size(); name++) {
+	for (unsigned int name = 0; name < saved_game_names.size(); name++) {
 		if (saved_game_names[name] == game_name) {
 			return true;
 		}

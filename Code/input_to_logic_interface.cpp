@@ -59,4 +59,7 @@ input stratego_interface::user_to_logic(int user_input) {
 	else if (user_input == ascii_io::down) {
 		return _down;
 	}
+	else {
+		return undefined;
+	}
 }
