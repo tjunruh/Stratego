@@ -5,6 +5,8 @@
 #include "direction.h"
 #include "ascii_board.h"
 #include "label.h"
+#include "spacer.h"
+#include "text_box.h"
 
 class stratego_display {
 private:
@@ -49,8 +51,6 @@ private:
 
 	std::string saved_game_name_to_load;
 
-	bool _add_hint = false;
-
 	void execute_add_curser();
 	void execute_hide_player1();
 	void execute_hide_player2();
@@ -62,18 +62,25 @@ private:
 	void execute_show_player1();
 	void execute_show_player2();
 	void invert_arrows();
-	void execute_add_hint();
+	label board_heading;
 	ascii_board board;
 	label pieces_out_label;
 	frame* main_frame;
 
+	label multipurpose_label;
+	spacer left_text_box_spacer;
+	text_box multipurpose_text_box;
+	spacer right_text_box_spacer;
+	frame* multipurpose_frame;
+
 public:
-	stratego_display(frame* main_display);
+	stratego_display(frame* main_display, frame* multipurpose_display);
 	void add_move_up_curser(int curser_row, int curser_column);
 	void add_move_down_curser(int curser_row, int curser_column);
 	void add_move_right_curser(int curser_row, int curser_column);
 	void add_move_left_curser(int curser_row, int curser_column);
 	void add_standard_curser(int curser_row, int curser_column);
+	void add_heading(std::string heading);
 	void orient_for_player(int player);
 	void hide_player1();
 	void hide_player2();
@@ -81,14 +88,17 @@ public:
 	void add_scout_arrows(int start_row, int start_column, direction direction, int distance, int player);
 	void add_pieces_out_of_play();
 	void display_board(stratego_piece board_pieces[80]);
+	void display_get_player1_name();
+	void display_get_player2_name();
 	void display_player1_preturn_menu();
 	void display_player2_preturn_menu();
+	void display_player_won(int player);
 	void display_controls();
-	void display_load_game_menu(std::vector<std::string> saved_game_names, int selected_game);
 	void set_player1_name(std::string name);
 	void set_player2_name(std::string name);
+	void display_load_game_menu(std::vector<std::string> saved_game_names, int selected_game);
 	void save_move(int player, stratego_piece losing_piece);
-	void display_saved_move();
+	void display_saved_move(int player);
 	bool screen_shot_empty();
 	std::string get_screen_shot();
 	void set_screen_shot(std::string shot);
@@ -96,4 +106,5 @@ public:
 	std::string get_player1_name();
 	std::string get_player2_name();
 	void add_hint();
+	void erase_screen_shot();
 };

@@ -2,9 +2,9 @@
 #include "game_operations.h"
 #include <iostream>
 
-stratego_game_operations::stratego_game_operations(frame* main_display) : display(main_display)
+stratego_game_operations::stratego_game_operations(frame* main_display, frame* multipurpose_display) : display(main_display, multipurpose_display)
 {
-
+    
 }
 
 void stratego_game_operations::initialize_file_system() {
@@ -23,20 +23,12 @@ void stratego_game_operations::initialize_file_system() {
 }
 
 void stratego_game_operations::setup() {
-    int input = -1;
+    int input = ascii_io::undefined;
     logic.reset_board();
     logic.set_game_state(placing_pieces);
-
-    ascii_io::clear();
-    ascii_io::print("Enter your name player 1:\n");
-    std::string player_name = "";
-    player_name = ascii_io::getline();
-    display.set_player1_name(player_name);
-
-    ascii_io::clear();
-    ascii_io::print("Enter your name player 2:\n");
-    player_name = ascii_io::getline();
-    display.set_player2_name(player_name);
+    
+    display.display_get_player1_name();
+    display.display_get_player2_name();
 
     do {
         ascii_io::clear();
@@ -57,7 +49,6 @@ void stratego_game_operations::setup() {
         display.add_standard_curser(logic.get_curser_row(), logic.get_curser_column());
         stratego_piece board_info[80];
         logic.get_board_info(board_info);
-        ascii_io::move_cursor_to_position(0, 0);
         display.display_board(board_info);
         input = ascii_io::getchar();
         if ((input == ascii_io::up) || (input == ascii_io::down) || (input == ascii_io::right) || (input == ascii_io::left)) {
@@ -93,7 +84,6 @@ void stratego_game_operations::setup() {
         display.add_standard_curser(logic.get_curser_row(), logic.get_curser_column());
         stratego_piece board_info[80];
         logic.get_board_info(board_info);
-        ascii_io::move_cursor_to_position(0, 0);
         display.display_board(board_info);
         input = ascii_io::getchar();
         if ((input == ascii_io::up) || (input == ascii_io::down) || (input == ascii_io::right) || (input == ascii_io::left)) {
@@ -109,6 +99,7 @@ void stratego_game_operations::setup() {
     } while (!logic.player2_pieces_placed());
 
     logic.set_game_state(turn_ended);
+    display.erase_screen_shot();
 }
 
 void stratego_game_operations::load() {
@@ -182,7 +173,6 @@ void stratego_game_operations::game_loop() {
             display.hide_player1();
         }
         display.add_pieces_out_of_play();
-        ascii_io::move_cursor_to_position(0, 0);
         display.display_board(board_info);
 
         input = ascii_io::getchar();
@@ -196,26 +186,18 @@ void stratego_game_operations::game_loop() {
             scout_selected_handle(input);
         }
         else if (logic.get_game_state() == move_made) {
-            move_made_handle(input);
+            move_made_handle();
         }
         else if (logic.get_game_state() == battling) {
-            battling_handle(input);
+            battling_handle();
         }
     } while (!logic.player1_won() && !logic.player2_won());
     
     if (logic.player1_won()) {
-        ascii_io::clear();
-        ascii_io::print(display.get_player1_name() + " won!");
-        do {
-            input = ascii_io::getchar();
-        } while (input != ascii_io::enter);
+        display.display_player_won(1);
     }
     else if (logic.player2_won()) {
-        ascii_io::clear();
-        ascii_io::print(display.get_player2_name() + " won!");
-        do {
-            input = ascii_io::getchar();
-        } while (input != ascii_io::enter);
+        display.display_player_won(2);
     }
 }
 
@@ -231,8 +213,7 @@ void stratego_game_operations::end_game() {
         display.hide_player2();
         display.orient_for_player(1);
         display.add_pieces_out_of_play();
-        ascii_io::clear();
-        ascii_io::print(display.get_player1_name() + "'s pieces:\n");
+        display.add_heading(display.get_player1_name() + "'s pieces:");
         display.display_board(board_info);
         int input = -1;
         do {
@@ -242,8 +223,7 @@ void stratego_game_operations::end_game() {
         display.hide_player1();
         display.orient_for_player(2);
         display.add_pieces_out_of_play();
-        ascii_io::clear();
-        ascii_io::print(display.get_player2_name() + "'s pieces:\n");
+        display.add_heading(display.get_player2_name() + "'s pieces:");
         display.display_board(board_info);
         do {
             input = ascii_io::getchar();
@@ -268,7 +248,6 @@ bool stratego_game_operations::turn_ended_handle() {
         logic.set_curser_row(2);
         logic.set_curser_column(4);
         do {
-            ascii_io::clear();
             display.display_player2_preturn_menu();
             input = ascii_io::getchar();
             if (input == ascii_io::h) {
@@ -281,12 +260,7 @@ bool stratego_game_operations::turn_ended_handle() {
         }
         logic.set_turn(2);
         if (!display.screen_shot_empty()) {
-            ascii_io::move_cursor_to_position(0, 0);
-            display.display_saved_move();
-            ascii_io::print("\n" + display.get_player1_name() + "'s move. Press enter to continue.");
-            do {
-                input = ascii_io::getchar();
-            } while (input != ascii_io::enter);
+            display.display_saved_move(1);
         }
         display.add_standard_curser(logic.get_curser_row(), logic.get_curser_column());
     }
@@ -294,7 +268,6 @@ bool stratego_game_operations::turn_ended_handle() {
         logic.set_curser_row(7);
         logic.set_curser_column(5);
         do {
-            ascii_io::clear();
             display.display_player1_preturn_menu();
             input = ascii_io::getchar();
             if (input == ascii_io::h) {
@@ -307,12 +280,7 @@ bool stratego_game_operations::turn_ended_handle() {
         }
         logic.set_turn(1);
         if (!display.screen_shot_empty()) {
-            ascii_io::move_cursor_to_position(0, 0);
-            display.display_saved_move();
-            ascii_io::print("\n" + display.get_player2_name() + "'s move. Press enter to continue.");
-            do {
-                input = ascii_io::getchar();
-            } while (input != ascii_io::enter);
+            display.display_saved_move(2);
         }
         display.add_standard_curser(logic.get_curser_row(), logic.get_curser_column());
     }
@@ -414,26 +382,14 @@ void stratego_game_operations::scout_selected_handle(int input) {
     }
 }
 
-void stratego_game_operations::move_made_handle(int input) {
-    if (input == ascii_io::enter) {
-        logic.set_game_state(turn_ended);
-    }
-    else if (input == ascii_io::h) {
-        help_menu();
-    }
-    else {
-        display.add_hint();
-    }
+void stratego_game_operations::move_made_handle() {
+    logic.set_game_state(turn_ended);
+    
 }
 
-void stratego_game_operations::battling_handle(int input) {
-    if (input == ascii_io::enter) {
-        logic.finalize_move();
-        logic.set_game_state(move_made);
-    }
-    else {
-        display.add_hint();
-    }
+void stratego_game_operations::battling_handle() {
+    logic.finalize_move();
+    logic.set_game_state(move_made);
 }
 
 void stratego_game_operations::save_game_handle() {

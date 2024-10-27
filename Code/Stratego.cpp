@@ -18,7 +18,8 @@ int main()
 #endif
     frame* home_frame = new frame();
     frame* main_frame = new frame();
-    stratego_game_operations game_manager(main_frame);
+    frame* multipurpose_frame = new frame();
+    stratego_game_operations game_manager(main_frame, multipurpose_frame);
     game_manager.initialize_file_system();
     label logo(home_frame);
     logo.set_alignment("center block");
@@ -30,6 +31,7 @@ int main()
     initialization_menu.append_item("Load Game");
     initialization_menu.append_item("Exit");
     initialization_menu.disable_quit();
+    ascii_io::hide_cursor();
     do {
         home_frame->display();
         std::string selection = "";
@@ -54,6 +56,8 @@ int main()
     } while (1);
    
     delete(home_frame);
+    delete(main_frame);
+    delete(multipurpose_frame);
 #ifdef __linux__
     ascii_io::ncurses_end();
 #endif

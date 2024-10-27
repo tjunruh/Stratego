@@ -13,7 +13,7 @@ private:
 	stratego_interface interface;
 	stratego_file_managment file_managment;
 public:
-	stratego_game_operations(frame* main_display);
+	stratego_game_operations(frame* main_display, frame* multipurpose_frame);
 	void initialize_file_system();
 	void setup();
 	void load();
@@ -25,8 +25,8 @@ public:
 	void moving_curser_handle(int input);
 	void piece_selected_handle(int input);
 	void scout_selected_handle(int input);
-	void move_made_handle(int input);
-	void battling_handle(int input);
+	void move_made_handle();
+	void battling_handle();
 	void save_game_handle();
 
 	const std::string logo = R"(_____/\\\\\\\\\\\______________________________________________________________________________________________________)"

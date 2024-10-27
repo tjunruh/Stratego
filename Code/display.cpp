@@ -5,9 +5,17 @@
 #include "label.h"
 #include <string>
 
-stratego_display::stratego_display(frame* main_display) : board(main_display, "board_configs/stratego_board.txt", "default"), pieces_out_label(main_display, "new line")
+stratego_display::stratego_display(frame* main_display, frame* multipurpose_display) :
+board_heading(main_display),
+board(main_display, "board_configs/stratego_board.txt", "default", "new line"),
+pieces_out_label(main_display, "new line"),
+multipurpose_label(multipurpose_display),
+left_text_box_spacer(multipurpose_display, 1, "new line"),
+multipurpose_text_box(multipurpose_display, "none", 3),
+right_text_box_spacer(multipurpose_display, 1)
 {
 	main_frame = main_display;
+	board_heading.set_alignment("center");
 	board.set_alignment("center block");
 	pieces_out_label.set_alignment("center block");
 	board.load_board_translation("reverse", "board_configs/stratego_reverse_board.txt");
@@ -33,6 +41,11 @@ stratego_display::stratego_display(frame* main_display) : board(main_display, "b
 	board.add_configuration("scout_down", -1, -1, "*v*", '*');
 	board.add_configuration("scout_left", -1, -1, "*<*", '*');
 	board.add_configuration("scout_right", -1, -1, "*>*", '*');
+
+	multipurpose_frame = multipurpose_display;
+	multipurpose_frame->set_coordinate_width_multiplier(1, 0, 1);
+	multipurpose_frame->set_coordinate_width_multiplier(1, 1, 1);
+	multipurpose_label.set_alignment("center block");
 }
 
 void stratego_display::add_move_up_curser(int curser_row, int curser_column) {
@@ -68,6 +81,11 @@ void stratego_display::add_standard_curser(int curser_row, int curser_column) {
 	_curser_row = curser_row;
 	_curser_column = curser_column;
 	add_curser = true;
+}
+
+void stratego_display::add_heading(std::string heading)
+{
+	board_heading.set_output(heading);
 }
 
 void stratego_display::orient_for_player(int player) {
@@ -290,7 +308,7 @@ void stratego_display::reset() {
 	_reveal_piece = false;
 	_display_pieces_out_of_play = false;
 	_save_move = false;
-	_add_hint = false;
+	board_heading.set_output("");
 	board.clear_all();
 }
 
@@ -343,10 +361,6 @@ void stratego_display::display_board(stratego_piece board_pieces[80]) {
 
 	main_frame->display();
 
-	if (_add_hint) {
-		execute_add_hint();
-	}
-
 	if (_save_move) {
 		execute_save_move();
 	}
@@ -354,12 +368,68 @@ void stratego_display::display_board(stratego_piece board_pieces[80]) {
 	reset();
 }
 
+void stratego_display::display_get_player1_name()
+{
+	int input = ascii_io::undefined;
+	multipurpose_label.set_output("Enter your name player 1");
+	multipurpose_label.set_spacing(15, 0, 0, 0);
+	multipurpose_frame->display();
+	do
+	{
+		input = multipurpose_text_box.write();
+	} while (input != ascii_io::enter);
+	player1_name = multipurpose_text_box.get_text();
+	ascii_io::hide_cursor();
+	multipurpose_text_box.clear();
+}
+
+void stratego_display::display_get_player2_name()
+{
+	int input = ascii_io::undefined;
+	multipurpose_label.set_output("Enter your name player 2");
+	multipurpose_label.set_spacing(15, 0, 0, 0);
+	multipurpose_frame->display();
+	do
+	{
+		input = multipurpose_text_box.write();
+	} while (input != ascii_io::enter);
+	player2_name = multipurpose_text_box.get_text();
+	ascii_io::hide_cursor();
+	multipurpose_text_box.clear();
+}
+
 void stratego_display::display_player1_preturn_menu() {
-	ascii_io::print(player1_name + "'s turn. Press space to begin.");
+	multipurpose_label.set_output(player1_name + "'s turn. Press space to begin.");
+	multipurpose_label.set_spacing(15, 0, 0, 0);
+	multipurpose_frame->display();
 }
 
 void stratego_display::display_player2_preturn_menu() {
-	ascii_io::print(player2_name + "'s turn. Press space to begin.");
+	multipurpose_label.set_output(player2_name + "'s turn. Press space to begin.");
+	multipurpose_label.set_spacing(15, 0, 0, 0);
+	multipurpose_frame->display();
+}
+
+void stratego_display::display_player_won(int player)
+{
+	std::string output = "";
+	if (player == 1)
+	{
+		output = player1_name + " won!";
+	}
+	else if (player == 2)
+	{
+		output = player2_name + " won!";
+	}
+
+	multipurpose_label.set_spacing(15, 0, 0, 0);
+	multipurpose_label.set_output(output);
+	multipurpose_frame->display();
+	int input = ascii_io::undefined;
+	do
+	{
+		input = ascii_io::getchar();
+	} while (input != ascii_io::enter);
 }
 
 void stratego_display::display_controls() {
@@ -460,8 +530,25 @@ void stratego_display::save_move(int player, stratego_piece losing_piece) {
 	}
 }
 
-void stratego_display::display_saved_move() {
-	ascii_io::print(screen_shot);
+void stratego_display::display_saved_move(int player) {
+	std::string output = "";
+	if (player == 1)
+	{
+		output = player1_name + "'s move. Press enter to continue.\n";
+	}
+	else if (player == 2)
+	{
+		output = player2_name + "'s move. Press enter to continue.\n";
+	}
+	output = output + screen_shot;
+	multipurpose_label.set_output(output);
+	multipurpose_label.set_spacing(0, 0, 0, 0);
+	multipurpose_frame->display();
+	int input = ascii_io::undefined;
+	do
+	{
+		input = ascii_io::getchar();
+	} while (input != ascii_io::enter);
 }
 
 void stratego_display::invert_arrows() {
@@ -534,10 +621,7 @@ std::string stratego_display::get_player2_name() {
 	return player2_name;
 }
 
-void stratego_display::add_hint() {
-	_add_hint = true;
-}
-
-void stratego_display::execute_add_hint() {
-	ascii_io::print("Press Enter.\n");
+void stratego_display::erase_screen_shot()
+{
+	screen_shot = "";
 }
