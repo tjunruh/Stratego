@@ -103,53 +103,32 @@ void stratego_game_operations::setup() {
 }
 
 void stratego_game_operations::load() {
-    int input = -1;
     std::vector<std::string> saved_game_names;
     file_managment.get_saved_game_names(saved_game_names);
-    unsigned int saved_game_selection = 0;
-    ascii_io::clear();
-    do {
-        ascii_io::move_cursor_to_position(0, 0);
-        if (saved_game_names.size() != 0) {
-            display.display_load_game_menu(saved_game_names, saved_game_selection);
-        }
-        input = ascii_io::getchar();
-        if ((input == ascii_io::up) && (saved_game_selection > 0)) {
-            saved_game_selection--;
-        }
-        else if ((input == ascii_io::down) && (saved_game_selection < (saved_game_names.size() - 1))) {
-            saved_game_selection++;
-        }
-        else if ((input == ascii_io::enter) && (saved_game_names.size() != 0)) {
-            stratego_piece board_info[80];
-            int player_turn;
-            std::string saved_move_shot;
-            std::string player1_name;
-            std::string player2_name;
-            file_managment.load_game(saved_game_names[saved_game_selection], board_info, player_turn, saved_move_shot, player1_name, player2_name);
-            logic.reset_board();
-            display.reset();
-            logic.set_board_info(board_info);
-            logic.set_turn(player_turn);
-            display.set_screen_shot(saved_move_shot);
-            display.set_player1_name(player1_name);
-            display.set_player2_name(player2_name);
-            game_loaded = true;
-            logic.set_game_state(turn_ended);
-        }
-        else if (input == ascii_io::q) {
-            game_loaded = false;
-        }
-        else if (input == ascii_io::q) {
-            file_managment.delete_file(saved_game_names[saved_game_selection]);
-            file_managment.get_saved_game_names(saved_game_names);
-            ascii_io::clear();
-        }
+    std::string selection = "";
+    ascii_io::move_cursor_to_position(0, 0);
+    selection = display.display_load_game_menu(saved_game_names);
 
-        if (input == ascii_io::h) {
-            help_menu();
-        }
-    } while (((input != ascii_io::enter) || (saved_game_names.size() == 0)) && (input != ascii_io::q));
+    if (selection != "") {
+        stratego_piece board_info[80];
+        int player_turn;
+        std::string saved_move_shot;
+        std::string player1_name;
+        std::string player2_name;
+        file_managment.load_game(selection, board_info, player_turn, saved_move_shot, player1_name, player2_name);
+        logic.reset_board();
+        display.reset();
+        logic.set_board_info(board_info);
+        logic.set_turn(player_turn);
+        display.set_screen_shot(saved_move_shot);
+        display.set_player1_name(player1_name);
+        display.set_player2_name(player2_name);
+        game_loaded = true;
+        logic.set_game_state(turn_ended);
+    }
+    else if (selection == "") {
+        game_loaded = false;
+    }
 }
 
 void stratego_game_operations::game_loop() {

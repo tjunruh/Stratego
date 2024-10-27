@@ -96,7 +96,7 @@ public:
 	void display_controls();
 	void set_player1_name(std::string name);
 	void set_player2_name(std::string name);
-	void display_load_game_menu(std::vector<std::string> saved_game_names, int selected_game);
+	std::string display_load_game_menu(std::vector<std::string> saved_game_names);
 	void save_move(int player, stratego_piece losing_piece);
 	void display_saved_move(int player);
 	bool screen_shot_empty();
@@ -105,6 +105,5 @@ public:
 	void reset();
 	std::string get_player1_name();
 	std::string get_player2_name();
-	void add_hint();
 	void erase_screen_shot();
 };

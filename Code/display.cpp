@@ -4,6 +4,7 @@
 #include "ascii_board.h"
 #include "label.h"
 #include <string>
+#include "menu.h"
 
 stratego_display::stratego_display(frame* main_display, frame* multipurpose_display) :
 board_heading(main_display),
@@ -592,17 +593,40 @@ bool stratego_display::screen_shot_empty() {
 	}
 }
 
-void stratego_display::display_load_game_menu(std::vector<std::string> saved_game_names, int selected_game) {
-	std::string saved_game_list = "";
-	for (unsigned int saved_game = 0; saved_game < saved_game_names.size(); saved_game++) {
-		if (saved_game == (unsigned int) selected_game) {
-			saved_game_list = saved_game_list + "* " + saved_game_names[saved_game] + "\n";
-		}
-		else {
-			saved_game_list = saved_game_list + "  " + saved_game_names[saved_game] + "\n";
-		}
+std::string stratego_display::display_load_game_menu(std::vector<std::string> saved_game_names) {
+	int x = 0;
+	int y = 0;
+	ascii_io::get_terminal_size(x, y);
+	bool reduced_menu_size = false;
+	if ((y - 4) > 10)
+	{
+		y = y - 5;
+		reduced_menu_size = true;
 	}
-	ascii_io::print(saved_game_list);
+	else if((y - 1) > 0)
+	{
+		y = y - 1;
+	}
+	frame* menu_frame = new frame();
+	label saved_games_label(menu_frame);
+	menu saved_games_menu(menu_frame, "new line", y);
+	saved_games_label.set_alignment("center");
+	saved_games_label.set_output("Saved Games");
+	saved_games_menu.set_alignment("center");
+	saved_games_menu.add_border();
+	saved_games_menu.enable_quit();
+	if (reduced_menu_size)
+	{
+		saved_games_label.set_spacing(2, 0, 0, 0);
+	}
+	for (unsigned int i = 0; i < saved_game_names.size(); i++)
+	{
+		saved_games_menu.append_item(saved_game_names[i]);
+	}
+	saved_games_menu.sync();
+	menu_frame->display();
+	std::string selection = saved_games_menu.get_selection();
+	return selection;
 }
 
 std::string stratego_display::get_screen_shot() {
