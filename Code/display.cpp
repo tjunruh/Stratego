@@ -433,6 +433,22 @@ void stratego_display::display_player_won(int player)
 	} while (input != ascii_io::enter);
 }
 
+std::string stratego_display::display_save_game()
+{
+	multipurpose_label.set_spacing(15, 0, 0, 0);
+	multipurpose_label.set_output("Enter a name (duplicate names will be rejected):");
+	multipurpose_frame->display();
+	int input = ascii_io::undefined;
+	do
+	{
+		input = multipurpose_text_box.write();
+	} while (input != ascii_io::enter);
+	std::string game_name = multipurpose_text_box.get_text();
+	ascii_io::hide_cursor();
+	multipurpose_text_box.clear();
+	return game_name;
+}
+
 void stratego_display::display_controls() {
 	ascii_io::print("CONTROLS:\n\n");
 	ascii_io::print("Go back   : q\n\n");

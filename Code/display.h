@@ -98,6 +98,7 @@ public:
 	void display_player1_preturn_menu();
 	void display_player2_preturn_menu();
 	void display_player_won(int player);
+	std::string display_save_game();
 	void display_controls();
 	void set_player1_name(std::string name);
 	void set_player2_name(std::string name);

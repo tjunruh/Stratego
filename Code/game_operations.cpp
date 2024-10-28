@@ -386,10 +386,7 @@ void stratego_game_operations::save_game_handle() {
     ascii_io::print("Enter a name:\n");
     std::string game_name = "";
     do {
-        game_name = ascii_io::getline();
-        if (file_managment.duplicate_name(game_name)) {
-            ascii_io::print("Game already exists. Enter a different name:\n");
-        }
+        game_name = display.display_save_game();
     } while (file_managment.duplicate_name(game_name));
     stratego_piece board_info[80];
     logic.get_board_info(board_info);
