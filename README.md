@@ -35,7 +35,7 @@ make
 Then enter
 
 ```shell
-./Stratego
+make run
 ```
 
 # Game Instructions
