@@ -610,6 +610,7 @@ std::string stratego_display::display_load_game_menu(std::vector<std::string> sa
 	frame* menu_frame = new frame();
 	label saved_games_label(menu_frame);
 	menu saved_games_menu(menu_frame, "new line", y);
+	saved_games_menu.set_controls(menu_select, menu_up, menu_down, menu_quit);
 	saved_games_label.set_alignment("center");
 	saved_games_label.set_output("Saved Games");
 	saved_games_menu.set_alignment("center");
@@ -648,4 +649,12 @@ std::string stratego_display::get_player2_name() {
 void stratego_display::erase_screen_shot()
 {
 	screen_shot = "";
+}
+
+void stratego_display::set_menu_controls(int up, int down, int select, int quit)
+{
+	menu_up = up;
+	menu_down = down;
+	menu_select = select;
+	menu_quit = quit;
 }

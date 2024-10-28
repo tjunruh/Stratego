@@ -4,6 +4,7 @@
 #include "input_to_logic_interface.h"
 #include "file_managment.h"
 #include "frame.h"
+#include "controls.h"
 
 class stratego_game_operations {
 private:
@@ -12,6 +13,39 @@ private:
 	stratego_logic logic;
 	stratego_interface interface;
 	stratego_file_managment file_managment;
+	controls game_controls;
+	struct control_mapping
+	{
+		std::string name = "";
+		int key = ascii_io::undefined;
+	};
+
+	const std::vector<control_mapping> default_control_names =
+	{
+		{"up", ascii_io::up},
+		{"down", ascii_io::down},
+		{"right", ascii_io::right},
+		{"left", ascii_io::left},
+		{"spy", ascii_io::s},
+		{"flag", ascii_io::f},
+		{"1", ascii_io::one},
+		{"2", ascii_io::two},
+		{"3", ascii_io::three},
+		{"4", ascii_io::four},
+		{"5", ascii_io::five},
+		{"6", ascii_io::six},
+		{"7", ascii_io::seven},
+		{"8", ascii_io::eight},
+		{"9", ascii_io::nine},
+		{"bomb", ascii_io::b},
+		{"select", ascii_io::enter},
+		{"quit", ascii_io::q},
+		{"new turn", ascii_io::space},
+		{"finalize", ascii_io::enter},
+		{"help", ascii_io::h},
+		{"save", ascii_io::s}
+	};
+
 public:
 	stratego_game_operations(frame* main_display, frame* multipurpose_frame);
 	void initialize_file_system();

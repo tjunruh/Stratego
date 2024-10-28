@@ -44,6 +44,11 @@ private:
 
 	int _players_move;
 
+	int menu_up = ascii_io::up;
+	int menu_down = ascii_io::down;
+	int menu_select = ascii_io::enter;
+	int menu_quit = ascii_io::q;
+
 	std::string player1_name = "player 1";
 	std::string player2_name = "player 2";
 
@@ -106,4 +111,5 @@ public:
 	std::string get_player1_name();
 	std::string get_player2_name();
 	void erase_screen_shot();
+	void set_menu_controls(int up, int down, int select, int quit);
 };
