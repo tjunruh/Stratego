@@ -6,7 +6,7 @@
 #include <string>
 #include "menu.h"
 
-stratego_display::stratego_display(frame* main_display, frame* multipurpose_display) :
+stratego_display::stratego_display(frame* main_display, frame* multipurpose_display, controls* master_game_controls) :
 board_heading(main_display),
 board(main_display, "board_configs/stratego_board.txt", "default", "new line"),
 pieces_out_label(main_display, "new line"),
@@ -20,33 +20,88 @@ right_text_box_spacer(multipurpose_display, 1)
 	board.set_alignment("center block");
 	pieces_out_label.set_alignment("center block");
 	board.load_board_translation("reverse", "board_configs/stratego_reverse_board.txt");
-	board.add_configuration("hide", -1, -1, "*X*", '*');
-	board.add_configuration("0", -1, -1, "*f*", '*');
-	board.add_configuration("-1", -1, -1, "*s*", '*');
-	board.add_configuration("-2", -1, -1, "*b*", '*');
-	board.add_configuration("1", -1, -1, "*1*", '*');
-	board.add_configuration("2", -1, -1, "*2*", '*');
-	board.add_configuration("3", -1, -1, "*3*", '*');
-	board.add_configuration("4", -1, -1, "*4*", '*');
-	board.add_configuration("5", -1, -1, "*5*", '*');
-	board.add_configuration("6", -1, -1, "*6*", '*');
-	board.add_configuration("7", -1, -1, "*7*", '*');
-	board.add_configuration("8", -1, -1, "*8*", '*');
-	board.add_configuration("9", -1, -1, "*9*", '*');
-	board.add_configuration("cursor", -1, -1, "(*)", '*');
-	board.add_configuration("up_cursor", -1, -1, "^*^", '*');
-	board.add_configuration("down_cursor", -1, -1, "v*v", '*');
-	board.add_configuration("left_cursor", -1, -1, "<*<", '*');
-	board.add_configuration("right_cursor", -1, -1, ">*>", '*');
-	board.add_configuration("scout_up", -1, -1, "*^*", '*');
-	board.add_configuration("scout_down", -1, -1, "*v*", '*');
-	board.add_configuration("scout_left", -1, -1, "*<*", '*');
-	board.add_configuration("scout_right", -1, -1, "*>*", '*');
+	game_controls = master_game_controls;
+	bool bold = game_controls->get_key("bold foreground");
+	board.add_configuration("hide", -1, -1, "*X*", '*', build_central_element_color_structure(game_controls->get_key("hidden piece color"), bold));
+	board.add_configuration("0", -1, -1, "*f*", '*', build_central_element_color_structure(game_controls->get_key("flag color"), bold));
+	board.add_configuration("-1", -1, -1, "*s*", '*', build_central_element_color_structure(game_controls->get_key("spy color"), bold));
+	board.add_configuration("-2", -1, -1, "*b*", '*', build_central_element_color_structure(game_controls->get_key("bomb color"), bold));
+	board.add_configuration("1", -1, -1, "*1*", '*', build_central_element_color_structure(game_controls->get_key("1 color"), bold));
+	board.add_configuration("2", -1, -1, "*2*", '*', build_central_element_color_structure(game_controls->get_key("2 color"), bold));
+	board.add_configuration("3", -1, -1, "*3*", '*', build_central_element_color_structure(game_controls->get_key("3 color"), bold));
+	board.add_configuration("4", -1, -1, "*4*", '*', build_central_element_color_structure(game_controls->get_key("4 color"), bold));
+	board.add_configuration("5", -1, -1, "*5*", '*', build_central_element_color_structure(game_controls->get_key("5 color"), bold));
+	board.add_configuration("6", -1, -1, "*6*", '*', build_central_element_color_structure(game_controls->get_key("6 color"), bold));
+	board.add_configuration("7", -1, -1, "*7*", '*', build_central_element_color_structure(game_controls->get_key("7 color"), bold));
+	board.add_configuration("8", -1, -1, "*8*", '*', build_central_element_color_structure(game_controls->get_key("8 color"), bold));
+	board.add_configuration("9", -1, -1, "*9*", '*', build_central_element_color_structure(game_controls->get_key("9 color"), bold));
+	board.add_configuration("cursor", -1, -1, "(*)", '*', build_cursor_color_structure(game_controls->get_key("cursor color"), bold));
+	board.add_configuration("up_cursor", -1, -1, "^*^", '*', build_cursor_color_structure(game_controls->get_key("cursor arrow color"), bold));
+	board.add_configuration("down_cursor", -1, -1, "v*v", '*', build_cursor_color_structure(game_controls->get_key("cursor arrow color"), bold));
+	board.add_configuration("left_cursor", -1, -1, "<*<", '*', build_cursor_color_structure(game_controls->get_key("cursor arrow color"), bold));
+	board.add_configuration("right_cursor", -1, -1, ">*>", '*', build_cursor_color_structure(game_controls->get_key("cursor arrow color"), bold));
+	board.add_configuration("scout_up", -1, -1, "*^*", '*', build_central_element_color_structure(game_controls->get_key("scout arrow color"), bold));
+	board.add_configuration("scout_down", -1, -1, "*v*", '*', build_central_element_color_structure(game_controls->get_key("scout arrow color"), bold));
+	board.add_configuration("scout_left", -1, -1, "*<*", '*', build_central_element_color_structure(game_controls->get_key("scout arrow color"), bold));
+	board.add_configuration("scout_right", -1, -1, "*>*", '*', build_central_element_color_structure(game_controls->get_key("scout arrow color"), bold));
 
 	multipurpose_frame = multipurpose_display;
 	multipurpose_frame->set_coordinate_width_multiplier(1, 0, 1);
 	multipurpose_frame->set_coordinate_width_multiplier(1, 1, 1);
 	multipurpose_label.set_alignment("center block");
+
+	if (game_controls->get_key("enable line drawing"))
+	{
+		main_frame->enable_dec();
+		multipurpose_frame->enable_dec();
+	}
+
+	if (game_controls->get_key("enable color"))
+	{
+		main_frame->enable_color();
+	}
+
+	main_frame->set_default_background_color(game_controls->get_key("background color"));
+	main_frame->set_default_foreground_color(game_controls->get_key("foreground color"));
+	multipurpose_frame->set_default_background_color(game_controls->get_key("background color"));
+	multipurpose_frame->set_default_foreground_color(game_controls->get_key("foreground color"));
+}
+
+std::vector<format_tools::index_format> stratego_display::build_cursor_color_structure(int color, bool bold)
+{
+	std::vector<format_tools::index_format> colors;
+	if (color != format_tools::none)
+	{
+		format_tools::index_format color1;
+		color1.format.foreground_format = color;
+		color1.format.bold = bold;
+		color1.index = 0;
+		format_tools::index_format color2;
+		color2.format.foreground_format = format_tools::none;
+		color2.index = 1;
+		format_tools::index_format color3;
+		color3.format.foreground_format = color;
+		color3.format.bold = bold;
+		color3.index = 2;
+		colors.push_back(color1);
+		colors.push_back(color2);
+		colors.push_back(color3);
+	}
+	return colors;
+}
+
+std::vector<format_tools::index_format> stratego_display::build_central_element_color_structure(int color, bool bold)
+{
+	std::vector<format_tools::index_format> colors;
+	if (color != format_tools::none)
+	{
+		format_tools::index_format color1;
+		color1.format.foreground_format = color;
+		color1.format.bold = bold;
+		color1.index = 1;
+		colors.push_back(color1);
+	}
+	return colors;
 }
 
 void stratego_display::add_move_up_curser(int curser_row, int curser_column) {
@@ -614,7 +669,7 @@ std::string stratego_display::display_load_game_menu(std::vector<std::string> sa
 	int y = 0;
 	ascii_io::get_terminal_size(x, y);
 	bool reduced_menu_size = false;
-	if ((y - 4) > 10)
+	if ((y - 5) > 10)
 	{
 		y = y - 5;
 		reduced_menu_size = true;
@@ -624,6 +679,17 @@ std::string stratego_display::display_load_game_menu(std::vector<std::string> sa
 		y = y - 1;
 	}
 	frame* menu_frame = new frame();
+	if (game_controls->get_key("enable line drawing"));
+	{
+		menu_frame->enable_dec();
+	}
+
+	if (game_controls->get_key("enable color"))
+	{
+		menu_frame->set_default_background_color(game_controls->get_key("background color"));
+		menu_frame->set_default_foreground_color(game_controls->get_key("foreground color"));
+	}
+
 	label saved_games_label(menu_frame);
 	menu saved_games_menu(menu_frame, "new line", y);
 	saved_games_menu.set_controls(menu_select, menu_up, menu_down, menu_quit);
@@ -673,4 +739,151 @@ void stratego_display::set_menu_controls(int up, int down, int select, int quit)
 	menu_down = down;
 	menu_select = select;
 	menu_quit = quit;
+}
+
+void stratego_display::display_set_controls()
+{
+	frame* settings_frame = new frame();
+	int x = 0;
+	int y = 0;
+	bool reduced_menu_size = false;
+	ascii_io::get_terminal_size(x, y);
+	y = y / 2;
+	if ((y - 4) > 10)
+	{
+		y = y - 4;
+		reduced_menu_size = true;
+	}
+	label settings_label(settings_frame);
+	settings_label.set_alignment("center");
+	settings_label.set_output("Settings Menu");
+	menu settings_menu(settings_frame, "new line", y);
+	settings_menu.enable_quit();
+	settings_menu.separate_items(true);
+	settings_menu.set_alignment("center");
+	settings_menu.add_border();
+	settings_menu.set_controls(game_controls->get_key("select"), game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("quit"));
+	if (reduced_menu_size)
+	{
+		settings_menu.set_spacing(2, 0, 0, 0);
+	}
+	
+	for (unsigned int i = 0; i < control_settings_menu_items.size(); i++)
+	{
+		settings_menu.append_item(control_settings_menu_items[i].name_id);
+		settings_menu.set_item_label(control_settings_menu_items[i].name_id, std::to_string(game_controls->get_key(control_settings_menu_items[i].name_id)));
+	}
+	
+	if (game_controls->get_key("enable line drawing"))
+	{
+		settings_frame->enable_dec();
+	}
+
+	if (game_controls->get_key("enable color"))
+	{
+		settings_frame->set_default_background_color(game_controls->get_key("background color"));
+		settings_frame->set_default_foreground_color(game_controls->get_key("foreground color"));
+	}
+
+	settings_menu.sync();
+	settings_frame->display();
+	std::string selection = "";
+	do
+	{
+		selection = settings_menu.get_selection();
+		settings_menu.sync();
+		for (unsigned int i = 0; i < control_settings_menu_items.size(); i++)
+		{
+			if (selection == control_settings_menu_items[i].name_id)
+			{
+				if (control_settings_menu_items[i].type == regular)
+				{
+					settings_label.set_output("Press key to bind to " + selection);
+					settings_label.refresh();
+					int key = ascii_io::getchar();
+					game_controls->unbind(control_settings_menu_items[i].name_id);
+					game_controls->bind(control_settings_menu_items[i].name_id, key);
+					settings_menu.set_item_label(selection, std::to_string(key));
+					settings_label.set_output("");
+					settings_label.refresh();
+				}
+				else if(control_settings_menu_items[i].type == color)
+				{
+					settings_label.set_output("b -> blue, c -> cyan, d -> black, g -> green, m -> magenta, r -> red, w -> white, y -> yellow");
+					settings_label.refresh();
+					int key = ascii_io::getchar();
+					int selected_color = format_tools::none;
+					switch (key)
+					{
+						case ascii_io::b:
+							selected_color = format_tools::blue;
+							break;
+						case ascii_io::c:
+							selected_color = format_tools::cyan;
+							break;
+						case ascii_io::d:
+							selected_color = format_tools::black;
+							break;
+						case ascii_io::g:
+							selected_color = format_tools::green;
+							break;
+						case ascii_io::m:
+							selected_color = format_tools::magenta;
+							break;
+						case ascii_io::r:
+							selected_color = format_tools::red;
+							break;
+						case ascii_io::w:
+							selected_color = format_tools::white;
+							break;
+						case ascii_io::y:
+							selected_color = format_tools::yellow;
+							break;
+					}
+					game_controls->unbind(control_settings_menu_items[i].name_id);
+					game_controls->bind(control_settings_menu_items[i].name_id, selected_color);
+					settings_menu.set_item_label(selection, std::to_string(selected_color));
+					settings_label.set_output("");
+					settings_label.refresh();
+				}
+				else if (control_settings_menu_items[i].type == boolean)
+				{
+					bool value = game_controls->get_key(control_settings_menu_items[i].name_id);
+					game_controls->unbind(control_settings_menu_items[i].name_id);
+					game_controls->bind(control_settings_menu_items[i].name_id, !value);
+					settings_menu.set_item_label(selection, std::to_string(!value));
+					if (game_controls->get_key("enable line drawing"))
+					{
+						main_frame->enable_dec();
+						multipurpose_frame->enable_dec();
+						settings_frame->enable_dec();
+						settings_frame->display();
+					}
+					else
+					{
+						main_frame->disable_dec();
+						multipurpose_frame->disable_dec();
+						settings_frame->disable_dec();
+						settings_frame->display();
+					}
+				}
+			}
+		}
+	} while (selection != "");
+	game_controls->save_controls("controls.json");
+
+	if (game_controls->get_key("enable color"))
+	{
+		main_frame->enable_color();
+		main_frame->set_default_background_color(game_controls->get_key("background color"));
+		main_frame->set_default_foreground_color(game_controls->get_key("foreground color"));
+		multipurpose_frame->set_default_background_color(game_controls->get_key("background color"));
+		multipurpose_frame->set_default_foreground_color(game_controls->get_key("foreground color"));
+	}
+	else
+	{
+		main_frame->disable_color();
+	}
+
+	delete(settings_frame);
 }

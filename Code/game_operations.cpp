@@ -3,19 +3,10 @@
 #include <iostream>
 #include "error_codes.h"
 
-stratego_game_operations::stratego_game_operations(frame* main_display, frame* multipurpose_display) : display(main_display, multipurpose_display)
+stratego_game_operations::stratego_game_operations(frame* main_display, frame* multipurpose_display, controls* master_game_controls) : display(main_display, multipurpose_display, master_game_controls)
 {
-    game_controls.load_controls("controls.json");
-    for (unsigned int i = 0; i < default_control_names.size(); i++)
-    {
-        if (game_controls.get_key(default_control_names[i].name) == ascii_io::undefined)
-        {
-            game_controls.bind(default_control_names[i].name, default_control_names[i].key);
-        }
-    }
-    
-    display.set_menu_controls(game_controls.get_key("up"), game_controls.get_key("down"), game_controls.get_key("select"), game_controls.get_key("quit"));
-    game_controls.save_controls("controls.json");
+    game_controls = master_game_controls;
+    display.set_menu_controls(game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("select"), game_controls->get_key("quit"));
 }
 
 void stratego_game_operations::initialize_file_system() {
@@ -45,7 +36,7 @@ void stratego_game_operations::setup() {
         ascii_io::clear();
         display.display_player1_preturn_menu();
         input = ascii_io::getchar();
-        if (input == game_controls.get_key("help")) {
+        if (input == game_controls->get_key("help")) {
             help_menu();
         }
     } while (input != ascii_io::space);
@@ -62,14 +53,14 @@ void stratego_game_operations::setup() {
         logic.get_board_info(board_info);
         display.display_board(board_info);
         input = ascii_io::getchar();
-        if ((input == game_controls.get_key("up")) || (input == game_controls.get_key("down")) || (input == game_controls.get_key("right")) || (input == game_controls.get_key("left"))) {
+        if ((input == game_controls->get_key("up")) || (input == game_controls->get_key("down")) || (input == game_controls->get_key("right")) || (input == game_controls->get_key("left"))) {
             logic.move_curser(interface.user_to_logic(input, game_controls));
         }
         else {
             logic.place_piece(interface.user_to_logic(input, game_controls));
         }
 
-        if (input == game_controls.get_key("help")) {
+        if (input == game_controls->get_key("help")) {
             help_menu();
         }
 
@@ -79,10 +70,10 @@ void stratego_game_operations::setup() {
         ascii_io::clear();
         display.display_player2_preturn_menu();
         input = ascii_io::getchar();
-        if (input == game_controls.get_key("help")) {
+        if (input == game_controls->get_key("help")) {
             help_menu();
         }
-    } while (input != game_controls.get_key("new turn"));
+    } while (input != game_controls->get_key("new turn"));
 
     logic.set_turn(2);
     logic.set_curser_row(0);
@@ -97,14 +88,14 @@ void stratego_game_operations::setup() {
         logic.get_board_info(board_info);
         display.display_board(board_info);
         input = ascii_io::getchar();
-        if ((input == game_controls.get_key("up")) || (input == game_controls.get_key("down")) || (input == game_controls.get_key("right")) || (input == game_controls.get_key("left"))) {
+        if ((input == game_controls->get_key("up")) || (input == game_controls->get_key("down")) || (input == game_controls->get_key("right")) || (input == game_controls->get_key("left"))) {
             logic.move_curser(interface.user_to_logic(input, game_controls));
         }
         else {
             logic.place_piece(interface.user_to_logic(input, game_controls));
         }
 
-        if (input == game_controls.get_key("help")) {
+        if (input == game_controls->get_key("help")) {
             help_menu();
         }
     } while (!logic.player2_pieces_placed());
@@ -207,7 +198,7 @@ void stratego_game_operations::end_game() {
         int input = -1;
         do {
             input = ascii_io::getchar();
-        } while (input != game_controls.get_key("finalize"));
+        } while (input != game_controls->get_key("finalize"));
 
         display.hide_player1();
         display.orient_for_player(2);
@@ -216,19 +207,12 @@ void stratego_game_operations::end_game() {
         display.display_board(board_info);
         do {
             input = ascii_io::getchar();
-        } while (input != game_controls.get_key("finalize"));
+        } while (input != game_controls->get_key("finalize"));
     }
 }
 
 void stratego_game_operations::help_menu() {
-    int input = -1;
-   
-    ascii_io::clear();
-    display.display_controls();
-    do {
-        input = ascii_io::getchar();
-    } while (input != game_controls.get_key("quit"));
-    ascii_io::clear();
+    display.display_set_controls();
 }
 
 bool stratego_game_operations::turn_ended_handle() {
@@ -239,11 +223,11 @@ bool stratego_game_operations::turn_ended_handle() {
         do {
             display.display_player2_preturn_menu();
             input = ascii_io::getchar();
-            if (input == game_controls.get_key("help")) {
+            if (input == game_controls->get_key("help")) {
                 help_menu();
             }
-        } while ((input != game_controls.get_key("new turn")) && (input != game_controls.get_key("save")));
-        if (input == game_controls.get_key("save")) {
+        } while ((input != game_controls->get_key("new turn")) && (input != game_controls->get_key("save")));
+        if (input == game_controls->get_key("save")) {
             save_game_handle();
             return true;
         }
@@ -259,11 +243,11 @@ bool stratego_game_operations::turn_ended_handle() {
         do {
             display.display_player1_preturn_menu();
             input = ascii_io::getchar();
-            if (input == game_controls.get_key("help")) {
+            if (input == game_controls->get_key("help")) {
                 help_menu();
             }
-        } while ((input != game_controls.get_key("new turn")) && (input != game_controls.get_key("save")));
-        if (input == game_controls.get_key("save")) {
+        } while ((input != game_controls->get_key("new turn")) && (input != game_controls->get_key("save")));
+        if (input == game_controls->get_key("save")) {
             save_game_handle();
             return true;
         }
@@ -278,22 +262,22 @@ bool stratego_game_operations::turn_ended_handle() {
 }
 
 void stratego_game_operations::moving_curser_handle(int input) {
-    if ((input == game_controls.get_key("up")) || (input == game_controls.get_key("down")) || (input == game_controls.get_key("right")) || (input == game_controls.get_key("left"))) {
+    if ((input == game_controls->get_key("up")) || (input == game_controls->get_key("down")) || (input == game_controls->get_key("right")) || (input == game_controls->get_key("left"))) {
         logic.move_curser(interface.user_to_logic(input, game_controls));
         display.add_standard_curser(logic.get_curser_row(), logic.get_curser_column());
     }
-    else if (input == game_controls.get_key("select")) {
+    else if (input == game_controls->get_key("select")) {
         logic.select_piece(logic.get_curser_row(), logic.get_curser_column());
         display.add_standard_curser(logic.get_curser_row(), logic.get_curser_column());
     }
-    else if (input == game_controls.get_key("help")) {
+    else if (input == game_controls->get_key("help")) {
         help_menu();
         display.add_standard_curser(logic.get_curser_row(), logic.get_curser_column());
     }
 }
 
 void stratego_game_operations::piece_selected_handle(int input) {
-    if ((input == game_controls.get_key("up")) || (input == game_controls.get_key("down")) || (input == game_controls.get_key("right")) || (input == game_controls.get_key("left")) || (input == game_controls.get_key("finalize")) || (input == game_controls.get_key("help"))) {
+    if ((input == game_controls->get_key("up")) || (input == game_controls->get_key("down")) || (input == game_controls->get_key("right")) || (input == game_controls->get_key("left")) || (input == game_controls->get_key("finalize")) || (input == game_controls->get_key("help"))) {
         logic.adjust_piece_position(interface.user_to_logic(input, game_controls));
         if (logic.get_direction() == neutral) {
             display.add_standard_curser(logic.get_curser_row(), logic.get_curser_column());
@@ -311,7 +295,7 @@ void stratego_game_operations::piece_selected_handle(int input) {
             display.add_move_down_curser(logic.get_curser_row(), logic.get_curser_column());
         }
 
-        if (input == game_controls.get_key("finalize")) {
+        if (input == game_controls->get_key("finalize")) {
             logic.move_piece(interface.user_to_logic(input, game_controls));
             display.save_move(logic.get_turn(), logic.get_losing_piece_data());
             if (logic.battle()) {
@@ -319,18 +303,18 @@ void stratego_game_operations::piece_selected_handle(int input) {
             }
         }
 
-        if (input == game_controls.get_key("help")) {
+        if (input == game_controls->get_key("help")) {
             help_menu();
         }
     }
-    else if (input == game_controls.get_key("quit")) {
+    else if (input == game_controls->get_key("quit")) {
         logic.unselect_piece();
         display.add_standard_curser(logic.get_curser_row(), logic.get_curser_column());
     }
 }
 
 void stratego_game_operations::scout_selected_handle(int input) {
-    if ((input == game_controls.get_key("up")) || (input == game_controls.get_key("down")) || (input == game_controls.get_key("right")) || (input == game_controls.get_key("left")) || (input == game_controls.get_key("finalize")) || (input == game_controls.get_key("help"))) {
+    if ((input == game_controls->get_key("up")) || (input == game_controls->get_key("down")) || (input == game_controls->get_key("right")) || (input == game_controls->get_key("left")) || (input == game_controls->get_key("finalize")) || (input == game_controls->get_key("help"))) {
         logic.adjust_scout_position(interface.user_to_logic(input, game_controls));
         if (logic.get_direction() == neutral) {
             display.add_standard_curser(logic.get_curser_row(), logic.get_curser_column());
@@ -352,7 +336,7 @@ void stratego_game_operations::scout_selected_handle(int input) {
             display.add_scout_arrows(logic.get_selected_piece_row(), logic.get_selected_piece_column(), logic.get_direction(), logic.get_distance(), logic.get_turn());
         }
 
-        if (input == game_controls.get_key("finalize")) {
+        if (input == game_controls->get_key("finalize")) {
             display.add_scout_arrows(logic.get_selected_piece_row(), logic.get_selected_piece_column(), logic.get_direction(), logic.get_distance(), logic.get_turn());
             logic.move_piece(interface.user_to_logic(input, game_controls));
             display.save_move(logic.get_turn(), logic.get_losing_piece_data());
@@ -361,11 +345,11 @@ void stratego_game_operations::scout_selected_handle(int input) {
             }
         }
 
-        if (input == game_controls.get_key("help")) {
+        if (input == game_controls->get_key("help")) {
             help_menu();
         }
     }
-    else if (input == game_controls.get_key("quit")) {
+    else if (input == game_controls->get_key("quit")) {
         logic.unselect_piece();
         display.add_standard_curser(logic.get_curser_row(), logic.get_curser_column());
     }

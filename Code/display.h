@@ -7,6 +7,10 @@
 #include "label.h"
 #include "spacer.h"
 #include "text_box.h"
+#include "menu.h"
+#include "controls.h"
+#include <unordered_map>
+#include "format_tools.h"
 
 class stratego_display {
 private:
@@ -67,6 +71,8 @@ private:
 	void execute_show_player1();
 	void execute_show_player2();
 	void invert_arrows();
+	std::vector<format_tools::index_format> build_cursor_color_structure(int color, bool bold);
+	std::vector<format_tools::index_format> build_central_element_color_structure(int color, bool bold);
 	label board_heading;
 	ascii_board board;
 	label pieces_out_label;
@@ -78,8 +84,70 @@ private:
 	spacer right_text_box_spacer;
 	frame* multipurpose_frame;
 
+	controls* game_controls;
+
+	enum setting_type
+	{
+		regular,
+		boolean,
+		color
+	};
+
+	struct control_settings_menu_item
+	{
+		std::string name_id = "";
+		setting_type type = regular;
+	};
+
+	std::vector<control_settings_menu_item> control_settings_menu_items
+	{
+		{"up", regular},
+		{"down", regular},
+		{"right", regular},
+		{"left", regular},
+		{"spy", regular},
+		{"flag", regular},
+		{"1", regular},
+		{"2", regular},
+		{"3", regular},
+		{"4", regular},
+		{"5", regular},
+		{"6", regular},
+		{"7", regular},
+		{"8", regular},
+		{"9", regular},
+		{"bomb", regular},
+		{"select", regular},
+		{"quit", regular},
+		{"new turn", regular},
+		{"finalize", regular},
+		{"help", regular},
+		{"save", regular},
+		{"enable line drawing", boolean},
+		{"enable color", boolean},
+		{"background color", color},
+		{"foreground color", color},
+		{"cursor color", color},
+		{"cursor arrow color", color},
+		{"scout arrow color", color},
+		{"spy color", color},
+		{"flag color", color},
+		{"1 color", color},
+		{"2 color", color},
+		{"3 color", color},
+		{"4 color", color},
+		{"5 color", color},
+		{"6 color", color},
+		{"7 color", color},
+		{"8 color", color},
+		{"9 color", color},
+		{"bomb color", color},
+		{"hidden piece color", color},
+		{"bold foreground", boolean}
+	};
+
 public:
-	stratego_display(frame* main_display, frame* multipurpose_display);
+	stratego_display(frame* main_display, frame* multipurpose_display, controls* game_controls);
 	void add_move_up_curser(int curser_row, int curser_column);
 	void add_move_down_curser(int curser_row, int curser_column);
 	void add_move_right_curser(int curser_row, int curser_column);
@@ -113,4 +181,5 @@ public:
 	std::string get_player2_name();
 	void erase_screen_shot();
 	void set_menu_controls(int up, int down, int select, int quit);
+	void display_set_controls();
 };
