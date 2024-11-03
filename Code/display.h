@@ -3,14 +3,13 @@
 #include <vector>
 #include "piece.h"
 #include "direction.h"
-#include "ascii_board.h"
-#include "label.h"
-#include "spacer.h"
-#include "text_box.h"
-#include "menu.h"
-#include "controls.h"
-#include <unordered_map>
-#include "format_tools.h"
+#include <ascii_board.h>
+#include <label.h>
+#include <spacer.h>
+#include <text_box.h>
+#include <menu.h>
+#include <controls.h>
+#include <format_tools.h>
 
 class stratego_display {
 private:

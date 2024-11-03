@@ -1,10 +1,10 @@
 #include "display.h"
-#include "ascii_io.h"
-#include "frame.h"
-#include "ascii_board.h"
-#include "label.h"
+#include <ascii_io.h>
+#include <frame.h>
+#include <ascii_board.h>
+#include <label.h>
 #include <string>
-#include "menu.h"
+#include <menu.h>
 
 stratego_display::stratego_display(frame* main_display, frame* multipurpose_display, controls* master_game_controls) :
 board_heading(main_display),
@@ -679,7 +679,7 @@ std::string stratego_display::display_load_game_menu(std::vector<std::string> sa
 		y = y - 1;
 	}
 	frame* menu_frame = new frame();
-	if (game_controls->get_key("enable line drawing"));
+	if (game_controls->get_key("enable line drawing"))
 	{
 		menu_frame->enable_dec();
 	}

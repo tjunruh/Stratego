@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
-#include "ascii_io.h"
-#include "format_tools.h"
+#include <ascii_io.h>
+#include <format_tools.h>
 
 struct control_mapping
 {

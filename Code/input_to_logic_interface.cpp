@@ -1,5 +1,5 @@
 #include "input_to_logic_interface.h"
-#include "ascii_io.h"
+#include <ascii_io.h>
 
 input stratego_interface::user_to_logic(int user_input, controls* game_controls) {
 	if (user_input == game_controls->get_key("1")) {

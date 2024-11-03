@@ -2,15 +2,15 @@
 //
 
 #include "game_operations.h"
-#include "frame.h"
-#include "menu.h"
-#include "label.h"
-#include "ascii_board.h"
-#include "controls.h"
+#include <frame.h>
+#include <menu.h>
+#include <label.h>
+#include <ascii_board.h>
+#include <controls.h>
 #include "default_controls.h"
 #ifdef __linux__
 #include <unistd.h>
-#include "ascii_io.h"
+#include <ascii_io.h>
 #endif
 
 int main()

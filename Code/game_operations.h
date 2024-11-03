@@ -3,9 +3,9 @@
 #include "logic.h"
 #include "input_to_logic_interface.h"
 #include "file_managment.h"
-#include "frame.h"
-#include "controls.h"
-#include "format_tools.h"
+#include <frame.h>
+#include <controls.h>
+#include <format_tools.h>
 
 class stratego_game_operations {
 private:

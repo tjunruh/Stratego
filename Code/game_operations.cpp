@@ -1,7 +1,7 @@
-#include "ascii_io.h"
+#include <ascii_io.h>
 #include "game_operations.h"
 #include <iostream>
-#include "error_codes.h"
+#include <error_codes.h>
 
 stratego_game_operations::stratego_game_operations(frame* main_display, frame* multipurpose_display, controls* master_game_controls) : display(main_display, multipurpose_display, master_game_controls)
 {

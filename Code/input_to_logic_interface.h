@@ -1,6 +1,6 @@
 #pragma once
 #include "logic_input.h"
-#include "controls.h"
+#include <controls.h>
 
 
 class stratego_interface {
