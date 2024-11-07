@@ -42,7 +42,9 @@ int main()
     initialization_menu.append_item("Load Game");
     initialization_menu.append_item("Exit");
     initialization_menu.disable_quit();
-    initialization_menu.set_controls(game_controls->get_key("select"), game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("quit"));
+    std::vector<int> menu_select_buttons;
+    menu_select_buttons.push_back(game_controls->get_key("select"));
+    initialization_menu.set_controls(menu_select_buttons, game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("quit"));
     if (game_controls->get_key("enable color"))
     {
         home_frame->set_default_foreground_color(game_controls->get_key("foreground color"));
@@ -50,25 +52,19 @@ int main()
     }
     ascii_io::hide_cursor();
     do {
-        if (game_controls->get_key("enable line drawing"))
-        {
-            home_frame->enable_dec();
-        }
-        else
-        {
-            home_frame->disable_dec();
-        }
-
+        home_frame->enable_dec(game_controls->get_key("enable line drawing"));
+        home_frame->enable_color(game_controls->get_key("enable color"));
         if (game_controls->get_key("enable color"))
         {
-            home_frame->enable_color();
+            
             home_frame->set_default_background_color(game_controls->get_key("background color"));
             home_frame->set_default_foreground_color(game_controls->get_key("foreground color"));
         }
         home_frame->display();
         std::string selection = "";
+        int key_stroke = ascii_io::undefined;
         do {
-            selection = initialization_menu.get_selection();
+            initialization_menu.get_selection(selection, key_stroke);
             if (selection == "New Game") {
                 game_manager.setup();
             }

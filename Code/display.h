@@ -47,11 +47,6 @@ private:
 
 	int _players_move;
 
-	int menu_up = ascii_io::up;
-	int menu_down = ascii_io::down;
-	int menu_select = ascii_io::enter;
-	int menu_quit = ascii_io::q;
-
 	std::string player1_name = "player 1";
 	std::string player2_name = "player 2";
 
@@ -72,6 +67,7 @@ private:
 	void invert_arrows();
 	std::vector<format_tools::index_format> build_cursor_color_structure(int color, bool bold);
 	std::vector<format_tools::index_format> build_central_element_color_structure(int color, bool bold);
+	void reset_color(std::string control_name, int color_code);
 	label board_heading;
 	ascii_board board;
 	label pieces_out_label;
@@ -92,13 +88,19 @@ private:
 		color
 	};
 
+	enum color_type
+	{
+		central,
+		cursor
+	};
+
 	struct control_settings_menu_item
 	{
 		std::string name_id = "";
 		setting_type type = regular;
 	};
 
-	std::vector<control_settings_menu_item> control_settings_menu_items
+	const std::vector<control_settings_menu_item> control_settings_menu_items
 	{
 		{"up", regular},
 		{"down", regular},
@@ -118,6 +120,7 @@ private:
 		{"bomb", regular},
 		{"select", regular},
 		{"quit", regular},
+		{"delete", regular},
 		{"new turn", regular},
 		{"finalize", regular},
 		{"help", regular},
@@ -145,6 +148,39 @@ private:
 		{"bold foreground", boolean}
 	};
 
+	struct config_name_color_pair
+	{
+		std::string name_id = "";
+		std::string value = "";
+		color_type type = central;
+	};
+
+	struct config_color_group
+	{
+		std::string color = "";
+		std::vector<config_name_color_pair> groups;
+	};
+
+	const std::vector<config_color_group> color_group_map
+	{
+		{"cursor color", {{"cursor", "(*)", cursor}}},
+		{"cursor arrow color", {{"up_cursor", "^*^", cursor}, {"down_cursor", "v*v", cursor}, {"left_cursor", "<*<", cursor}, {"right_cursor", ">*>", cursor}}},
+		{"scout arrow color", {{"scout_up", "*^*", central}, {"scout_down", "*v*", central}, {"scout_left", "*<*", central}, {"scout_right", "*>*", central}}},
+		{"spy color", {{"-1", "*s*", central}}},
+		{"flag color", {{"0", "*f*"}}},
+		{"1 color", {{"1", "*1*", central}}},
+		{"2 color", {{"2", "*2*", central}}},
+		{"3 color", {{"3", "*3*", central}}},
+		{"4 color", {{"4", "*4*", central}}},
+		{"5 color", {{"5", "*5*", central}}},
+		{"6 color", {{"6", "*6*", central}}},
+		{"7 color", {{"7", "*7*", central}}},
+		{"8 color", {{"8", "*8*", central}}},
+		{"9 color", {{"9", "*9*", central}}},
+		{"bomb color", {{"-2", "*b*", central}}},
+		{"hidden piece color", {{"hide", "*X*", central}}}
+	};
+
 public:
 	stratego_display(frame* main_display, frame* multipurpose_display, controls* game_controls);
 	void add_move_up_curser(int curser_row, int curser_column);
@@ -169,7 +205,7 @@ public:
 	void display_controls();
 	void set_player1_name(std::string name);
 	void set_player2_name(std::string name);
-	std::string display_load_game_menu(std::vector<std::string> saved_game_names);
+	void display_load_game_menu(std::vector<std::string> saved_game_names, std::string& selection, int& key_stroke);
 	void save_move(int player, stratego_piece losing_piece);
 	void display_saved_move(int player);
 	bool screen_shot_empty();
@@ -179,6 +215,5 @@ public:
 	std::string get_player1_name();
 	std::string get_player2_name();
 	void erase_screen_shot();
-	void set_menu_controls(int up, int down, int select, int quit);
 	void display_set_controls();
 };

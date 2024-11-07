@@ -29,6 +29,7 @@ const std::vector<control_mapping> default_control_names =
 	{"bomb", ascii_io::b},
 	{"select", ascii_io::enter},
 	{"quit", ascii_io::q},
+	{"delete", ascii_io::DEL},
 	{"new turn", ascii_io::space},
 	{"finalize", ascii_io::enter},
 	{"help", ascii_io::h},

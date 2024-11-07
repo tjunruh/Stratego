@@ -6,7 +6,6 @@
 stratego_game_operations::stratego_game_operations(frame* main_display, frame* multipurpose_display, controls* master_game_controls) : display(main_display, multipurpose_display, master_game_controls)
 {
     game_controls = master_game_controls;
-    display.set_menu_controls(game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("select"), game_controls->get_key("quit"));
 }
 
 void stratego_game_operations::initialize_file_system() {
@@ -106,9 +105,18 @@ void stratego_game_operations::setup() {
 
 void stratego_game_operations::load() {
     std::vector<std::string> saved_game_names;
-    file_managment.get_saved_game_names(saved_game_names);
     std::string selection = "";
-    selection = display.display_load_game_menu(saved_game_names);
+    int key_stroke = ascii_io::undefined;
+    do
+    {
+        file_managment.get_saved_game_names(saved_game_names);
+        display.display_load_game_menu(saved_game_names, selection, key_stroke);
+        if (key_stroke == game_controls->get_key("delete"))
+        {
+            file_managment.delete_file(selection);
+        }
+    } while ((key_stroke != game_controls->get_key("select")) && (key_stroke != game_controls->get_key("quit")));
+    
 
     if (selection != "") {
         stratego_piece board_info[80];

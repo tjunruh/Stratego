@@ -50,16 +50,10 @@ right_text_box_spacer(multipurpose_display, 1)
 	multipurpose_frame->set_coordinate_width_multiplier(1, 1, 1);
 	multipurpose_label.set_alignment("center block");
 
-	if (game_controls->get_key("enable line drawing"))
-	{
-		main_frame->enable_dec();
-		multipurpose_frame->enable_dec();
-	}
+	main_frame->enable_dec(game_controls->get_key("enable line drawing"));
+	multipurpose_frame->enable_dec(game_controls->get_key("enable line drawing"));
 
-	if (game_controls->get_key("enable color"))
-	{
-		main_frame->enable_color();
-	}
+	main_frame->enable_color(game_controls->get_key("enable color"));
 
 	main_frame->set_default_background_color(game_controls->get_key("background color"));
 	main_frame->set_default_foreground_color(game_controls->get_key("foreground color"));
@@ -102,6 +96,29 @@ std::vector<format_tools::index_format> stratego_display::build_central_element_
 		colors.push_back(color1);
 	}
 	return colors;
+}
+
+void stratego_display::reset_color(std::string control_name, int color_code)
+{
+	for (unsigned int i = 0; i < color_group_map.size(); i++)
+	{
+		if (color_group_map[i].color == control_name)
+		{
+			for (unsigned int j = 0; j < color_group_map[i].groups.size(); j++)
+			{
+				std::vector<format_tools::index_format> color;
+				if (color_group_map[i].groups[j].type == central)
+				{
+					color = build_central_element_color_structure(color_code, game_controls->get_key("bold foreground"));
+				}
+				else if (color_group_map[i].groups[j].type == cursor)
+				{
+					color = build_cursor_color_structure(color_code, game_controls->get_key("bold foreground"));
+				}
+				board.set_sub_configuration_color(color_group_map[i].groups[j].name_id, color_group_map[i].groups[j].value, color);
+			}
+		}
+	}
 }
 
 void stratego_display::add_move_up_curser(int curser_row, int curser_column) {
@@ -664,7 +681,7 @@ bool stratego_display::screen_shot_empty() {
 	}
 }
 
-std::string stratego_display::display_load_game_menu(std::vector<std::string> saved_game_names) {
+void stratego_display::display_load_game_menu(std::vector<std::string> saved_game_names, std::string& selection, int& key_stroke) {
 	int x = 0;
 	int y = 0;
 	ascii_io::get_terminal_size(x, y);
@@ -679,10 +696,7 @@ std::string stratego_display::display_load_game_menu(std::vector<std::string> sa
 		y = y - 1;
 	}
 	frame* menu_frame = new frame();
-	if (game_controls->get_key("enable line drawing"))
-	{
-		menu_frame->enable_dec();
-	}
+	menu_frame->enable_dec(game_controls->get_key("enable line drawing"));
 
 	if (game_controls->get_key("enable color"))
 	{
@@ -692,7 +706,10 @@ std::string stratego_display::display_load_game_menu(std::vector<std::string> sa
 
 	label saved_games_label(menu_frame);
 	menu saved_games_menu(menu_frame, "new line", y);
-	saved_games_menu.set_controls(menu_select, menu_up, menu_down, menu_quit);
+	std::vector<int> menu_select_buttons;
+	menu_select_buttons.push_back(game_controls->get_key("select"));
+	menu_select_buttons.push_back(game_controls->get_key("delete"));
+	saved_games_menu.set_controls(menu_select_buttons, game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("quit"));
 	saved_games_label.set_alignment("center");
 	saved_games_label.set_output("Saved Games");
 	saved_games_menu.set_alignment("center");
@@ -708,8 +725,9 @@ std::string stratego_display::display_load_game_menu(std::vector<std::string> sa
 	}
 	saved_games_menu.sync();
 	menu_frame->display();
-	std::string selection = saved_games_menu.get_selection();
-	return selection;
+	selection = "";
+	key_stroke = ascii_io::undefined;
+	saved_games_menu.get_selection(selection, key_stroke);
 }
 
 std::string stratego_display::get_screen_shot() {
@@ -733,14 +751,6 @@ void stratego_display::erase_screen_shot()
 	screen_shot = "";
 }
 
-void stratego_display::set_menu_controls(int up, int down, int select, int quit)
-{
-	menu_up = up;
-	menu_down = down;
-	menu_select = select;
-	menu_quit = quit;
-}
-
 void stratego_display::display_set_controls()
 {
 	frame* settings_frame = new frame();
@@ -762,7 +772,9 @@ void stratego_display::display_set_controls()
 	settings_menu.separate_items(true);
 	settings_menu.set_alignment("center");
 	settings_menu.add_border();
-	settings_menu.set_controls(game_controls->get_key("select"), game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("quit"));
+	std::vector<int> menu_select_buttons;
+	menu_select_buttons.push_back(game_controls->get_key("select"));
+	settings_menu.set_controls(menu_select_buttons, game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("quit"));
 	if (reduced_menu_size)
 	{
 		settings_menu.set_spacing(2, 0, 0, 0);
@@ -774,10 +786,7 @@ void stratego_display::display_set_controls()
 		settings_menu.set_item_label(control_settings_menu_items[i].name_id, std::to_string(game_controls->get_key(control_settings_menu_items[i].name_id)));
 	}
 	
-	if (game_controls->get_key("enable line drawing"))
-	{
-		settings_frame->enable_dec();
-	}
+	settings_frame->enable_dec(game_controls->get_key("enable line drawing"));
 
 	if (game_controls->get_key("enable color"))
 	{
@@ -788,9 +797,10 @@ void stratego_display::display_set_controls()
 	settings_menu.sync();
 	settings_frame->display();
 	std::string selection = "";
+	int key_stroke = ascii_io::undefined;
 	do
 	{
-		selection = settings_menu.get_selection();
+		settings_menu.get_selection(selection, key_stroke);
 		settings_menu.sync();
 		for (unsigned int i = 0; i < control_settings_menu_items.size(); i++)
 		{
@@ -842,6 +852,7 @@ void stratego_display::display_set_controls()
 					}
 					game_controls->unbind(control_settings_menu_items[i].name_id);
 					game_controls->bind(control_settings_menu_items[i].name_id, selected_color);
+					reset_color(control_settings_menu_items[i].name_id, selected_color);
 					settings_menu.set_item_label(selection, std::to_string(selected_color));
 					settings_label.set_output("");
 					settings_label.refresh();
@@ -852,37 +863,31 @@ void stratego_display::display_set_controls()
 					game_controls->unbind(control_settings_menu_items[i].name_id);
 					game_controls->bind(control_settings_menu_items[i].name_id, !value);
 					settings_menu.set_item_label(selection, std::to_string(!value));
-					if (game_controls->get_key("enable line drawing"))
+					main_frame->enable_dec(game_controls->get_key("enable line drawing"));
+					multipurpose_frame->enable_dec(game_controls->get_key("enable line drawing"));
+					settings_frame->enable_dec(game_controls->get_key("enable line drawing"));
+					if (control_settings_menu_items[i].name_id == "bold foreground")
 					{
-						main_frame->enable_dec();
-						multipurpose_frame->enable_dec();
-						settings_frame->enable_dec();
-						settings_frame->display();
+						for (unsigned int j = 0; j < color_group_map.size(); j++)
+						{
+							reset_color(color_group_map[j].color, game_controls->get_key(color_group_map[j].color));
+						}
 					}
-					else
-					{
-						main_frame->disable_dec();
-						multipurpose_frame->disable_dec();
-						settings_frame->disable_dec();
-						settings_frame->display();
-					}
+					settings_frame->display();
 				}
 			}
 		}
 	} while (selection != "");
 	game_controls->save_controls("controls.json");
 
+	main_frame->enable_color(game_controls->get_key("enable color"));
+
 	if (game_controls->get_key("enable color"))
 	{
-		main_frame->enable_color();
 		main_frame->set_default_background_color(game_controls->get_key("background color"));
 		main_frame->set_default_foreground_color(game_controls->get_key("foreground color"));
 		multipurpose_frame->set_default_background_color(game_controls->get_key("background color"));
 		multipurpose_frame->set_default_foreground_color(game_controls->get_key("foreground color"));
-	}
-	else
-	{
-		main_frame->disable_color();
 	}
 
 	delete(settings_frame);
