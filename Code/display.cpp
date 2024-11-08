@@ -783,7 +783,27 @@ void stratego_display::display_set_controls()
 	for (unsigned int i = 0; i < control_settings_menu_items.size(); i++)
 	{
 		settings_menu.append_item(control_settings_menu_items[i].name_id);
-		settings_menu.set_item_label(control_settings_menu_items[i].name_id, std::to_string(game_controls->get_key(control_settings_menu_items[i].name_id)));
+		std::string label_name;
+		if (control_settings_menu_items[i].type == regular)
+		{
+			label_name = ascii_io::get_key_name(game_controls->get_key(control_settings_menu_items[i].name_id));
+		}
+		else if (control_settings_menu_items[i].type == color)
+		{
+			label_name = format_tools::get_color_name(game_controls->get_key(control_settings_menu_items[i].name_id));
+		}
+		else if(control_settings_menu_items[i].type == boolean)
+		{
+			if (game_controls->get_key(control_settings_menu_items[i].name_id) == 0)
+			{
+				label_name = "No";
+			}
+			else if (game_controls->get_key(control_settings_menu_items[i].name_id) == 1)
+			{
+				label_name = "Yes";
+			}
+		}
+		settings_menu.set_item_label(control_settings_menu_items[i].name_id, label_name);
 	}
 	
 	settings_frame->enable_dec(game_controls->get_key("enable line drawing"));
@@ -813,7 +833,7 @@ void stratego_display::display_set_controls()
 					int key = ascii_io::getchar();
 					game_controls->unbind(control_settings_menu_items[i].name_id);
 					game_controls->bind(control_settings_menu_items[i].name_id, key);
-					settings_menu.set_item_label(selection, std::to_string(key));
+					settings_menu.set_item_label(selection, ascii_io::get_key_name(key));
 					settings_label.set_output("");
 					settings_label.refresh();
 				}
@@ -853,16 +873,26 @@ void stratego_display::display_set_controls()
 					game_controls->unbind(control_settings_menu_items[i].name_id);
 					game_controls->bind(control_settings_menu_items[i].name_id, selected_color);
 					reset_color(control_settings_menu_items[i].name_id, selected_color);
-					settings_menu.set_item_label(selection, std::to_string(selected_color));
+					settings_menu.set_item_label(selection, format_tools::get_color_name(selected_color));
 					settings_label.set_output("");
 					settings_label.refresh();
 				}
 				else if (control_settings_menu_items[i].type == boolean)
 				{
 					bool value = game_controls->get_key(control_settings_menu_items[i].name_id);
+					value = !value;
 					game_controls->unbind(control_settings_menu_items[i].name_id);
-					game_controls->bind(control_settings_menu_items[i].name_id, !value);
-					settings_menu.set_item_label(selection, std::to_string(!value));
+					game_controls->bind(control_settings_menu_items[i].name_id, value);
+					std::string label_name = "";
+					if (value == 0)
+					{
+						label_name = "No";
+					}
+					else if (value == 1)
+					{
+						label_name = "Yes";
+					}
+					settings_menu.set_item_label(selection, label_name);
 					main_frame->enable_dec(game_controls->get_key("enable line drawing"));
 					multipurpose_frame->enable_dec(game_controls->get_key("enable line drawing"));
 					settings_frame->enable_dec(game_controls->get_key("enable line drawing"));
