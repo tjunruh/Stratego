@@ -6,14 +6,16 @@
 #include <string>
 #include <menu.h>
 
-stratego_display::stratego_display(frame* main_display, frame* multipurpose_display, controls* master_game_controls) :
+stratego_display::stratego_display(frame* main_display, frame* multipurpose_display, frame* load_game_display, controls* master_game_controls) :
 board_heading(main_display),
 board(main_display, "board_configs/stratego_board.txt", "default", "new line"),
 pieces_out_label(main_display, "new line"),
 multipurpose_label(multipurpose_display),
 left_text_box_spacer(multipurpose_display, 1, "new line"),
 multipurpose_text_box(multipurpose_display, "none", 3),
-right_text_box_spacer(multipurpose_display, 1)
+right_text_box_spacer(multipurpose_display, 1),
+load_game_label(load_game_display),
+load_game_menu(load_game_display, "new line")
 {
 	main_frame = main_display;
 	board_heading.set_alignment("center");
@@ -59,6 +61,13 @@ right_text_box_spacer(multipurpose_display, 1)
 	main_frame->set_default_foreground_color(game_controls->get_key("foreground color"));
 	multipurpose_frame->set_default_background_color(game_controls->get_key("background color"));
 	multipurpose_frame->set_default_foreground_color(game_controls->get_key("foreground color"));
+
+	load_game_frame = load_game_display;
+	load_game_label.set_spacing(2, 0, 0, 0);
+	load_game_label.set_alignment("center");
+	load_game_menu.set_alignment("center");
+	load_game_menu.add_border();
+	load_game_menu.enable_quit();
 }
 
 std::vector<format_tools::index_format> stratego_display::build_cursor_color_structure(int color, bool bold)
@@ -682,52 +691,30 @@ bool stratego_display::screen_shot_empty() {
 }
 
 void stratego_display::display_load_game_menu(std::vector<std::string> saved_game_names, std::string& selection, int& key_stroke) {
-	int x = 0;
-	int y = 0;
-	ascii_io::get_terminal_size(x, y);
-	bool reduced_menu_size = false;
-	if ((y - 5) > 10)
-	{
-		y = y - 5;
-		reduced_menu_size = true;
-	}
-	else if((y - 1) > 0)
-	{
-		y = y - 1;
-	}
-	frame* menu_frame = new frame();
-	menu_frame->enable_dec(game_controls->get_key("enable line drawing"));
+	load_game_frame->enable_dec(game_controls->get_key("enable line drawing"));
 
 	if (game_controls->get_key("enable color"))
 	{
-		menu_frame->set_default_background_color(game_controls->get_key("background color"));
-		menu_frame->set_default_foreground_color(game_controls->get_key("foreground color"));
+		load_game_frame->set_default_background_color(game_controls->get_key("background color"));
+		load_game_frame->set_default_foreground_color(game_controls->get_key("foreground color"));
 	}
 
-	label saved_games_label(menu_frame);
-	menu saved_games_menu(menu_frame, "new line", y);
 	std::vector<int> menu_select_buttons;
 	menu_select_buttons.push_back(game_controls->get_key("select"));
 	menu_select_buttons.push_back(game_controls->get_key("delete"));
-	saved_games_menu.set_controls(menu_select_buttons, game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("quit"));
-	saved_games_label.set_alignment("center");
-	saved_games_label.set_output("Saved Games");
-	saved_games_menu.set_alignment("center");
-	saved_games_menu.add_border();
-	saved_games_menu.enable_quit();
-	if (reduced_menu_size)
-	{
-		saved_games_label.set_spacing(2, 0, 0, 0);
-	}
+	load_game_menu.set_controls(menu_select_buttons, game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("quit"));
+	
+	load_game_label.set_output("Saved Games");
+	load_game_menu.remove_all_items();
 	for (unsigned int i = 0; i < saved_game_names.size(); i++)
 	{
-		saved_games_menu.append_item(saved_game_names[i]);
+		load_game_menu.append_item(saved_game_names[i]);
 	}
-	saved_games_menu.sync();
-	menu_frame->display();
+	load_game_menu.sync();
+	load_game_frame->display();
 	selection = "";
 	key_stroke = ascii_io::undefined;
-	saved_games_menu.get_selection(selection, key_stroke);
+	load_game_menu.get_selection(selection, key_stroke);
 }
 
 std::string stratego_display::get_screen_shot() {

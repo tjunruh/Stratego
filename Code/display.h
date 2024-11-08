@@ -79,6 +79,10 @@ private:
 	spacer right_text_box_spacer;
 	frame* multipurpose_frame;
 
+	label load_game_label;
+	menu load_game_menu;
+	frame* load_game_frame;
+
 	controls* game_controls;
 
 	enum setting_type
@@ -182,7 +186,7 @@ private:
 	};
 
 public:
-	stratego_display(frame* main_display, frame* multipurpose_display, controls* game_controls);
+	stratego_display(frame* main_display, frame* multipurpose_display, frame* load_game_display, controls* game_controls);
 	void add_move_up_curser(int curser_row, int curser_column);
 	void add_move_down_curser(int curser_row, int curser_column);
 	void add_move_right_curser(int curser_row, int curser_column);
