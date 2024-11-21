@@ -700,13 +700,11 @@ bool stratego_display::screen_shot_empty() {
 void stratego_display::display_load_game_menu(std::vector<std::string> saved_game_names, std::string& selection, int& key_stroke) {
 	int x = 0;
 	int y = 0;
-	bool reduced_menu_size = false;
 	ascii_io::get_terminal_size(x, y);
 	y = y / 2;
 	if ((y - 5) > 10)
 	{
 		y = y - 5;
-		reduced_menu_size = true;
 	}
 	load_game_menu.set_lines_count(y);
 	load_game_frame->enable_dec(game_controls->get_key("enable line drawing"));
