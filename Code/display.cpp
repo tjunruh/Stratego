@@ -56,6 +56,7 @@ load_game_menu(load_game_display, "new line")
 	multipurpose_frame->enable_dec(game_controls->get_key("enable line drawing"));
 
 	main_frame->enable_color(game_controls->get_key("enable color"));
+	multipurpose_frame->enable_color(game_controls->get_key("enable color"));
 
 	main_frame->set_default_background_color(game_controls->get_key("background color"));
 	main_frame->set_default_foreground_color(game_controls->get_key("foreground color"));
@@ -66,7 +67,7 @@ load_game_menu(load_game_display, "new line")
 	load_game_label.set_spacing(2, 0, 0, 0);
 	load_game_label.set_alignment("center");
 	load_game_menu.set_alignment("center");
-	load_game_menu.add_border();
+	load_game_menu.add_border(true);
 	load_game_menu.enable_quit();
 }
 
@@ -580,6 +581,7 @@ void stratego_display::set_player2_name(std::string name) {
 
 void stratego_display::execute_save_move() {
 	screen_shot = "";
+	screen_shot_colors.clear();
 	if (_players_move == 1) {
 		execute_show_player2();
 		execute_hide_player1();
@@ -589,7 +591,7 @@ void stratego_display::execute_save_move() {
 			execute_reveal_piece();
 		}
 		board.use_translation("reverse");
-		screen_shot = board.get_board();
+		board.get_board_and_colors(screen_shot, screen_shot_colors);
 	}
 	else if (_players_move == 2) {
 		execute_show_player1();
@@ -600,7 +602,7 @@ void stratego_display::execute_save_move() {
 			execute_reveal_piece();
 		}
 		board.use_translation("default");
-		screen_shot = board.get_board();
+		board.get_board_and_colors(screen_shot, screen_shot_colors);
 	}
 }
 
@@ -630,6 +632,7 @@ void stratego_display::save_move(int player, stratego_piece losing_piece) {
 
 void stratego_display::display_saved_move(int player) {
 	std::string output = "";
+	
 	if (player == 1)
 	{
 		output = player1_name + "'s move. Press enter to continue.\n";
@@ -638,10 +641,14 @@ void stratego_display::display_saved_move(int player) {
 	{
 		output = player2_name + "'s move. Press enter to continue.\n";
 	}
+	screen_shot_colors = format_tools::shift_index(screen_shot_colors, output.length());
 	output = output + screen_shot;
 	multipurpose_label.set_output(output);
+	multipurpose_label.set_colors(screen_shot_colors);
 	multipurpose_label.set_spacing(0, 0, 0, 0);
 	multipurpose_frame->display();
+	std::vector<format_tools::index_format> clear_colors;
+	multipurpose_label.set_colors(clear_colors);
 	int input = ascii_io::undefined;
 	do
 	{
@@ -691,6 +698,17 @@ bool stratego_display::screen_shot_empty() {
 }
 
 void stratego_display::display_load_game_menu(std::vector<std::string> saved_game_names, std::string& selection, int& key_stroke) {
+	int x = 0;
+	int y = 0;
+	bool reduced_menu_size = false;
+	ascii_io::get_terminal_size(x, y);
+	y = y / 2;
+	if ((y - 5) > 10)
+	{
+		y = y - 5;
+		reduced_menu_size = true;
+	}
+	load_game_menu.set_lines_count(y);
 	load_game_frame->enable_dec(game_controls->get_key("enable line drawing"));
 
 	if (game_controls->get_key("enable color"))
@@ -705,11 +723,13 @@ void stratego_display::display_load_game_menu(std::vector<std::string> saved_gam
 	load_game_menu.set_controls(menu_select_buttons, game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("quit"));
 	
 	load_game_label.set_output("Saved Games");
+	unsigned int cursor_line = load_game_menu.get_cursor_line();
 	load_game_menu.remove_all_items();
 	for (unsigned int i = 0; i < saved_game_names.size(); i++)
 	{
 		load_game_menu.append_item(saved_game_names[i]);
 	}
+	load_game_menu.set_cursor_line(cursor_line);
 	load_game_menu.sync();
 	load_game_frame->display();
 	selection = "";
@@ -758,7 +778,7 @@ void stratego_display::display_set_controls()
 	settings_menu.enable_quit();
 	settings_menu.separate_items(true);
 	settings_menu.set_alignment("center");
-	settings_menu.add_border();
+	settings_menu.add_border(true);
 	std::vector<int> menu_select_buttons;
 	menu_select_buttons.push_back(game_controls->get_key("select"));
 	settings_menu.set_controls(menu_select_buttons, game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("quit"));
@@ -898,6 +918,7 @@ void stratego_display::display_set_controls()
 	game_controls->save_controls("controls.json");
 
 	main_frame->enable_color(game_controls->get_key("enable color"));
+	multipurpose_frame->enable_color(game_controls->get_key("enable color"));
 
 	if (game_controls->get_key("enable color"))
 	{

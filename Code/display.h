@@ -18,6 +18,8 @@ private:
 
 	std::string screen_shot;
 
+	std::vector<format_tools::index_format> screen_shot_colors;
+
 	// curser functions
 	int _curser_row;
 	int _curser_column;
