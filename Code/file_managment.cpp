@@ -100,6 +100,11 @@ int stratego_file_managment::delete_game(std::string file_name)
 
 void stratego_file_managment::get_saved_game_names(std::vector<std::string>& game_names) {
 	game_names.clear();
+	if (!std::filesystem::exists(saved_games_path))
+	{
+		std::filesystem::create_directory(saved_games_path);
+	}
+
 	for (const auto& entry : std::filesystem::directory_iterator(saved_games_path))
 	{
 		game_names.push_back(file_manager::extract_file(entry.path().string()));
