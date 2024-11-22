@@ -95,11 +95,11 @@ void stratego_game_operations::load() {
     int key_stroke = ascii_io::undefined;
     do
     {
-        file_managment.get_saved_game_names(saved_game_names);
+        stratego_file_managment::get_saved_game_names(saved_game_names);
         display.display_load_game_menu(saved_game_names, selection, key_stroke);
         if (key_stroke == game_controls->get_key("delete"))
         {
-            file_managment.delete_game(selection);
+            stratego_file_managment::delete_game(selection);
         }
     } while ((key_stroke != game_controls->get_key("select")) && (key_stroke != game_controls->get_key("quit")));
     
@@ -110,7 +110,7 @@ void stratego_game_operations::load() {
         std::string saved_move_shot;
         std::string player1_name;
         std::string player2_name;
-        file_managment.load_game(selection, board_info, player_turn, saved_move_shot, player1_name, player2_name);
+        stratego_file_managment::load_game(selection, board_info, player_turn, saved_move_shot, player1_name, player2_name);
         logic.reset_board();
         display.reset();
         logic.set_board_info(board_info);
@@ -365,9 +365,9 @@ void stratego_game_operations::save_game_handle() {
     std::string game_name = "";
     do {
         game_name = display.display_save_game();
-    } while (file_managment.duplicate_name(game_name));
+    } while (stratego_file_managment::duplicate_name(game_name));
     stratego_piece board_info[80];
     logic.get_board_info(board_info);
-    file_managment.save_game(game_name, board_info, logic.get_turn(), display.get_screen_shot(), display.get_player1_name(), display.get_player2_name());
+    stratego_file_managment::save_game(game_name, board_info, logic.get_turn(), display.get_screen_shot(), display.get_player1_name(), display.get_player2_name());
     display.reset();
 }

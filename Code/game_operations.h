@@ -13,7 +13,6 @@ private:
 	stratego_display display;
 	stratego_logic logic;
 	stratego_interface interface;
-	stratego_file_managment file_managment;
 	controls* game_controls;
 public:
 	stratego_game_operations(frame* main_display, frame* multipurpose_frame, frame* load_game_display, controls* master_game_controls);

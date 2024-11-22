@@ -92,6 +92,28 @@ int stratego_file_managment::load_game(std::string file_name, stratego_piece(&bo
 	return status;
 }
 
+int stratego_file_managment::save_controls(std::string file_name, controls* game_controls)
+{
+	if (!std::filesystem::exists(controls_path))
+	{
+		std::filesystem::create_directory(controls_path);
+	}
+
+	int status = game_controls->save_controls(controls_path + file_name);
+	return status;
+}
+
+int stratego_file_managment::load_controls(std::string file_name, controls* game_controls)
+{
+	if (!std::filesystem::exists(controls_path))
+	{
+		std::filesystem::create_directory(controls_path);
+	}
+
+	int status = game_controls->load_controls(controls_path + file_name);
+	return status;
+}
+
 int stratego_file_managment::delete_game(std::string file_name)
 {
 	int status = file_manager::delete_file(saved_games_path + file_name);

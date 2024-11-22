@@ -5,6 +5,7 @@
 #include <label.h>
 #include <string>
 #include <menu.h>
+#include "file_managment.h"
 
 stratego_display::stratego_display(frame* main_display, frame* multipurpose_display, frame* load_game_display, controls* master_game_controls) :
 board_heading(main_display),
@@ -913,7 +914,7 @@ void stratego_display::display_set_controls()
 			}
 		}
 	} while (selection != "");
-	game_controls->save_controls("controls.json");
+	stratego_file_managment::save_controls("controls.json", game_controls);
 
 	main_frame->enable_color(game_controls->get_key("enable color"));
 	multipurpose_frame->enable_color(game_controls->get_key("enable color"));

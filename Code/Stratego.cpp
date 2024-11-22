@@ -8,6 +8,7 @@
 #include <ascii_board.h>
 #include <controls.h>
 #include "default_controls.h"
+#include "file_managment.h"
 #ifdef __linux__
 #include <unistd.h>
 #include <ascii_io.h>
@@ -19,7 +20,7 @@ int main()
     ascii_io::ncurses_init();
 #endif
     controls* game_controls = new controls();
-    game_controls->load_controls("controls.json");
+    stratego_file_managment::load_controls("controls.json", game_controls);
     for (unsigned int i = 0; i < default_control_names.size(); i++)
     {
         if (game_controls->get_key(default_control_names[i].name) == ascii_io::undefined)
