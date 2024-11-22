@@ -2,25 +2,11 @@
 #include "game_operations.h"
 #include <iostream>
 #include <error_codes.h>
+#include <file_manager.h>
 
 stratego_game_operations::stratego_game_operations(frame* main_display, frame* multipurpose_display, frame* load_game_display, controls* master_game_controls) : display(main_display, multipurpose_display, load_game_display, master_game_controls)
 {
     game_controls = master_game_controls;
-}
-
-void stratego_game_operations::initialize_file_system() {
-    std::string exe_path = file_managment.get_exe_path_directory();
-#ifdef _WIN32
-    while (exe_path[exe_path.length() - 1] != '\\') {
-        exe_path.erase(exe_path.length() - 1, 1);
-    }
-#elif __linux__
-    while (exe_path[exe_path.length() - 1] != '/') {
-        exe_path.erase(exe_path.length() - 1, 1);
-    }
-#endif
-    
-    file_managment.set_working_directory(exe_path);
 }
 
 void stratego_game_operations::setup() {
@@ -113,7 +99,7 @@ void stratego_game_operations::load() {
         display.display_load_game_menu(saved_game_names, selection, key_stroke);
         if (key_stroke == game_controls->get_key("delete"))
         {
-            file_managment.delete_file(selection);
+            file_managment.delete_game(selection);
         }
     } while ((key_stroke != game_controls->get_key("select")) && (key_stroke != game_controls->get_key("quit")));
     

@@ -1,19 +1,9 @@
 #include "file_managment.h"
-#include <fstream>
+#include <file_manager.h>
 #include <ascii_io.h>
-#include <stdio.h>
-#ifdef _WIN32
-#include <windows.h>
-#include <libloaderapi.h>
-#elif __linux__
-#include <linux/limits.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#endif
-#include <dirent.h>
-#include <sys/types.h>
+#include <filesystem>
 
-void stratego_file_managment::save_game(std::string file_name, stratego_piece board_info[80], int player_turn, std::string saved_move_shot, std::string player1_name, std::string player2_name) {
+int stratego_file_managment::save_game(std::string file_name, stratego_piece board_info[80], int player_turn, std::string saved_move_shot, std::string player1_name, std::string player2_name) {
 	std::string content = "";
 	content = content + player1_name + "\n";
 	content = content + player2_name + "\n";
@@ -40,20 +30,15 @@ void stratego_file_managment::save_game(std::string file_name, stratego_piece bo
 	}
 	content = content + "#\n";
 	content = content + saved_move_shot;
-	if (write_file(file_name, content)) {
-		ascii_io::print(file_name + " saved!\n");
-	}
-	else {
-		ascii_io::print("Failed to save game.");
-	}
+	int status = file_manager::write_file(saved_games_path + file_name, content);
+	return status;
 }
 
-void stratego_file_managment::load_game(std::string file_name, stratego_piece(&board_info)[80], int& player_turn, std::string& saved_move_shot, std::string& player1_name, std::string& player2_name) {
-	std::string content = read_file(file_name);
-	if (content == "") {
-		ascii_io::print("Could not open the file.\n");
-	}
-	else {
+int stratego_file_managment::load_game(std::string file_name, stratego_piece(&board_info)[80], int& player_turn, std::string& saved_move_shot, std::string& player1_name, std::string& player2_name) {
+	std::string content = "";
+		
+	int status = file_manager::read_file(saved_games_path + file_name, content);
+	if (status == 0) {
 		int position = 0;
 		player1_name = "";
 		player2_name = "";
@@ -104,82 +89,27 @@ void stratego_file_managment::load_game(std::string file_name, stratego_piece(&b
 			position++;
 		}
 	}
+	return status;
 }
 
-bool stratego_file_managment::write_file(std::string file_name, std::string content) {
-	bool success = false;
-	std::ofstream file(_working_directory + file_name);
-	if (file.is_open()) {
-		file << content << std::endl;
-		success = true;
-	}
-	else {
-		success = false;
-	}
-	return success;
-}
-
-std::string stratego_file_managment::read_file(std::string file_name) {
-	std::ifstream file(_working_directory + file_name);
-	std::string content;
-
-	if (file.is_open()) {
-		char letter[1];
-		while (!file.eof()) {
-			file.read(letter, 1);
-			content = content + letter[0];
-		}
-		content.erase((content.length() - 2), 2);
-		file.close();
-	}
-	else {
-		ascii_io::print("Cannot find file.\n");
-		content = "";
-	}
-	return content;
-}
-
-void stratego_file_managment::set_working_directory(std::string exe_path) {
-	_working_directory = exe_path + "Saved_Stratego_Games/";
-#ifdef __linux__
-	struct stat sb;
-	if (stat(_working_directory.c_str(), &sb) != 0) {
-		char* dirname = "Saved_Stratego_Games/";
-		mkdir(dirname, 0777);
-	}
-#endif
-}
-
-std::string stratego_file_managment::get_exe_path_directory() {
-#ifdef _WIN32
-	char path[MAX_PATH + 1];
-	int count = ::GetModuleFileNameA(NULL, path, MAX_PATH);
-	return std::string(path, (count > 0) ? count : 0);
-
-#elif __linux__
-	char path[PATH_MAX];
-	ssize_t count = readlink("/proc/self/exe", path, PATH_MAX);
-	return std::string(path, (count > 0) ? count : 0);
-#endif
+int stratego_file_managment::delete_game(std::string file_name)
+{
+	int status = file_manager::delete_file(saved_games_path + file_name);
+	return status;
 }
 
 void stratego_file_managment::get_saved_game_names(std::vector<std::string>& game_names) {
 	game_names.clear();
-	DIR* dr;
-	struct dirent* en;
-	dr = opendir(_working_directory.c_str());
-	if (dr) {
-		while ((en = readdir(dr)) != NULL) {
-			game_names.push_back(en->d_name);
-		}
+	for (const auto& entry : std::filesystem::directory_iterator(saved_games_path))
+	{
+		game_names.push_back(file_manager::extract_file(entry.path().string()));
 	}
+
 	for (int name = (game_names.size() - 1); name >= 0; name--) {
 		if ((game_names[name] == ".") || (game_names[name] == "..")) {
 			game_names.erase(game_names.begin() + name);
 		}
 	}
-
-	closedir(dr);
 }
 
 bool stratego_file_managment::duplicate_name(std::string game_name) {
@@ -195,9 +125,4 @@ bool stratego_file_managment::duplicate_name(std::string game_name) {
 
 int stratego_file_managment::char_to_int(char _char) {
 	return (int(_char - 48));
-}
-
-void stratego_file_managment::delete_file(std::string file_name) {
-	std::string path = _working_directory + file_name;
-	remove(path.c_str());
 }

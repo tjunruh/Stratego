@@ -32,7 +32,6 @@ int main()
     frame* multipurpose_frame = new frame();
     frame* load_game_frame = new frame();
     stratego_game_operations game_manager(main_frame, multipurpose_frame, load_game_frame, game_controls);
-    game_manager.initialize_file_system();
     label logo(home_frame);
     logo.set_alignment("center block");
     logo.set_output(game_manager.logo);
