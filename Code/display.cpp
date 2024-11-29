@@ -467,6 +467,7 @@ void stratego_display::display_get_player1_name()
 	int input = ascii_io::undefined;
 	multipurpose_label.set_output("Enter your name player 1");
 	multipurpose_label.set_spacing(15, 0, 0, 0);
+	multipurpose_text_box.add_border(true);
 	multipurpose_frame->display();
 	do
 	{
@@ -474,6 +475,7 @@ void stratego_display::display_get_player1_name()
 	} while (input != ascii_io::enter);
 	player1_name = multipurpose_text_box.get_text();
 	ascii_io::hide_cursor();
+	multipurpose_text_box.add_border(false);
 	multipurpose_text_box.clear();
 }
 
@@ -482,6 +484,7 @@ void stratego_display::display_get_player2_name()
 	int input = ascii_io::undefined;
 	multipurpose_label.set_output("Enter your name player 2");
 	multipurpose_label.set_spacing(15, 0, 0, 0);
+	multipurpose_text_box.add_border(true);
 	multipurpose_frame->display();
 	do
 	{
@@ -489,6 +492,7 @@ void stratego_display::display_get_player2_name()
 	} while (input != ascii_io::enter);
 	player2_name = multipurpose_text_box.get_text();
 	ascii_io::hide_cursor();
+	multipurpose_text_box.add_border(false);
 	multipurpose_text_box.clear();
 }
 
@@ -530,6 +534,7 @@ std::string stratego_display::display_save_game()
 {
 	multipurpose_label.set_spacing(15, 0, 0, 0);
 	multipurpose_label.set_output("Enter a name (duplicate names will be rejected):");
+	multipurpose_text_box.add_border(true);
 	multipurpose_frame->display();
 	int input = ascii_io::undefined;
 	do
@@ -538,6 +543,7 @@ std::string stratego_display::display_save_game()
 	} while (input != ascii_io::enter);
 	std::string game_name = multipurpose_text_box.get_text();
 	ascii_io::hide_cursor();
+	multipurpose_text_box.add_border(false);
 	multipurpose_text_box.clear();
 	return game_name;
 }
