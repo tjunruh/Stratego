@@ -15,7 +15,7 @@ private:
 	stratego_interface interface;
 	controls* game_controls;
 public:
-	stratego_game_operations(frame* main_display, frame* multipurpose_frame, frame* load_game_display, controls* master_game_controls);
+	stratego_game_operations(frame* main_display, frame* multipurpose_frame, frame* load_game_display, frame* settings_display, controls* master_game_controls);
 	void setup();
 	void load();
 	void game_loop();

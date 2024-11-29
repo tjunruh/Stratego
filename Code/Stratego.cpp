@@ -32,7 +32,8 @@ int main()
     frame* main_frame = new frame();
     frame* multipurpose_frame = new frame();
     frame* load_game_frame = new frame();
-    stratego_game_operations game_manager(main_frame, multipurpose_frame, load_game_frame, game_controls);
+    frame* settings_frame = new frame();
+    stratego_game_operations game_manager(main_frame, multipurpose_frame, load_game_frame, settings_frame, game_controls);
     label logo(home_frame);
     logo.set_alignment("center block");
     logo.set_output(game_manager.logo);
@@ -89,6 +90,7 @@ int main()
     delete(main_frame);
     delete(multipurpose_frame);
     delete(load_game_frame);
+    delete(settings_frame);
     delete(game_controls);
 #ifdef __linux__
     ascii_io::ncurses_end();

@@ -4,7 +4,7 @@
 #include <error_codes.h>
 #include <file_manager.h>
 
-stratego_game_operations::stratego_game_operations(frame* main_display, frame* multipurpose_display, frame* load_game_display, controls* master_game_controls) : display(main_display, multipurpose_display, load_game_display, master_game_controls)
+stratego_game_operations::stratego_game_operations(frame* main_display, frame* multipurpose_display, frame* load_game_display, frame* settings_display, controls* master_game_controls) : display(main_display, multipurpose_display, load_game_display, settings_display, master_game_controls)
 {
     game_controls = master_game_controls;
 }
