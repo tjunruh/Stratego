@@ -29,13 +29,14 @@ sudo apt-get install libncurses5-dev libncursesw5-dev
 Simply clone this repository and run the following command:
 
 ```shell
-make
+make all
 ```
 
-Then enter
+Then enter the newly created build directory and execute the script
 
 ```shell
-make run
+cd build
+./Stratego.sh
 ```
 
 # Game Instructions

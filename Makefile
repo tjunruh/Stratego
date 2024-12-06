@@ -21,11 +21,14 @@ OUT := stratego
 
 all: $(EXECUTABLE)
 
-run: $(EXECUTABLE)
-	env LD_LIBRARY_PATH="external_libraries/ASCII_Board_Game_Engine_v1.4.1-alpha/Linux/" ./$(OUT)
-
 $(EXECUTABLE): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $@ $(LDFLAGS)
+	mkdir $(BLD_DIR)/bin
+	mv stratego $(BLD_DIR)/bin
+	cp external_libraries/ASCII_Board_Game_Engine_v1.4.1-alpha/Linux/libascii_engine.so $(BLD_DIR)/bin
+	cp -r board_configs $(BLD_DIR)/bin
+	rm -rf $(BLD_DIR)/Code
+	cp Stratego.sh $(BLD_DIR)
 
 $(BLD_DIR)/%.cpp.o: %.cpp
 	mkdir -p $(dir $@)
@@ -33,6 +36,5 @@ $(BLD_DIR)/%.cpp.o: %.cpp
 
 clean:
 	-rm -r $(BLD_DIR)
-	-rm $(EXECUTABLE)
 
 -include $(DEPS)
