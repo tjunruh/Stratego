@@ -60,7 +60,7 @@
       <AdditionalDependencies>ascii_engine.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "C:\Users\tanne\source\repos\Stratego\external_libraries\ASCII_Board_Game_Engine_v1.4.1-alpha\Windows\ascii_engine.dll" "$(OutDir)"</Command>
+      <Command>xcopy /y /d "..\..\external_libraries\ASCII_Board_Game_Engine_v1.4.1-alpha\Windows\ascii_engine.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
