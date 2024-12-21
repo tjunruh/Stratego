@@ -16,7 +16,19 @@ This is the two player board game of Stratego. Here, it is implemented as a cons
 
 # Windows
 
-The game can be installed by double clicking on the setup executable in the Windows_Installation folder. Note that you most likely will have to run the game as administrator when you start the game in order to save games later.
+Clone this repository and run the following command (Note that MSbuild.exe from Visual Studio 2022 must be in the System Environment Path variable):
+
+```shell
+.\windows_make.bat
+```
+
+Then enter the newly created build directory and execute the script.
+
+```shell
+cd build
+.\Stratego.bat
+```
+
 
 # Linux
 
