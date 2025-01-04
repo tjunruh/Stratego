@@ -16,9 +16,7 @@
 
 int main()
 {
-#ifdef __linux__
-    ascii_io::ncurses_init();
-#endif
+    ascii_io::ascii_engine_init();
     controls* game_controls = new controls();
     stratego_file_managment::load_controls("controls.json", game_controls);
     for (unsigned int i = 0; i < default_control_names.size(); i++)
@@ -92,7 +90,5 @@ int main()
     delete(load_game_frame);
     delete(settings_frame);
     delete(game_controls);
-#ifdef __linux__
-    ascii_io::ncurses_end();
-#endif
+    ascii_io::ascii_engine_end();
 }
