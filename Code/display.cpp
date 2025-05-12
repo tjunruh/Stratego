@@ -102,10 +102,6 @@ void stratego_display::reset_color(std::string control_name, int color_code)
 void stratego_display::initialize_settings_menu()
 {
 	settings_menu.set_lines_count(-6);
-	std::vector<int> menu_select_buttons;
-	menu_select_buttons.push_back(game_controls->get_key("select"));
-	settings_menu.set_controls(menu_select_buttons, game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("quit"));
-
 	for (unsigned int i = 0; i < control_settings_menu_items.size(); i++)
 	{
 		settings_menu.append_item(control_settings_menu_items[i].name_id);
@@ -768,6 +764,10 @@ void stratego_display::erase_screen_shot()
 
 void stratego_display::display_set_controls()
 {
+	std::vector<int> menu_select_buttons;
+	menu_select_buttons.push_back(game_controls->get_key("select"));
+	settings_menu.set_controls(menu_select_buttons, game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("quit"));
+
 	settings_frame->enable_dec(game_controls->get_key("enable line drawing"));
 
 	if (game_controls->get_key("enable color"))
