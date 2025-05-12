@@ -66,8 +66,6 @@ private:
 	void execute_show_player1();
 	void execute_show_player2();
 	void invert_arrows();
-	std::vector<format_tools::index_format> build_cursor_color_structure(int color, bool bold);
-	std::vector<format_tools::index_format> build_central_element_color_structure(int color, bool bold);
 	void reset_color(std::string control_name, int color_code);
 	void initialize_settings_menu();
 	label board_heading;
@@ -160,7 +158,6 @@ private:
 	{
 		std::string name_id = "";
 		std::string value = "";
-		color_type type = central;
 	};
 
 	struct config_color_group
@@ -171,22 +168,22 @@ private:
 
 	const std::vector<config_color_group> color_group_map
 	{
-		{"cursor color", {{"cursor", "(*)", cursor}}},
-		{"cursor arrow color", {{"up_cursor", "^*^", cursor}, {"down_cursor", "v*v", cursor}, {"left_cursor", "<*<", cursor}, {"right_cursor", ">*>", cursor}}},
-		{"scout arrow color", {{"scout_up", "*^*", central}, {"scout_down", "*v*", central}, {"scout_left", "*<*", central}, {"scout_right", "*>*", central}}},
-		{"spy color", {{"-1", "*s*", central}}},
+		{"cursor color", {{"cursor", "(*)"}}},
+		{"cursor arrow color", {{"up_cursor", "^*^"}, {"down_cursor", "v*v"}, {"left_cursor", "<*<"}, {"right_cursor", ">*>"}}},
+		{"scout arrow color", {{"scout_up", "*^*"}, {"scout_down", "*v*"}, {"scout_left", "*<*"}, {"scout_right", "*>*"}}},
+		{"spy color", {{"-1", "*s*"}}},
 		{"flag color", {{"0", "*f*"}}},
-		{"1 color", {{"1", "*1*", central}}},
-		{"2 color", {{"2", "*2*", central}}},
-		{"3 color", {{"3", "*3*", central}}},
-		{"4 color", {{"4", "*4*", central}}},
-		{"5 color", {{"5", "*5*", central}}},
-		{"6 color", {{"6", "*6*", central}}},
-		{"7 color", {{"7", "*7*", central}}},
-		{"8 color", {{"8", "*8*", central}}},
-		{"9 color", {{"9", "*9*", central}}},
-		{"bomb color", {{"-2", "*b*", central}}},
-		{"hidden piece color", {{"hide", "*X*", central}}}
+		{"1 color", {{"1", "*1*"}}},
+		{"2 color", {{"2", "*2*"}}},
+		{"3 color", {{"3", "*3*"}}},
+		{"4 color", {{"4", "*4*"}}},
+		{"5 color", {{"5", "*5*"}}},
+		{"6 color", {{"6", "*6*"}}},
+		{"7 color", {{"7", "*7*"}}},
+		{"8 color", {{"8", "*8*"}}},
+		{"9 color", {{"9", "*9*"}}},
+		{"bomb color", {{"-2", "*b*"}}},
+		{"hidden piece color", {{"hide", "*X*"}}}
 	};
 
 public:

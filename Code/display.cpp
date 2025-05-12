@@ -25,28 +25,28 @@ stratego_display::stratego_display(frame* main_display, frame* multipurpose_disp
 	board.load_board_translation("reverse", "board_configs/stratego_reverse_board.txt");
 	game_controls = master_game_controls;
 	bool bold = game_controls->get_key("bold foreground");
-	board.add_configuration("hide", -1, -1, "*X*", '*', build_central_element_color_structure(game_controls->get_key("hidden piece color"), bold));
-	board.add_configuration("0", -1, -1, "*f*", '*', build_central_element_color_structure(game_controls->get_key("flag color"), bold));
-	board.add_configuration("-1", -1, -1, "*s*", '*', build_central_element_color_structure(game_controls->get_key("spy color"), bold));
-	board.add_configuration("-2", -1, -1, "*b*", '*', build_central_element_color_structure(game_controls->get_key("bomb color"), bold));
-	board.add_configuration("1", -1, -1, "*1*", '*', build_central_element_color_structure(game_controls->get_key("1 color"), bold));
-	board.add_configuration("2", -1, -1, "*2*", '*', build_central_element_color_structure(game_controls->get_key("2 color"), bold));
-	board.add_configuration("3", -1, -1, "*3*", '*', build_central_element_color_structure(game_controls->get_key("3 color"), bold));
-	board.add_configuration("4", -1, -1, "*4*", '*', build_central_element_color_structure(game_controls->get_key("4 color"), bold));
-	board.add_configuration("5", -1, -1, "*5*", '*', build_central_element_color_structure(game_controls->get_key("5 color"), bold));
-	board.add_configuration("6", -1, -1, "*6*", '*', build_central_element_color_structure(game_controls->get_key("6 color"), bold));
-	board.add_configuration("7", -1, -1, "*7*", '*', build_central_element_color_structure(game_controls->get_key("7 color"), bold));
-	board.add_configuration("8", -1, -1, "*8*", '*', build_central_element_color_structure(game_controls->get_key("8 color"), bold));
-	board.add_configuration("9", -1, -1, "*9*", '*', build_central_element_color_structure(game_controls->get_key("9 color"), bold));
-	board.add_configuration("cursor", -1, -1, "(*)", '*', build_cursor_color_structure(game_controls->get_key("cursor color"), bold));
-	board.add_configuration("up_cursor", -1, -1, "^*^", '*', build_cursor_color_structure(game_controls->get_key("cursor arrow color"), bold));
-	board.add_configuration("down_cursor", -1, -1, "v*v", '*', build_cursor_color_structure(game_controls->get_key("cursor arrow color"), bold));
-	board.add_configuration("left_cursor", -1, -1, "<*<", '*', build_cursor_color_structure(game_controls->get_key("cursor arrow color"), bold));
-	board.add_configuration("right_cursor", -1, -1, ">*>", '*', build_cursor_color_structure(game_controls->get_key("cursor arrow color"), bold));
-	board.add_configuration("scout_up", -1, -1, "*^*", '*', build_central_element_color_structure(game_controls->get_key("scout arrow color"), bold));
-	board.add_configuration("scout_down", -1, -1, "*v*", '*', build_central_element_color_structure(game_controls->get_key("scout arrow color"), bold));
-	board.add_configuration("scout_left", -1, -1, "*<*", '*', build_central_element_color_structure(game_controls->get_key("scout arrow color"), bold));
-	board.add_configuration("scout_right", -1, -1, "*>*", '*', build_central_element_color_structure(game_controls->get_key("scout arrow color"), bold));
+	board.add_configuration("hide", -1, -1, "*X*", '*', format_tools::build_color_for_value("*X*", '*', game_controls->get_key("hidden piece color"), format_tools::none, bold));
+	board.add_configuration("0", -1, -1, "*f*", '*', format_tools::build_color_for_value("*f*", '*', game_controls->get_key("flag color"), format_tools::none, bold));
+	board.add_configuration("-1", -1, -1, "*s*", '*', format_tools::build_color_for_value("*s*", '*', game_controls->get_key("spy color"), format_tools::none, bold));
+	board.add_configuration("-2", -1, -1, "*b*", '*', format_tools::build_color_for_value("*b*", '*', game_controls->get_key("bomb color"), format_tools::none, bold));
+	board.add_configuration("1", -1, -1, "*1*", '*', format_tools::build_color_for_value("*1*", '*', game_controls->get_key("1 color"), format_tools::none, bold));
+	board.add_configuration("2", -1, -1, "*2*", '*', format_tools::build_color_for_value("*2*", '*', game_controls->get_key("2 color"), format_tools::none, bold));
+	board.add_configuration("3", -1, -1, "*3*", '*', format_tools::build_color_for_value("*3*", '*', game_controls->get_key("3 color"), format_tools::none, bold));
+	board.add_configuration("4", -1, -1, "*4*", '*', format_tools::build_color_for_value("*4*", '*', game_controls->get_key("4 color"), format_tools::none, bold));
+	board.add_configuration("5", -1, -1, "*5*", '*', format_tools::build_color_for_value("*5*", '*', game_controls->get_key("5 color"), format_tools::none, bold));
+	board.add_configuration("6", -1, -1, "*6*", '*', format_tools::build_color_for_value("*6*", '*', game_controls->get_key("6 color"), format_tools::none, bold));
+	board.add_configuration("7", -1, -1, "*7*", '*', format_tools::build_color_for_value("*7*", '*', game_controls->get_key("7 color"), format_tools::none, bold));
+	board.add_configuration("8", -1, -1, "*8*", '*', format_tools::build_color_for_value("*8*", '*', game_controls->get_key("8 color"), format_tools::none, bold));
+	board.add_configuration("9", -1, -1, "*9*", '*', format_tools::build_color_for_value("*9*", '*', game_controls->get_key("9 color"), format_tools::none, bold));
+	board.add_configuration("cursor", -1, -1, "(*)", '*', format_tools::build_color_for_value("(*)", '*', game_controls->get_key("cursor color"), format_tools::none, bold));
+	board.add_configuration("up_cursor", -1, -1, "^*^", '*', format_tools::build_color_for_value("^*^", '*', game_controls->get_key("cursor arrow color"), format_tools::none, bold));
+	board.add_configuration("down_cursor", -1, -1, "v*v", '*', format_tools::build_color_for_value("v*v", '*', game_controls->get_key("cursor arrow color"), format_tools::none, bold));
+	board.add_configuration("left_cursor", -1, -1, "<*<", '*', format_tools::build_color_for_value("<*<", '*', game_controls->get_key("cursor arrow color"), format_tools::none, bold));
+	board.add_configuration("right_cursor", -1, -1, ">*>", '*', format_tools::build_color_for_value(">*>", '*', game_controls->get_key("cursor arrow color"), format_tools::none, bold));
+	board.add_configuration("scout_up", -1, -1, "*^*", '*', format_tools::build_color_for_value("*^*", '*', game_controls->get_key("scout arrow color"), format_tools::none, bold));
+	board.add_configuration("scout_down", -1, -1, "*v*", '*', format_tools::build_color_for_value("*v*", '*', game_controls->get_key("scout arrow color"), format_tools::none, bold));
+	board.add_configuration("scout_left", -1, -1, "*<*", '*', format_tools::build_color_for_value("*<*", '*', game_controls->get_key("scout arrow color"), format_tools::none, bold));
+	board.add_configuration("scout_right", -1, -1, "*>*", '*', format_tools::build_color_for_value("*>*", '*', game_controls->get_key("scout arrow color"), format_tools::none, bold));
 
 	multipurpose_frame = multipurpose_display;
 	multipurpose_text_box.set_width_multiplier(1.0);
@@ -83,43 +83,6 @@ stratego_display::stratego_display(frame* main_display, frame* multipurpose_disp
 	initialize_settings_menu();
 }
 
-std::vector<format_tools::index_format> stratego_display::build_cursor_color_structure(int color, bool bold)
-{
-	std::vector<format_tools::index_format> colors;
-	if (color != format_tools::none)
-	{
-		format_tools::index_format color1;
-		color1.format.foreground_format = color;
-		color1.format.bold = bold;
-		color1.index = 0;
-		format_tools::index_format color2;
-		color2.format.foreground_format = format_tools::none;
-		color2.index = 1;
-		format_tools::index_format color3;
-		color3.format.foreground_format = color;
-		color3.format.bold = bold;
-		color3.index = 2;
-		colors.push_back(color1);
-		colors.push_back(color2);
-		colors.push_back(color3);
-	}
-	return colors;
-}
-
-std::vector<format_tools::index_format> stratego_display::build_central_element_color_structure(int color, bool bold)
-{
-	std::vector<format_tools::index_format> colors;
-	if (color != format_tools::none)
-	{
-		format_tools::index_format color1;
-		color1.format.foreground_format = color;
-		color1.format.bold = bold;
-		color1.index = 1;
-		colors.push_back(color1);
-	}
-	return colors;
-}
-
 void stratego_display::reset_color(std::string control_name, int color_code)
 {
 	for (unsigned int i = 0; i < color_group_map.size(); i++)
@@ -129,14 +92,7 @@ void stratego_display::reset_color(std::string control_name, int color_code)
 			for (unsigned int j = 0; j < color_group_map[i].groups.size(); j++)
 			{
 				std::vector<format_tools::index_format> color;
-				if (color_group_map[i].groups[j].type == central)
-				{
-					color = build_central_element_color_structure(color_code, game_controls->get_key("bold foreground"));
-				}
-				else if (color_group_map[i].groups[j].type == cursor)
-				{
-					color = build_cursor_color_structure(color_code, game_controls->get_key("bold foreground"));
-				}
+				color = format_tools::build_color_for_value(color_group_map[i].groups[j].value, '*',color_code, format_tools::none, game_controls->get_key("bold foreground"));
 				board.set_sub_configuration_color(color_group_map[i].groups[j].name_id, color_group_map[i].groups[j].value, color);
 			}
 		}
