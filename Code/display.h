@@ -69,6 +69,7 @@ private:
 	std::vector<format_tools::index_format> build_cursor_color_structure(int color, bool bold);
 	std::vector<format_tools::index_format> build_central_element_color_structure(int color, bool bold);
 	void reset_color(std::string control_name, int color_code);
+	void initialize_settings_menu();
 	label board_heading;
 	ascii_board board;
 	label pieces_out_label;

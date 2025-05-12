@@ -79,6 +79,8 @@ stratego_display::stratego_display(frame* main_display, frame* multipurpose_disp
 	settings_menu.separate_items(true);
 	settings_menu.set_alignment("center");
 	settings_menu.add_border(true);
+
+	initialize_settings_menu();
 }
 
 std::vector<format_tools::index_format> stratego_display::build_cursor_color_structure(int color, bool bold)
@@ -138,6 +140,40 @@ void stratego_display::reset_color(std::string control_name, int color_code)
 				board.set_sub_configuration_color(color_group_map[i].groups[j].name_id, color_group_map[i].groups[j].value, color);
 			}
 		}
+	}
+}
+
+void stratego_display::initialize_settings_menu()
+{
+	settings_menu.set_lines_count(-6);
+	std::vector<int> menu_select_buttons;
+	menu_select_buttons.push_back(game_controls->get_key("select"));
+	settings_menu.set_controls(menu_select_buttons, game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("quit"));
+
+	for (unsigned int i = 0; i < control_settings_menu_items.size(); i++)
+	{
+		settings_menu.append_item(control_settings_menu_items[i].name_id);
+		std::string label_name;
+		if (control_settings_menu_items[i].type == regular)
+		{
+			label_name = ascii_io::get_key_name(game_controls->get_key(control_settings_menu_items[i].name_id));
+		}
+		else if (control_settings_menu_items[i].type == color)
+		{
+			label_name = format_tools::get_color_name(game_controls->get_key(control_settings_menu_items[i].name_id));
+		}
+		else if (control_settings_menu_items[i].type == boolean)
+		{
+			if (game_controls->get_key(control_settings_menu_items[i].name_id) == 0)
+			{
+				label_name = "No";
+			}
+			else if (game_controls->get_key(control_settings_menu_items[i].name_id) == 1)
+			{
+				label_name = "Yes";
+			}
+		}
+		settings_menu.set_item_label(control_settings_menu_items[i].name_id, label_name);
 	}
 }
 
@@ -776,57 +812,6 @@ void stratego_display::erase_screen_shot()
 
 void stratego_display::display_set_controls()
 {
-	int x = 0;
-	int y = 0;
-	bool reduced_menu_size = false;
-	ascii_io::get_terminal_size(x, y);
-	y = y / 2;
-	if ((y - 4) > 10)
-	{
-		y = y - 4;
-		reduced_menu_size = true;
-	}
-	settings_menu.set_lines_count(-6);
-	std::vector<int> menu_select_buttons;
-	menu_select_buttons.push_back(game_controls->get_key("select"));
-	settings_menu.set_controls(menu_select_buttons, game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("quit"));
-	if (reduced_menu_size)
-	{
-		settings_menu.set_spacing(2, 0, 0, 0);
-	}
-	else
-	{
-		settings_menu.set_spacing(0, 0, 0, 0);
-	}
-
-	settings_menu.remove_all_items();
-	
-	for (unsigned int i = 0; i < control_settings_menu_items.size(); i++)
-	{
-		settings_menu.append_item(control_settings_menu_items[i].name_id);
-		std::string label_name;
-		if (control_settings_menu_items[i].type == regular)
-		{
-			label_name = ascii_io::get_key_name(game_controls->get_key(control_settings_menu_items[i].name_id));
-		}
-		else if (control_settings_menu_items[i].type == color)
-		{
-			label_name = format_tools::get_color_name(game_controls->get_key(control_settings_menu_items[i].name_id));
-		}
-		else if(control_settings_menu_items[i].type == boolean)
-		{
-			if (game_controls->get_key(control_settings_menu_items[i].name_id) == 0)
-			{
-				label_name = "No";
-			}
-			else if (game_controls->get_key(control_settings_menu_items[i].name_id) == 1)
-			{
-				label_name = "Yes";
-			}
-		}
-		settings_menu.set_item_label(control_settings_menu_items[i].name_id, label_name);
-	}
-	
 	settings_frame->enable_dec(game_controls->get_key("enable line drawing"));
 
 	if (game_controls->get_key("enable color"))
