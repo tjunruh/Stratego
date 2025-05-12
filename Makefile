@@ -5,7 +5,7 @@ EXECUTABLE ?= stratego
 
 SRC_DIR ?= Code
 BLD_DIR ?= build
-ASCII_ENGINE_DIR ?= ASCII_Board_Game_Engine_v1.8.0-alpha
+ASCII_ENGINE_DIR ?= ASCII_Board_Game_Engine_v2.0.1-alpha
 INC_DIR := $(shell find $(SRC_DIR) -type d)
 
 SRCS := $(shell find $(SRC_DIR) -name *.cpp)

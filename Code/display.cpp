@@ -12,9 +12,7 @@ stratego_display::stratego_display(frame* main_display, frame* multipurpose_disp
 	board(main_display, "board_configs/stratego_board.txt", "default", "new line"),
 	pieces_out_label(main_display, "new line"),
 	multipurpose_label(multipurpose_display),
-	left_text_box_spacer(multipurpose_display, 1, "new line"),
-	multipurpose_text_box(multipurpose_display, "none", 3),
-	right_text_box_spacer(multipurpose_display, 1),
+	multipurpose_text_box(multipurpose_display, "new line", 3),
 	load_game_label(load_game_display),
 	load_game_menu(load_game_display, "new line"),
 	settings_label(settings_display),
@@ -51,8 +49,9 @@ stratego_display::stratego_display(frame* main_display, frame* multipurpose_disp
 	board.add_configuration("scout_right", -1, -1, "*>*", '*', build_central_element_color_structure(game_controls->get_key("scout arrow color"), bold));
 
 	multipurpose_frame = multipurpose_display;
-	multipurpose_frame->set_coordinate_width_multiplier(1, 0, 1);
-	multipurpose_frame->set_coordinate_width_multiplier(1, 1, 1);
+	multipurpose_text_box.set_width_multiplier(1.0);
+	multipurpose_text_box.use_spacing_width_multipliers(true);
+	multipurpose_text_box.set_spacing_width_multipliers(1.0, 1.0);
 	multipurpose_label.set_alignment("center block");
 
 	main_frame->enable_dec(game_controls->get_key("enable line drawing"));
@@ -444,7 +443,7 @@ void stratego_display::display_board(stratego_piece board_pieces[80]) {
 		board.use_translation("reverse");
 	}
 
-	board.sync();
+	board.build();
 
 	if (_display_pieces_out_of_play) {
 		int player1_pieces_out[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -608,6 +607,7 @@ void stratego_display::execute_save_move() {
 			execute_reveal_piece();
 		}
 		board.use_translation("reverse");
+		board.build();
 		board.get_board_and_colors(screen_shot, screen_shot_colors);
 	}
 	else if (_players_move == 2) {
@@ -619,6 +619,7 @@ void stratego_display::execute_save_move() {
 			execute_reveal_piece();
 		}
 		board.use_translation("default");
+		board.build();
 		board.get_board_and_colors(screen_shot, screen_shot_colors);
 	}
 }
@@ -723,7 +724,7 @@ void stratego_display::display_load_game_menu(std::vector<std::string> saved_gam
 	{
 		y = y - 5;
 	}
-	load_game_menu.set_lines_count(y);
+	load_game_menu.set_lines_count(-6);
 	load_game_frame->enable_dec(game_controls->get_key("enable line drawing"));
 
 	if (game_controls->get_key("enable color"))
@@ -738,14 +739,14 @@ void stratego_display::display_load_game_menu(std::vector<std::string> saved_gam
 	load_game_menu.set_controls(menu_select_buttons, game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("quit"));
 	
 	load_game_label.set_output("Saved Games");
-	unsigned int cursor_line = load_game_menu.get_cursor_line();
+	unsigned int cursor_item = load_game_menu.get_cursor_item();
 	load_game_menu.remove_all_items();
 	for (unsigned int i = 0; i < saved_game_names.size(); i++)
 	{
 		load_game_menu.append_item(saved_game_names[i]);
 	}
-	load_game_menu.set_cursor_line(cursor_line);
-	load_game_menu.sync();
+	load_game_menu.set_cursor_item(cursor_item);
+	load_game_menu.build();
 	load_game_frame->display();
 	selection = "";
 	key_stroke = ascii_io::undefined;
@@ -785,7 +786,7 @@ void stratego_display::display_set_controls()
 		y = y - 4;
 		reduced_menu_size = true;
 	}
-	settings_menu.set_lines_count(y);
+	settings_menu.set_lines_count(-6);
 	std::vector<int> menu_select_buttons;
 	menu_select_buttons.push_back(game_controls->get_key("select"));
 	settings_menu.set_controls(menu_select_buttons, game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("quit"));
@@ -834,14 +835,14 @@ void stratego_display::display_set_controls()
 		settings_frame->set_default_foreground_color(game_controls->get_key("foreground color"));
 	}
 
-	settings_menu.sync();
+	settings_menu.build();
 	settings_frame->display();
 	std::string selection = "";
 	int key_stroke = ascii_io::undefined;
 	do
 	{
 		settings_menu.get_selection(selection, key_stroke);
-		settings_menu.sync();
+		settings_menu.build();
 		for (unsigned int i = 0; i < control_settings_menu_items.size(); i++)
 		{
 			if (selection == control_settings_menu_items[i].name_id)
@@ -923,8 +924,9 @@ void stratego_display::display_set_controls()
 							reset_color(color_group_map[j].color, game_controls->get_key(color_group_map[j].color));
 						}
 					}
-					settings_frame->display();
 				}
+				settings_menu.build();
+				settings_frame->display();
 			}
 		}
 	} while (selection != "");

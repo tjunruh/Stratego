@@ -5,7 +5,6 @@
 #include "direction.h"
 #include <ascii_board.h>
 #include <label.h>
-#include <spacer.h>
 #include <text_box.h>
 #include <menu.h>
 #include <controls.h>
@@ -76,9 +75,7 @@ private:
 	frame* main_frame;
 
 	label multipurpose_label;
-	spacer left_text_box_spacer;
 	text_box multipurpose_text_box;
-	spacer right_text_box_spacer;
 	frame* multipurpose_frame;
 
 	label load_game_label;

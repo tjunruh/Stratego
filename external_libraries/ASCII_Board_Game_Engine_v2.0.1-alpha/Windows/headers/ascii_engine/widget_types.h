@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 
 #ifdef _WIN32
 #ifdef WIDGET_TYPES_EXPORTS
@@ -16,4 +17,8 @@
 #define BOARD 3
 #define LABEL 4
 #define FRAME 5
-#define SPACER 6
+
+namespace widget_types
+{
+	const std::vector<int> line_constraint_widgets = { BOARD, TEXTBOX, MENU, LABEL };
+}

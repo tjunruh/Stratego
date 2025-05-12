@@ -45,6 +45,7 @@ int main()
     std::vector<int> menu_select_buttons;
     menu_select_buttons.push_back(game_controls->get_key("select"));
     initialization_menu.set_controls(menu_select_buttons, game_controls->get_key("up"), game_controls->get_key("down"), game_controls->get_key("quit"));
+    initialization_menu.build();
     if (game_controls->get_key("enable color"))
     {
         home_frame->set_default_foreground_color(game_controls->get_key("foreground color"));
