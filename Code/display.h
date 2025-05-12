@@ -94,12 +94,6 @@ private:
 		color
 	};
 
-	enum color_type
-	{
-		central,
-		cursor
-	};
-
 	struct control_settings_menu_item
 	{
 		std::string name_id = "";
