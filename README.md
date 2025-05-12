@@ -53,4 +53,4 @@ cd build
 
 # Game Instructions
 
-On entering, you may need to widen the terminal to properly see the title. To see controls pressing 'h' will display controls in most cases.
+Pressing 'h' once in the main game loop will display the settings menu where current settings and key bindings can be viewed and changed.
