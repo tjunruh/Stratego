@@ -14,6 +14,8 @@ _____/\\\\\\\\\\\_______________________________________________________________
 
 This is the two player board game of Stratego. Here, it is implemented as a console application.
 
+https://github.com/user-attachments/assets/df17bbb8-c015-45bd-ad0a-2b66038e8104
+
 # Windows
 
 Clone this repository and run the following command (Note that MSbuild.exe from Visual Studio 2022 must be in the System Environment Path variable):
